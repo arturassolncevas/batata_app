@@ -1,4 +1,6 @@
 const mix = require('laravel-mix');
+const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 /*
  |--------------------------------------------------------------------------
@@ -12,4 +14,11 @@ const mix = require('laravel-mix');
  */
 
 mix.react('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+   .less('resources/styles/less/app.less', 'public/css',
+      {
+         modifyVars: {
+            'primary-color': '#0BD37E',
+         },
+         javascriptEnabled: true,
+      }
+   );
