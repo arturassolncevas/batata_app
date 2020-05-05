@@ -28,6 +28,7 @@
         "antd": "^4.1.5",
         "css-loader": "^3.5.3",
         "extract-text-webpack-plugin": "^3.0.2",
+        "formik": "^2.1.4",
         "less": "^3.11.1",
         "less-loader": "^6.0.0",
         "react-intl": "^4.5.1",
