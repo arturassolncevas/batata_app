@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import {withRouter} from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { Formik } from 'formik'
 import { Form, Input, Button, Checkbox, Row, Col, Card } from 'antd';
 import { initialState } from './initialState'
+import { injectIntl } from 'react-intl'
 
 
 const layout = {
@@ -11,7 +12,7 @@ const layout = {
   wrapperCol: { span: 24 },
 }
 
-export default class LoginForm extends Component {
+class Login extends Component {
 
   constructor(props) {
     super(props)
@@ -23,24 +24,24 @@ export default class LoginForm extends Component {
     axios.post('/api/login', {
       ...values
     })
-    .then(function (response) {
-      switch(error.response.status) {
-        case 200:
-          this.props.history.push("/home")
-        default:
-          break
-      }
-    })
-    .catch((error) => {
-      switch(error.response.status) {
-        case 401:
-          this.state.errors.general.message = "Wrong username or password"
-          this.setState({ ...this.state })
-          this.props.history.push("/home")
-        default:
-          break
-      }
-    })
+      .then(function (response) {
+        switch (error.response.status) {
+          case 200:
+            this.props.history.push("/home")
+          default:
+            break
+        }
+      })
+      .catch((error) => {
+        switch (error.response.status) {
+          case 401:
+            this.state.generalError.message = this.props.intl.formatMessage({ id: 'pages.login.errors.wrong_credentials' })
+            this.setState({ ...this.state })
+          //this.props.history.push("/home")
+          default:
+            break
+        }
+      })
   }
 
   handleFormSubmitFailed(errorInfo) {
@@ -49,13 +50,13 @@ export default class LoginForm extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to = {{ pathname: "/home" }} />;
+      return <Redirect to={{ pathname: "/home" }} />;
     }
     return (
       <Row type="flex" justify="center" align="middle" style={{ minHeight: '100vh' }}>
         <Col lg={6} >
-          <Card title="Login">
-            <div style={{color: "red"}}>{ this.state.errors.general.message }</div>
+          <Card title={this.props.intl.formatMessage({ id: 'pages.login.header' })}>
+            <div style={{ color: "red" }}>{this.state.generalError.message}</div>
             <Form
               ref={this.formRef}
               {...layout}
@@ -65,7 +66,7 @@ export default class LoginForm extends Component {
               onFinishFailed={this.handleFormSubmitFailed}
             >
               <Form.Item
-                label="Email"
+                label={this.props.intl.formatMessage({ id: 'general.email' })}
                 name="email"
                 validateStatus={this.state.errors.name.status}
                 help={this.state.errors.name.message}
@@ -74,22 +75,24 @@ export default class LoginForm extends Component {
               </Form.Item>
 
               <Form.Item
-                label="Password"
+                label={this.props.intl.formatMessage({ id: 'general.password' })}
                 name="password"
               >
                 <Input.Password />
               </Form.Item>
 
-              <Form.Item name="remember" valuePropName="checked">
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
+              <Row style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <Form.Item name="remember" valuePropName="checked">
+                  <Checkbox>{this.props.intl.formatMessage({ id: 'pages.login.remember_me' })}</Checkbox>
+                </Form.Item>
+                <Link to="/home">{this.props.intl.formatMessage({ id: 'pages.login.forgot_password' })}</Link>
+              </ Row>
 
-              <Form.Item
-              >
+              <Form.Item >
                 <Row justify="end">
                   <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
+                    {this.props.intl.formatMessage({ id: 'general.submit' })}
+                  </Button>
                 </Row>
               </Form.Item>
             </Form>
@@ -99,3 +102,5 @@ export default class LoginForm extends Component {
     )
   }
 }
+
+export default injectIntl(Login)

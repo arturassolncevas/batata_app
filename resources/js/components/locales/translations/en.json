@@ -1,1 +1,18 @@
-{ "name": "Name" }
+{
+    "name": "Name",
+    "pages": {
+        "login": {
+            "forgot_password": "Forgot password?",
+            "remember_me": "Remember me",
+            "header": "Login",
+            "errors": {
+                "wrong_credentials": "Wrong username or password"
+            }
+        }
+    },
+    "general" :{
+        "email": "Email",
+        "password": "Password",
+        "submit": "Submit"
+    }
+ }
