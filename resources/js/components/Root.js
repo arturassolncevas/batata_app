@@ -4,15 +4,18 @@ import { BrowserRouter } from 'react-router-dom'
 import Index from './Index'
 import { DatePicker } from 'antd';
 import Locale from './locales/Locale'
+import RequestInterceptor from './services/RequestInterceptor'
 
 
 //styles
 
 function Root() {
     return (
-        <BrowserRouter>
-            <Index />
-        </BrowserRouter>
+        <RequestInterceptor>
+            <BrowserRouter>
+                <Index />
+            </BrowserRouter>
+        </RequestInterceptor>
     );
 }
 

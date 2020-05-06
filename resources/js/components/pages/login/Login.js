@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import {withRouter} from 'react-router-dom'
 import { Formik } from 'formik'
 import { Form, Input, Button, Checkbox, Row, Col, Card } from 'antd';
+import { initialState } from './initialState'
 
 
 const layout = {
@@ -13,14 +15,32 @@ export default class LoginForm extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { formDefault: { email: 'email', password: 'password' }, errors: { name: { message: null, status: "success" } } }
+    this.state = { ...initialState }
     this.formRef = React.createRef();
   }
 
   handleFormSubmit(values) {
-    let newState = { ...this.state }
-    newState.errors.name = { status: "error", message: "Wrong username" }
-    this.setState({ ...this.state, })
+    axios.post('/api/login', {
+      ...values
+    })
+    .then(function (response) {
+      switch(error.response.status) {
+        case 200:
+          this.props.history.push("/home")
+        default:
+          break
+      }
+    })
+    .catch((error) => {
+      switch(error.response.status) {
+        case 401:
+          this.state.errors.general.message = "Wrong username or password"
+          this.setState({ ...this.state })
+          this.props.history.push("/home")
+        default:
+          break
+      }
+    })
   }
 
   handleFormSubmitFailed(errorInfo) {
@@ -28,10 +48,14 @@ export default class LoginForm extends Component {
   };
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to = {{ pathname: "/home" }} />;
+    }
     return (
       <Row type="flex" justify="center" align="middle" style={{ minHeight: '100vh' }}>
         <Col lg={6} >
           <Card title="Login">
+            <div style={{color: "red"}}>{ this.state.errors.general.message }</div>
             <Form
               ref={this.formRef}
               {...layout}
@@ -52,7 +76,6 @@ export default class LoginForm extends Component {
               <Form.Item
                 label="Password"
                 name="password"
-                rules={[{ required: true, message: 'Please input your password!' }]}
               >
                 <Input.Password />
               </Form.Item>
