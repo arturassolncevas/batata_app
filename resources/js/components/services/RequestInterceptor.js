@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 
+axios.defaults.headers.common = { 'Authorization': `Bearer ${localStorage.getItem("token")}` }
+
 export default class RequestInterceptor extends Component {
     componentDidMount() {
         axios.interceptors.response.use(function (response) {

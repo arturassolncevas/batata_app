@@ -5,6 +5,7 @@ import { Formik } from 'formik'
 import { Form, Input, Button, Checkbox, Row, Col, Card } from 'antd';
 import { initialState } from './initialState'
 import { injectIntl } from 'react-intl'
+import Auth from '../../services/Auth'
 
 
 const layout = {
@@ -24,20 +25,22 @@ class Login extends Component {
     axios.post('/api/login', {
       ...values
     })
-      .then(function (response) {
-        switch (error.response.status) {
+      .then((response) => {
+        switch (response.status) {
           case 200:
+            let { success: { token = "" } } = response.data
+            localStorage.setItem("token", token)
+            Auth.authenticate()
             this.props.history.push("/home")
           default:
             break
         }
       })
       .catch((error) => {
-        switch (error.response.status) {
+        switch ((error.response || {}).status) {
           case 401:
             this.state.generalError.message = this.props.intl.formatMessage({ id: 'pages.login.errors.wrong_credentials' })
             this.setState({ ...this.state })
-          //this.props.history.push("/home")
           default:
             break
         }

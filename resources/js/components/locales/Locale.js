@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { IntlProvider } from 'react-intl';
-import { addLocaleData } from "react-intl"
 import flatten from 'flat'
 
 //import '@formatjs/intl-relativetimeformat/polyfill'
@@ -25,7 +24,6 @@ const locale = 'en'
 
 export default class Locale extends Component {
 	render() {
-		console.log(this.props)
 		return (
 			<IntlProvider
 				locale={locale}
