@@ -10,4 +10,5 @@ const Auth = {
     return this.isAuthenticated;
   }
 };
+
 export default Auth;

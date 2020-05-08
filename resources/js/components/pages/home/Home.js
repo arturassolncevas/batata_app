@@ -25,16 +25,16 @@ const menu = (
 
 export default function HomePage() {
   return (
-          <Content
-            className="site-layout-background"
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-              background: 'white'
-            }}
-          >
-            Content
-        </Content>
+    <Content
+      className="site-layout-background"
+      style={{
+        padding: 24,
+        margin: 0,
+        minHeight: 280,
+        background: 'white'
+      }}
+    >
+      Content
+    </Content>
   )
 }

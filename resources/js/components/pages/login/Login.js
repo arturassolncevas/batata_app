@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { withRouter, Link } from 'react-router-dom'
+import { withRouter, Link, Redirect } from 'react-router-dom'
 import { Formik } from 'formik'
 import { Form, Input, Button, Checkbox, Row, Col, Card } from 'antd';
 import { initialState } from './initialState'
 import { injectIntl } from 'react-intl'
-import Auth from '../../services/Auth'
+import { signIn } from '../../redux/actions/authActions'
+import { connect } from 'react-redux'
 
 
 const layout = {
@@ -22,16 +23,16 @@ class Login extends Component {
   }
 
   handleFormSubmit(values) {
-    axios.post('/api/login', {
+    requestClient.post('/api/login', {
       ...values
     })
-      .then((response) => {
+      .then(async (response) => {
         switch (response.status) {
           case 200:
+            await this.props.signIn()
             let { success: { token = "" } } = response.data
             localStorage.setItem("token", token)
-            Auth.authenticate()
-            this.props.history.push("/home")
+            this.props.history.push("/")
           default:
             break
         }
@@ -52,8 +53,8 @@ class Login extends Component {
   };
 
   render() {
-    if (this.state.redirect) {
-      return <Redirect to={{ pathname: "/home" }} />;
+    if (this.props.authReducer.isLogged) {
+      return (<Redirect to="/"></Redirect>)
     }
     return (
       <Row type="flex" justify="center" align="middle" style={{ minHeight: '100vh' }}>
@@ -106,4 +107,13 @@ class Login extends Component {
   }
 }
 
-export default injectIntl(Login)
+const mapStateToProps = state => {
+  const { authReducer } = state
+  return { authReducer }
+}
+
+const mapDispatchToProps = dispatch => ({
+  signIn: () => dispatch(signIn())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Login))
