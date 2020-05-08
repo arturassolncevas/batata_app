@@ -29,9 +29,9 @@ class Login extends Component {
       .then(async (response) => {
         switch (response.status) {
           case 200:
-            await this.props.signIn()
             let { success: { token = "" } } = response.data
             localStorage.setItem("token", token)
+            await this.props.signIn()
             this.props.history.push("/")
           default:
             break

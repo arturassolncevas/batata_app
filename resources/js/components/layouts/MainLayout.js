@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Dropdown } from 'antd';
 import { UserOutlined, LaptopOutlined, NotificationOutlined, DownOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
 import { Avatar, Badge } from 'antd';
+import { logOut } from '../redux/actions/authActions'
+import { connect } from 'react-redux'
+import { injectIntl } from 'react-intl'
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
-const menu = (
+const menu = (that) => (
   <Menu>
     <Menu.Item key="0">
       <a href="#">User settings</a>
@@ -18,12 +21,27 @@ const menu = (
     </Menu.Item>
     <Menu.Divider />
     <Menu.Item key="3">
-      Logout
+      <a
+        onClick={that.handleLogOut}
+      >
+        Logout
+      </a>
     </Menu.Item>
   </Menu>
 );
 
-export default class MainLayout extends Component {
+class MainLayout extends Component {
+  constructor(props) {
+    super(props)
+    this.handleLogOut = this.handleLogOut.bind(this)
+  }
+  handleLogOut(e) {
+    e.preventDefault
+    console.log(this.props)
+    this.props.logOut()
+    this.props.history.push("/")
+  }
+
   render() {
     return (
       <Layout style={{ height: "100vh" }} >
@@ -39,7 +57,7 @@ export default class MainLayout extends Component {
             justifyContent: 'center',
             float: "right"
           }}>
-            <Dropdown overlay={menu} trigger={['click']}>
+            <Dropdown overlay={(() => menu(this))()} trigger={['click']}>
               <a
                 style={{
                   height: '64px',
@@ -109,3 +127,14 @@ export default class MainLayout extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  const { authReducer } = state
+  return { authReducer }
+}
+
+const mapDispatchToProps = dispatch => ({
+  logOut: () => dispatch(logOut())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(MainLayout))

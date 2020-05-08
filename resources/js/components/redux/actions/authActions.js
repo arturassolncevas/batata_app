@@ -22,6 +22,14 @@ export const signIn = () => {
   }
 }
 
+export const logOut = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: ACTIONS.AUTH_LOGOUT
+    }) 
+  }
+}
+
 
 
 

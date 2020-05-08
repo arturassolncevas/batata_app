@@ -16,7 +16,7 @@ const authReducer = function (state = initialState, action) {
       newState= { isLogged: true, user: { ...action.payload } } 
       break;
     case ACTIONS.AUTH_LOGOUT:
-      newState = state
+      newState= { isLogged: false, user: { ...initialState.user } } 
       break;
     default:
       newState = state

@@ -8,7 +8,7 @@ export const setupRequestClient = () => {
 
   axiosInstance.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
   axiosInstance.interceptors.request.use(function (config) {
-    config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+    config.headers.Authorization = `Bearer ${localStorage.getItem("token") || ""}`;
     return config;
   }, function (err) {
     return Promise.reject(err);
