@@ -1,92 +1,55 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { Link } from 'react-router-dom'
-import { Layout, Menu, Breadcrumb, Dropdown } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined, DownOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
+import { Link, withRouter } from 'react-router-dom'
+import { Layout, Menu, Breadcrumb, Dropdown, Row, Col, Button } from 'antd';
+import { UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
 import { Avatar, Badge } from 'antd';
 import { logOut } from '../redux/actions/authActions'
+import { triggerMenu } from '../redux/actions/menuActions'
 import { connect } from 'react-redux'
 import { injectIntl } from 'react-intl'
+import Header from "../shared/Header"
 
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
-
-const menu = (that) => (
-  <Menu>
-    <Menu.Item key="0">
-      <a href="#">User settings</a>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <a href="#">Messages</a>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key="3">
-      <a
-        onClick={that.handleLogOut}
-      >
-        Logout
-      </a>
-    </Menu.Item>
-  </Menu>
-);
+const { Sider } = Layout;
 
 class MainLayout extends Component {
   constructor(props) {
     super(props)
-    this.handleLogOut = this.handleLogOut.bind(this)
+    console.log(props)
+
   }
-  handleLogOut(e) {
+
+  async handleLogOut(e) {
     e.preventDefault
-    console.log(this.props)
-    this.props.logOut()
+    await this.props.logOut()
     this.props.history.push("/")
+  }
+
+  async handleMenuClick(e) {
+    console.log("handle")
+    await this.props.triggerMenu()
   }
 
   render() {
     return (
       <Layout style={{ height: "100vh" }} >
-        <Header className="header" style={{ padding: '0px' }} >
-          <div style={{ paddingLeft: '20px', width: '200px' }}>
-            <img className="logo" src="https://carrothealth.com/wp-content/uploads/2019/10/carrot-logo-200w.png" />
-          </div>
-          <div style={{
-            height: '64px',
-            width: '64px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            float: "right"
-          }}>
-            <Dropdown overlay={(() => menu(this))()} trigger={['click']}>
-              <a
-                style={{
-                  height: '64px',
-                  width: '64px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  float: 'right'
-                }}
-
-                className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                <Badge count={1}>
-                  <Avatar shape="square" src="https://avatars3.githubusercontent.com/u/10627086?s=40&v=4" />
-                </Badge>
-              </a>
-            </Dropdown>
-
-          </div>
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} style={{ float: 'right' }} >
-            <Menu.Item key="1">nav 1</Menu.Item>
-            <Menu.Item key="2">nav 2</Menu.Item>
-          </Menu>
-        </Header>
-        <Layout>
+        <Header
+          handleMenuClick={(e) => { this.handleMenuClick(e) }}
+          handleLogOut={(e) => { this.handleLogOut(e) }}
+         />
+        <Layout style={{ position: "relative" }}>
           <Sider style={{
             overflowY: 'scroll',
             overflowX: 'hidden',
-            left: 0,
-          }}>
+            left: '0px',
+            bottom: '0px',
+            top: '0px',
+            position: 'absolute',
+            zIndex: '100'
+          }}
+          width={this.props.menuReducer.opened ? 200 : 0}
+          >
             <Menu
               mode="inline"
               defaultSelectedKeys={['1']}
@@ -119,7 +82,7 @@ class MainLayout extends Component {
               </SubMenu>
             </Menu>
           </Sider>
-          <Layout style={{ padding: '24px 24px 24px' }}>
+          <Layout className={`content ${ this.props.menuReducer.opened ? "opened" : "closed"}`}>
             {this.props.children}
           </Layout>
         </Layout>
@@ -129,12 +92,13 @@ class MainLayout extends Component {
 }
 
 const mapStateToProps = state => {
-  const { authReducer } = state
-  return { authReducer }
+  const { authReducer, menuReducer } = state
+  return { authReducer, menuReducer }
 }
 
 const mapDispatchToProps = dispatch => ({
-  logOut: () => dispatch(logOut())
+  logOut: () => dispatch(logOut()),
+  triggerMenu: () => dispatch(triggerMenu())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(MainLayout))
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(withRouter(MainLayout)))

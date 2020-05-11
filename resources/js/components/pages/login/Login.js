@@ -42,7 +42,9 @@ class Login extends Component {
           case 401:
             this.state.generalError.message = this.props.intl.formatMessage({ id: 'pages.login.errors.wrong_credentials' })
             this.setState({ ...this.state })
+            break;
           default:
+            console.log(error)
             break
         }
       })
@@ -85,10 +87,8 @@ class Login extends Component {
                 <Input.Password />
               </Form.Item>
 
-              <Row style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                <Form.Item name="remember" valuePropName="checked">
-                  <Checkbox>{this.props.intl.formatMessage({ id: 'pages.login.remember_me' })}</Checkbox>
-                </Form.Item>
+              <Row style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "25px", textDecoration: "underline" }}>
+                <Link to="/sign-up">{this.props.intl.formatMessage({ id: 'pages.login.sign_up' })}</Link>
                 <Link to="/home">{this.props.intl.formatMessage({ id: 'pages.login.forgot_password' })}</Link>
               </ Row>
 

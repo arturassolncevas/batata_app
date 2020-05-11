@@ -1,6 +1,15 @@
 @import '~antd/dist/antd.less';
 
+@l1: 64px;
 @primary-color: @green-6;
+
+.l1-height {
+  height: @l1;
+}
+
+.l1-width {
+  width: @l1;
+}
 
 .logo {
     width: 120px;
@@ -8,4 +17,32 @@
     background: url("../../images/logo.png");
     margin: 16px 24px 16px 0;
     float: left;
+}
+
+.ant-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @primary-color;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  padding: 24px 24px 24px;
+  &.opened {
+  }
+  &.closed {
+    margin-left: 0px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .content.opened {
+    margin-left: 200px; 
+  }
 }

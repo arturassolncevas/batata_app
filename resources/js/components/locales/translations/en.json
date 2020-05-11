@@ -4,6 +4,7 @@
         "login": {
             "forgot_password": "Forgot password?",
             "remember_me": "Remember me",
+            "sign_up": "Sign up",
             "header": "Login",
             "errors": {
                 "wrong_credentials": "Wrong username or password"

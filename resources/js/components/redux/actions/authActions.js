@@ -24,13 +24,19 @@ export const signIn = () => {
 
 export const logOut = () => {
   return async (dispatch) => {
-    dispatch({
-      type: ACTIONS.AUTH_LOGOUT
-    }) 
+    return requestClient.get('/api/logout')
+      .then((response) => {
+        switch (response.status) {
+          case 200:
+            localStorage.removeItem("token")
+            dispatch({
+              type: ACTIONS.AUTH_LOGOUT,
+            })
+          default:
+            break
+        }
+      }).catch((error) => { 
+        console.log(error)
+      })
   }
 }
-
-
-
-
-

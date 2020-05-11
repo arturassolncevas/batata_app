@@ -1,27 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Layout, Menu, Breadcrumb, Dropdown } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined, DownOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
+import { Layout, Menu, Breadcrumb, Dropdown, PageHeader } from 'antd';
+import { UserOutlined, LaptopOutlined, NotificationOutlined, DownOutlined, MessageOutlined, SettingOutlined, HomeFilled } from '@ant-design/icons';
 import { Avatar, Badge } from 'antd';
 
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
-
-const menu = (
-  <Menu>
-    <Menu.Item key="0">
-      <a href="#">User settings</a>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <a href="#">Messages</a>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key="3">
-      Logout
-    </Menu.Item>
-  </Menu>
-);
 
 export default function HomePage() {
   return (
@@ -34,7 +19,12 @@ export default function HomePage() {
         background: 'white'
       }}
     >
-      Content
+      <PageHeader
+        className="site-page-header"
+        title="Title"
+        avatar={{icon: (<HomeFilled />)}}
+      />
+
     </Content>
   )
 }
