@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'API\Authentication\LoginController@login');
 Route::post('register', 'API\Authentication\RegisterController@register');
 
+Route::get('countries', 'API\General\CountriesController@index');
+
 Route::get('user/details', 'API\Users\UsersController@details')->middleware('auth:api');
 Route::group(['middleware' => 'auth:api'], function() {
   Route::get('logout', 'API\Authentication\LoginController@logout');
