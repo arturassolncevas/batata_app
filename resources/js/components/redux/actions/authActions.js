@@ -17,8 +17,9 @@ export const signIn = () => {
           default:
             break
         }
-      }).catch((error) => { 
-         console.log("error in action") })
+      }).catch((error) => {
+        console.log("error in action")
+      })
   }
 }
 
@@ -35,7 +36,7 @@ export const logOut = () => {
           default:
             break
         }
-      }).catch((error) => { 
+      }).catch((error) => {
         console.log(error)
       })
   }

@@ -9,11 +9,23 @@
             "errors": {
                 "wrong_credentials": "Wrong username or password"
             }
+        },
+        "signup": {
+          "header": "Signup",
+          "company_name": "Company name"
         }
     },
     "general" :{
+        "name": "Navn",
         "email": "Email",
         "password": "Password",
-        "submit": "Submit"
+        "submit": "Submit",
+        "phone": "Phone",
+        "country": "Country"
+    },
+
+    "countries": {
+      "Denmark": "Denmark",
+      "United Kingdom": "United Kingdom"
     }
  }

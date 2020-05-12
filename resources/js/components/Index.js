@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import PrivateRoute from './services/PrivateRoute'
 import HomePage from './pages/home/Home'
 import LoginPage from './pages/login/Login'
+import SignupPage from './pages/signup/Signup'
 import 'antd/dist/antd.css'
 import '../../styles/less/app.less'
 import { injectIntl } from 'react-intl'
@@ -26,6 +27,7 @@ class Index extends Component {
     if (this.state.initialLoadStatus == "finished") {
       return (
         <Switch>
+          <Route exact path="/sign-up" component={SignupPage} />
           <Route exact path="/login" component={LoginPage} />
           <MainLayout>
             <PrivateRoute path="/" component={HomePage} />
