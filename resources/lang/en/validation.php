@@ -94,6 +94,7 @@ return [
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
     'password' => 'The password is incorrect.',
+    'phone_area' => 'The area code is required.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
     'required' => 'The :attribute field is required.',
@@ -130,8 +131,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'phone' => [
+            'phone_area' => 'The phone area is required.',
         ],
     ],
 
@@ -146,6 +147,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+      'country_id' => 'country'
+    ],
 
 ];

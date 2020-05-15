@@ -19,12 +19,18 @@ use Illuminate\Support\Facades\Route;
                   ->header('Content-Type', 'application/json');
 });*/
 
+//AUTH
 Route::post('login', 'API\Authentication\LoginController@login');
 Route::post('register', 'API\Authentication\RegisterController@register');
 
+//SIGNUP
+Route::post('signup/requestor', 'API\Signup\SignupController@register_requestor');
+
+//GENERAL
 Route::get('countries', 'API\General\CountriesController@index');
 
-Route::get('user/details', 'API\Users\UsersController@details')->middleware('auth:api');
 Route::group(['middleware' => 'auth:api'], function() {
+  //AUTH
+  Route::get('user/details', 'API\Users\UsersController@details');
   Route::get('logout', 'API\Authentication\LoginController@logout');
 });
