@@ -48,6 +48,10 @@ module.exports = {
         publicPath: "http://localhost:3000/js/",
         filename: "app.js"
     },
+    watchOptions: {
+      poll: 1000,
+      ignored: ["node_modules"]
+    },
     devServer: {
         contentBase: path.join(__dirname, "public/"),
         headers: { 'Access-Control-Allow-Origin': '*' },

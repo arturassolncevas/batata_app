@@ -12,7 +12,9 @@
         },
         "signup": {
           "header": "Signup",
-          "company_name": "Company name"
+          "company_name": "Company name",
+          "accept_terms_and_conditions": "I hereby allow to be contacted",
+          "successfully_submitted": "Thank you for your request. We highly appreciate your interest. You will be hearing from us soon."
         }
     },
     "general" :{

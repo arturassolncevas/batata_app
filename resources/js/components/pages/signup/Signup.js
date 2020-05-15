@@ -6,6 +6,10 @@ import { initialState } from './initialState'
 import { injectIntl } from 'react-intl'
 import ReactCountryFlag from "react-country-flag"
 import countries from '../../locales/countries.json'
+import merge from 'deep-merge-js'
+import deepCopy from 'json-deep-copy'
+import update from 'immutability-helper';
+
 
 const layout = {
   labelCol: { span: 24 },
@@ -16,47 +20,56 @@ class Signup extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { ...initialState }
+    this.initialState = initialState
+    this.state = deepCopy(initialState) 
     this.formRef = React.createRef();
   }
 
+  componentDidMount() {
+    this.fetchInitialData()
+  }
+
+  async fetchInitialData() {
+    let countries = await requestClient.get('/api/countries')
+    this.state.countries = countries.data
+    this.state.country = (countries[0] || {}).id || ""
+    this.setState({ ...this.state, isFetching: false })
+  }
+
+  resetErrors() {
+    this.setErrors()
+  }
+
+  setErrors(error = {}) {
+    this.state.error = merge(deepCopy(this.initialState.error), error)
+    this.setState({ ...this.state })
+  }
+
   handleFormSubmit(values) {
-    console.log(values)
-    requestClient.post('/api/login', {
-      ...values
+    requestClient.post('/api/signup/requestor', {
+      ...values,
     })
       .then(async (response) => {
         switch (response.status) {
           case 200:
-            let { success: { token = "" } } = response.data
-            localStorage.setItem("token", token)
-            await this.props.signIn()
-            this.props.history.push("/")
+            this.resetErrors()
+            this.setState({ ...this.state, successfully_submitted: true })
           default:
             break
         }
       })
       .catch((error) => {
         switch ((error.response || {}).status) {
-          case 401:
-            this.state.errors.general.message = this.props.intl.formatMessage({ id: 'pages.login.errors.wrong_credentials' })
-            this.setState({ ...this.state })
-            break;
           default:
-            console.log(error)
+            this.setErrors(error.response.data)
             break
         }
       })
   }
 
-  handleFormSubmitFailed(errorInfo) {
-    console.log('Failed:', errorInfo);
-  };
-
-  handleCountryChange(value) {
-    this.state.formInitial.country = value
-    this.setState({...this.state})
-    console.log(value)
+  handleCountryChange(id) {
+    let country = this.state.countries.find((country) => country.id === id)
+    this.formRef.current.setFieldsValue({ phone_area_country_id: country.id })
   };
 
   render() {
@@ -64,20 +77,20 @@ class Signup extends Component {
       <Row type="flex" justify="center" align="middle" style={{ minHeight: '100vh' }}>
         <Col lg={6} >
           <Card title={this.props.intl.formatMessage({ id: 'pages.signup.header' })}>
-            <div style={{ color: "red" }}>{this.state.errors.general.message}</div>
-            <Form
+            { this.state.successfully_submitted && <div>{this.props.intl.formatMessage({ id: 'pages.signup.successfully_submitted' })}</div> }
+            { !this.state.successfully_submitted && <Form
               ref={this.formRef}
               {...layout}
               name="basic"
-              initialValues={this.state.formInitial}
+              initialValues={this.state.initialForm}
               onFinish={(e) => { this.handleFormSubmit(e) }}
-              onFinishFailed={this.handleFormSubmitFailed}
             >
               <Form.Item
                 label={this.props.intl.formatMessage({ id: 'general.name' })}
                 name="name"
-                validateStatus={this.state.errors.name.status}
-                help={this.state.errors.name.message}
+                required
+                validateStatus={this.state.error.errors.name && "error"}
+                help={this.state.error.errors.name && this.state.error.errors.name.join(', ')}
               >
                 <Input />
               </Form.Item>
@@ -92,19 +105,26 @@ class Signup extends Component {
               <Form.Item
                 label={this.props.intl.formatMessage({ id: 'general.email' })}
                 name="email"
+                required
+                validateStatus={this.state.error.errors.email && "error"}
+                help={this.state.error.errors.email && this.state.error.errors.email.join(', ')}
               >
-                <Input value={"awdwa"}/>
+                <Input />
               </Form.Item>
 
               <Form.Item
                 label={this.props.intl.formatMessage({ id: 'general.country' })}
-                name="country"
+                name="country_id"
+                required
+                validateStatus={this.state.error.errors.country_id && "error"}
+                help={this.state.error.errors.country_id}
               >
-                <Select onChange={(value) => { this.handleCountryChange(value) }}>
-                  {countries.map((country, index) => {
+                <Select
+                  onChange={(value) => { this.handleCountryChange(value) }}>
+                  {this.state.countries.map((country) => {
                     return (
-                      <Select.Option key={index} value={country.alias}>
-                        <div><ReactCountryFlag countryCode={country.alias.toUpperCase()} />
+                      <Select.Option key={country.id} value={country.id}>
+                        <div><ReactCountryFlag countryCode={country.code.toUpperCase()} />
                           {this.props.intl.formatMessage({ id: `countries.${country.name}` })}
                         </div>
                       </Select.Option>)
@@ -114,14 +134,47 @@ class Signup extends Component {
 
               <Form.Item
                 label={this.props.intl.formatMessage({ id: 'general.phone' })}
-                name="phone"
+                required
+                validateStatus={this.state.error.errors.phone && "error"}
+                help={this.state.error.errors.phone && this.state.error.errors.phone.join(', ')}
               >
                 <Input.Group compact>
-                  <Input style={{ width: '30%' }} value={this.state.formInitial.country} disabled={false}/>
-                  <Input style={{ width: "70%" }} />
+                  <Form.Item
+                    noStyle
+                    name="phone_area_country_id"
+                  >
+                    <Select
+                      style={{ width: '30%' }}
+                      name="phone_area_country_id"
+                    >
+                      {this.state.countries.map((country) => {
+                        return (
+                          <Select.Option key={country.area_code} value={country.id}>
+                            <div><ReactCountryFlag countryCode={country.code.toUpperCase()} />
+                              {country.area_code}
+                            </div>
+                          </Select.Option>)
+                      })}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item
+                    label={this.props.intl.formatMessage({ id: 'general.phone' })}
+                    noStyle
+                    name="phone"
+                  >
+                    <Input style={{ width: "70%" }} />
+                  </Form.Item>
                 </Input.Group>
               </Form.Item>
-
+              <Form.Item
+                name="accept_terms_and_conditions"
+                required
+                valuePropName="checked"
+                validateStatus={this.state.error.errors.accept_terms_and_conditions && "error"}
+                help={this.state.error.errors.accept_terms_and_conditions && this.state.error.errors.accept_terms_and_conditions.join(', ')}
+              >
+                <Checkbox>{this.props.intl.formatMessage({ id: 'pages.signup.accept_terms_and_conditions' })}</Checkbox>
+              </Form.Item>
               <Form.Item >
                 <Row justify="end">
                   <Button type="primary" htmlType="submit">
@@ -129,7 +182,7 @@ class Signup extends Component {
                   </Button>
                 </Row>
               </Form.Item>
-            </Form>
+            </Form> }
           </Card>
         </Col>
       </Row >

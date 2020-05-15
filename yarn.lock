@@ -2731,6 +2731,11 @@ deep-equal@^1.0.1:
     object-keys "^1.1.1"
     regexp.prototype.flags "^1.2.0"
 
+deep-merge-js@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/deep-merge-js/-/deep-merge-js-1.0.6.tgz#b9478470effd57e23cf412c4e74e49f682306056"
+  integrity sha512-2jaOxOpdBsfR10S5u2HCBBMIXBKJZ5/zjixECFD/3ugXjcV1zBCZQb21PRw0WV2P0uO+Snna12yUPbd93JqE9A==
+
 deepmerge@^2.1.0, deepmerge@^2.1.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-2.2.1.tgz#5d3ff22a01c00f645405a2fbc17d0778a1801170"
@@ -4091,6 +4096,13 @@ img-loader@^3.0.0:
   dependencies:
     loader-utils "^1.1.0"
 
+immutability-helper@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/immutability-helper/-/immutability-helper-3.0.2.tgz#e9187158b47c93368a92e84c31714c4b3dff30b0"
+  integrity sha512-fcrJ26wpvUcuGRpoGY4hyQ/JOeR1HAunMmE3C0XYXSe6plAGtgTlB2S4BzueBANCPrDJ7AByL1yrIRLIlVfwpA==
+  dependencies:
+    invariant "^2.2.4"
+
 import-cwd@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/import-cwd/-/import-cwd-2.1.0.tgz#aa6cf36e722761285cb371ec6519f53e2435b0a9"
@@ -4568,6 +4580,11 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
   integrity sha1-597mbjXW/Bb3EP6R1c9p9w8IkR0=
+
+json-deep-copy@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/json-deep-copy/-/json-deep-copy-1.1.1.tgz#bfdd8fcdb5f1f5be44b1cc1198d1c4a4ea4fd693"
+  integrity sha512-TuDtc+FoQDd2VCmIm4fLGvsg7DtOdIO/i0aFkI2oSNBj1fL7Y/Ie0p0IYMEcQS401x6AMYk90sspS0GKQC+piw==
 
 json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
   version "1.0.2"

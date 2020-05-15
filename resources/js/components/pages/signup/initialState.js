@@ -1,22 +1,31 @@
 const initialState = {
-  formInitial: {
-    name: '',
-    company_name: '',
-    email: '',
-    country: 'dk',
-    phone: '',
-    agree_to_be_contacted: false
+  initialForm: {
+    name: null,
+    company_name: null,
+    email: null,
+    country_id: null,
+    area_code_country_id: null,
+    phone: null,
+    accept_terms_and_conditions: false
   },
-  errors: {
-    general: {
-      message: null,
-    },
-    name: { message: null, status: 'success' },
-    company_name: { message: null, status: 'success' },
-    email: { message: null, status: 'success' },
-    phone: { message: null, status: 'success' },
-    agree_to_be_contacted: false
+
+  error: {
+    message: null,
+    errors: {
+      name: null,
+      company_name: null,
+      email: null,
+      country_id: null,
+      area_code_country_id: null,
+      phone: null,
+      accept_terms_and_conditions: false
+    }
   },
+
+  countries: [],
+  country: { id: '', area_code: '' },
+  isFetching: true,
+  successfully_submitted: false
 }
 
 exports.initialState = initialState
