@@ -26,6 +26,13 @@
         "country": "Country"
     },
 
+    "menu": {
+      "dashboard": "Dashboard",
+      "marketplace": "Marketplace",
+      "products": "Products",
+      "orders": "Orders"
+    },
+
     "countries": {
       "Denmark": "Denmark",
       "United Kingdom": "United Kingdom"

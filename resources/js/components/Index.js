@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import PrivateRoute from './services/PrivateRoute'
 import HomePage from './pages/home/Home'
+import ProductsPage from './pages/products/Products'
+import DashBoardPage from './pages/dashboard/Dashboard'
+import OrdersPage from './pages/orders/Orders'
+import MarketPlacePage from './pages/marketplace/Marketplace'
 import LoginPage from './pages/login/Login'
 import SignupPage from './pages/signup/Signup'
-import 'antd/dist/antd.css'
+import { Result, Button } from 'antd';
 import '../../styles/less/app.less'
 import { injectIntl } from 'react-intl'
 import MainLayout from './layouts/MainLayout.js'
@@ -27,26 +31,41 @@ class Index extends Component {
     if (this.state.initialLoadStatus == "finished") {
       return (
         <Switch>
+          <Route exact path='/not-found'>
+            <Result
+              status="404"
+              title="404"
+              subTitle="Sorry, the page you visited does not exist."
+              extra={<Button type="primary">Back Home</Button>}
+            />
+          </Route>
           <Route exact path="/sign-up" component={SignupPage} />
           <Route exact path="/login" component={LoginPage} />
           <MainLayout>
-            <PrivateRoute path="/" component={HomePage} />
+            <Switch>
+              <PrivateRoute exact path="/" component={DashBoardPage} />
+              <PrivateRoute path="/dashboard" component={DashBoardPage} />
+              <PrivateRoute path="/orders" component={OrdersPage} />
+              <PrivateRoute exact path="/products" component={ProductsPage} />
+              <PrivateRoute path="/marketplace" component={MarketPlacePage} />
+              <Route><Redirect to={{ pathname: "/not-found" }} /></Route>
+            </Switch>
           </MainLayout>
         </Switch>
       )
-    } else { 
+    } else {
       return (<div>Loading</div>)
-     }
+    }
   }
 }
 
-  const mapStateToProps = state => {
-    const { authReducer } = state
-    return { authReducer }
-  }
+const mapStateToProps = state => {
+  const { authReducer } = state
+  return { authReducer }
+}
 
-  const mapDispatchToProps = dispatch => ({
-    signIn: () => dispatch(signIn())
-  })
+const mapDispatchToProps = dispatch => ({
+  signIn: () => dispatch(signIn())
+})
 
-  export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Index))
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Index))
