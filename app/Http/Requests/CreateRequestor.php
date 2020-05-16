@@ -31,7 +31,8 @@ class CreateRequestor extends FormRequest
           'country_id' => 'required',
           'phone' => ['bail', new Phonearea($this->phone_area_country_id),'required', 'max:255'],
           'accept_terms_and_conditions' => 'accepted',
-          'phone_area_country_id' => ''
+          'phone_area_country_id' => '',
+          'captcha_value' => 'recaptcha'
         ];
     }
 }

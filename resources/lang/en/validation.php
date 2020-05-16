@@ -96,6 +96,7 @@ return [
     'password' => 'The password is incorrect.',
     'phone_area' => 'The area code is required.',
     'present' => 'The :attribute field must be present.',
+    'recaptcha'=> 'Please ensure that you are a human!',
     'regex' => 'The :attribute format is invalid.',
     'required' => 'The :attribute field is required.',
     'required_if' => 'The :attribute field is required when :other is :value.',

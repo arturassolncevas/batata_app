@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import { withRouter, Link, Redirect } from 'react-router-dom'
 import { Form, Input, Button, Checkbox, Row, Col, Card, Select } from 'antd';
 import { initialState } from './initialState'
 import { injectIntl } from 'react-intl'
-import ReactCountryFlag from "react-country-flag"
-import countries from '../../locales/countries.json'
+import ReactCountryFlag from 'react-country-flag'
 import merge from 'deep-merge-js'
 import deepCopy from 'json-deep-copy'
-import update from 'immutability-helper';
+import ReCAPTCHA from 'react-google-recaptcha'
 
 
 const layout = {
@@ -21,8 +18,10 @@ class Signup extends Component {
   constructor(props) {
     super(props)
     this.initialState = initialState
-    this.state = deepCopy(initialState) 
+    this.state = deepCopy(initialState)
     this.formRef = React.createRef();
+    this.recaptchaRef = React.createRef();
+
   }
 
   componentDidMount() {
@@ -45,9 +44,12 @@ class Signup extends Component {
     this.setState({ ...this.state })
   }
 
+
+
   handleFormSubmit(values) {
+    let captcha_value = this.recaptchaRef.current.getValue()
     requestClient.post('/api/signup/requestor', {
-      ...values,
+      ...values, captcha_value
     })
       .then(async (response) => {
         switch (response.status) {
@@ -62,6 +64,7 @@ class Signup extends Component {
         switch ((error.response || {}).status) {
           default:
             this.setErrors(error.response.data)
+            this.recaptchaRef.current.reset()
             break
         }
       })
@@ -72,13 +75,17 @@ class Signup extends Component {
     this.formRef.current.setFieldsValue({ phone_area_country_id: country.id })
   };
 
+  handleCaptchaChange(value) {
+    this.setState({ ...this.state, captchaValue: value })
+  }
+
   render() {
     return (
       <Row type="flex" justify="center" align="middle" style={{ minHeight: '100vh' }}>
         <Col lg={6} >
           <Card title={this.props.intl.formatMessage({ id: 'pages.signup.header' })}>
-            { this.state.successfully_submitted && <div>{this.props.intl.formatMessage({ id: 'pages.signup.successfully_submitted' })}</div> }
-            { !this.state.successfully_submitted && <Form
+            {this.state.successfully_submitted && <div>{this.props.intl.formatMessage({ id: 'pages.signup.successfully_submitted' })}</div>}
+            {!this.state.successfully_submitted && <Form
               ref={this.formRef}
               {...layout}
               name="basic"
@@ -175,6 +182,17 @@ class Signup extends Component {
               >
                 <Checkbox>{this.props.intl.formatMessage({ id: 'pages.signup.accept_terms_and_conditions' })}</Checkbox>
               </Form.Item>
+              <Form.Item
+                name="captcha_value"
+                validateStatus={this.state.error.errors.captcha_value && "error"}
+                help={this.state.error.errors.captcha_value && this.state.error.errors.captcha_value.join(', ')}
+              >
+                <ReCAPTCHA
+                  ref={this.recaptchaRef}
+                  sitekey="6LcDK_gUAAAAAGR5tFJpgtWERSVU5ppBhgZBPjRM"
+                  onChange={(value) => { this.handleCaptchaChange(value) }}
+                />
+              </Form.Item>
               <Form.Item >
                 <Row justify="end">
                   <Button type="primary" htmlType="submit">
@@ -182,7 +200,7 @@ class Signup extends Component {
                   </Button>
                 </Row>
               </Form.Item>
-            </Form> }
+            </Form>}
           </Card>
         </Col>
       </Row >
