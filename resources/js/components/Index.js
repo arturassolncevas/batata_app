@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import PrivateRoute from './services/PrivateRoute'
 import HomePage from './pages/home/Home'
+
 import ProductsPage from './pages/products/Products'
+import NewProductPage from './pages/products/NewProduct'
+
 import DashBoardPage from './pages/dashboard/Dashboard'
 import OrdersPage from './pages/orders/Orders'
 import MarketPlacePage from './pages/marketplace/Marketplace'
@@ -46,7 +49,10 @@ class Index extends Component {
               <PrivateRoute exact path="/" component={DashBoardPage} />
               <PrivateRoute path="/dashboard" component={DashBoardPage} />
               <PrivateRoute path="/orders" component={OrdersPage} />
+
               <PrivateRoute exact path="/products" component={ProductsPage} />
+              <PrivateRoute exact path="/products/new" component={NewProductPage} />
+
               <PrivateRoute path="/marketplace" component={MarketPlacePage} />
               <Route><Redirect to={{ pathname: "/not-found" }} /></Route>
             </Switch>
