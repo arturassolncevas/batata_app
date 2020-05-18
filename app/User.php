@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
+    use Models\Concerns\UsesUuid;
 
     /**
      * The attributes that are mass assignable.
