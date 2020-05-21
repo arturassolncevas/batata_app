@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import { withRouter, Link, Redirect } from 'react-router-dom'
-import { Formik } from 'formik'
+import { Link, Redirect } from 'react-router-dom'
 import { Form, Input, Button, Checkbox, Row, Col, Card } from 'antd';
 import { initialState } from './initialState'
 import { injectIntl } from 'react-intl'
