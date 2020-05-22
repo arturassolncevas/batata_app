@@ -27,7 +27,6 @@ const selectMenuKeys = (locationString) => {
 }
 
 const MenuComponent = (props) => {
-  console.log(props)
   return (
     <Sider style={{
       overflowY: 'auto',

@@ -44,8 +44,6 @@ class Signup extends Component {
     this.setState({ ...this.state })
   }
 
-
-
   handleFormSubmit(values) {
     let captcha_value = this.recaptchaRef.current.getValue()
     requestClient.post('/api/signup/requestor', {

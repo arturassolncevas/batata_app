@@ -28,6 +28,7 @@ Route::post('signup/requestor', 'API\Signup\SignupController@register_requestor'
 
 //GENERAL
 Route::get('countries', 'API\General\CountriesController@index');
+Route::get('types', 'API\General\TypesController@index');
 
 Route::group(['middleware' => 'auth:api'], function() {
   //AUTH
