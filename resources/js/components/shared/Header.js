@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Layout, Menu, Dropdown, Row, Col, Button, Badge, Avatar } from 'antd';
 import { MenuFoldOutlined, MenufoldOutlined } from '@ant-design/icons'
+import logoImage from '../../../images/batata-logo.svg'
 const { Header } = Layout;
+
 
 
 const menu = (handleLogout) => {
@@ -38,7 +40,7 @@ export default (props) => {
           onClick={handleMenuClick}
         />
         <div style={{ paddingLeft: '20px', width: '200px', height: '64px' }}>
-          <img style={{ height: "100%", padding: "10px" }} src="https://carrothealth.com/wp-content/uploads/2019/10/carrot-logo-200w.png" />
+          <img style={{ height: "100%", padding: "10px" }} src={logoImage} />
         </div>
       </Col>
       <Col style={{ display: "flex", justifyContent: "flex-end" }}>

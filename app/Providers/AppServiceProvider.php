@@ -28,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
     {
       //Validators
       Validator::extend( 'recaptcha', 'App\\Validators\\ReCaptcha@validate');
+      Validator::extend( 'product_attribute', 'App\\Validators\\ProductAttribute@validate');
     }
 }

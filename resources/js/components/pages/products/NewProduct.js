@@ -1,49 +1,21 @@
 import React, { Component } from 'react'
-import { PageHeader, Divider } from 'antd';
-import { DropboxOutlined } from '@ant-design/icons';
+import { PageHeader, Divider, Button } from 'antd';
+import { DropboxOutlined, QqSquareFilled } from '@ant-design/icons';
 import { withRouter } from 'react-router-dom'
-import { Input, AutoComplete, Select } from 'antd';
+import { Input, AutoComplete, Select, Card, Row, Col, Form, Steps, Avatar } from 'antd';
 import deepCopy from 'json-deep-copy'
+import { injectIntl } from 'react-intl'
 import { initialState } from './initialStates/newProductInitialState'
-import { tuple } from 'antd/lib/_util/type';
+import WizarPage1 from './wizardPages/WizardPage1'
+import WizarPage2 from './wizardPages/WizardPage2'
+import WizarPage3 from './wizardPages/WizardPage3'
+import { modifyTypes } from './helpers/helper'
+import AutoCompleteOptionLabel from './components/AutocompleteOptionLabel'
+import merge from 'deep-merge-js'
+import qs from 'query-string';
+import parsem from 'multi-number-parse'
 
-const modifyTypes = (types) => {
-  for (let index in types) {
-    let el = types[index]
-    el.value = el.id
-    el.parentschain = getParentsChain(types[index], types)
-    el.ancestors = types.filter((e) => e.parent_id === types[index].parent_id)
-    el.firstlevelchildren = types.filter((e) => e.parent_id === types[index].id)
-    let path = el.parentschain.map((e) => e.name).join(el.parentschain.length > 1 ? " > " : "")
-    el.label = ( <div> {path} </div>)
-  }
-  return types
-}
-
-const getParentsChain = (type, types) => {
-  let el = [type]
-  let parent = types.find((e) => e.id === type.parent_id)
-  return parent ? getParentsChain(parent, types).concat(el) : el
-}
-
-const CategorySelectBoxes = (props) => {
-  let { state: { selectedCategoryChain }, ...rest } = props
-  let chain = [ ...selectedCategoryChain ]
-  let lastElementChildren = (chain[chain.length - 1] || {}).firstlevelchildren || []
-  if (lastElementChildren.length > 0) chain.push(lastElementChildren)
-  return chain.map((el) => {
-    let type = Array.isArray(el) ? { ancestors: el, id: null } : el 
-    return (<Select key={type.id} value={type.id} {...rest} >
-      {type.ancestors.map((ancestor) => (
-        <Select.Option
-          key={ancestor.id}
-          value={ancestor.id}
-        >
-          {ancestor.name}
-        </Select.Option>))}
-    </Select>)})
-  
-}
+const { Step } = Steps;
 
 class NewProdutPage extends Component {
   constructor(props) {
@@ -53,32 +25,39 @@ class NewProdutPage extends Component {
   }
 
   componentDidMount() {
-    this.fetchInitialData()
   }
 
-  async fetchInitialData() {
-    let resp = await requestClient.get('/api/types')
-    this.state.types = modifyTypes(resp.data)
-    this.setState({ ...this.state, isFetching: false })
+  componentWillUpdate(nextProps, nextState) {
+    /*
+    let step = parseInt((qs.parse(this.props.history.location.search)["wizard-step"] || 1), 10)
+    if (step !== 1 && this.state.wizardStep === 1) {
+      this.props.history.push(`/products/new?${qs.stringify({ "wizard-step": 1 })}`)
+      nextState.wizardStep = 1
+    }
+    else if (step === 1 && this.state.wizardStep !== 1 ) {
+      nextState.wizardStep = 1
+    }
+    */
   }
 
-  handleSearch(value) {
-    let blank = value.replace(/ /g, '') === ""
-    this.state.searchOptions = []
-    if (!blank)
-      for (const type of this.state.types)
-        if (type.name.match(new RegExp(`${value}`, 'gi')))
-          this.state.searchOptions.push(type)
-    this.setState({ ...this.state, selectedSearchValue: value })
+  handleCategoryChange(value) {
+    this.setState({ ...this.state, category: value }, () => { this.state.formRef.current.resetFields() })
   }
 
-  handleSearhSelect(value) {
-    let chain = this.state.types.find(e => e.id === value).parentschain
-    this.setState({ ...this.state, selectedCategoryChain: chain, selectedSearchValue: null })
+  async handlWizardeNext(value) {
+    let resp_attributes = await requestClient.get(`/api/attributes?category_id=${this.state.category.id}`)
+    let resp_measurements = await requestClient.get(`/api/measurements?category_id=${this.state.category.id}`)
+    this.initialState.initialForm.product_attributes = resp_attributes.data.map( e => ({ attribute_id: e.id, option_id: null }))
+    this.state.initialForm.product_attributes = deepCopy(this.initialState.initialForm.product_attributes)
+
+    this.setState({
+      ...this.state, measurementUnits: resp_measurements.data, attributes: resp_attributes.data, wizardStep: value,
+    }, () => { this.props.history.push(`/products/new?${qs.stringify({ "wizard-step": value - 1 })}`) })
   }
 
-  handleCategorySelectChange(value) {
-    this.handleSearhSelect(value)
+  setErrors(error = {}) {
+    this.state.error = merge(deepCopy(this.initialState.error), error)
+    this.setState({ ...this.state })
   }
 
   render() {
@@ -86,28 +65,43 @@ class NewProdutPage extends Component {
       <div>
         <PageHeader
           className="site-page-header"
-          title="New Product"
+          title={this.props.intl.formatMessage({ id: 'pages.new_product.header' })}
           avatar={{ icon: (<DropboxOutlined className="header-icon" />) }}
-          onBack={() => { this.props.history.goBack() }}
         />
         <Divider className="site-devider after-header"></Divider>
-        <AutoComplete
-          options={this.state.searchOptions}
-          onSearch={(value) => { this.handleSearch(value) }}
-          onSelect={(value) => { this.handleSearhSelect(value) }}
-          value={this.state.selectedSearchValue}
-        >
-          <Input.Search placeholder="write the letter T" enterButton />
-        </AutoComplete>
-        <CategorySelectBoxes
-          showSearch
-          state={this.state}
-          style={{ width: "100%" }}
-          onChange={(value) => { this.handleCategorySelectChange(value) }}
-         />
+
+        <Steps current={this.state.wizardStep - 1}>
+          <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.1' })} />
+          <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.2' })} />
+          <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.3' })} />
+          <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.4' })} />
+        </Steps>
+
+        <WizarPage1
+          style={{ display: this.state.wizardStep == 1 ? "" : "none"}}
+          handleCategoryChange={(value) => { this.handleCategoryChange(value) }}
+          handleWizardNext={(value) => { this.handlWizardeNext(value) }}
+        />
+
+        <WizarPage2
+          style={{ display: this.state.wizardStep == 2 ? "" : "none"}}
+          intl={this.props.intl}
+          error={this.state.error}
+          initialForm={this.state.initialForm}
+          category={this.state.category}
+          measurementUnits={this.state.measurementUnits}
+          attributes={this.state.attributes}
+          setFormRef={(val) => { this.setState({ ...this.state, formRef: val }) }}
+          setErrors={(val) => { this.setErrors(val) } }
+          handleWizardNext={(value) => { this.handlWizardeNext(value) }}
+        />
+
+        <WizarPage3
+          style={{ display: this.state.wizardStep == 3 ? "" : "none"}}
+        />
       </div>
     )
   }
 }
 
-export default withRouter(NewProdutPage)
+export default injectIntl(withRouter(NewProdutPage))

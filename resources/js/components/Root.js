@@ -20,26 +20,32 @@ import messages_da from './locales/translations/da.json'
 
 //Setup
 setupRequestClient()
-const locale = 'en'
+const locales = ['en', 'da']
 
 const messages = {
   'en': flatten(messages_en),
   'da': flatten(messages_da)
 };
 
-const i18nConfig = {
-  defaultLocale: 'en',
-  messages,
-};
+const formats = {
+  number: {
+    DKK: {
+      locale: 'da',
+      style: 'currency',
+      currency: 'DKK',
+    }
+  }
+}
 
 function Root() {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <IntlProvider
-          locale={locale}
-          defaultLocale={i18nConfig.defaultLocale}
-          messages={i18nConfig.messages[locale]}
+          locale={locales}
+          formats={formats}
+          defaultLocale={locales[0]}
+          messages={messages[locales[0]]}
         >
           <Index />
         </IntlProvider>

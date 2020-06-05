@@ -1,0 +1,22 @@
+exports.modifyTypes = (categories, label) => {
+  for (let index in categories) {
+    let el = categories[index]
+    el.value = el.id
+    el.parentschain = getParentsChain(categories[index], categories)
+    el.ancestors = categories.filter((e) => e.parent_id === categories[index].parent_id)
+    el.firstlevelchildren = categories.filter((e) => e.parent_id === categories[index].id)
+    let path = el.parentschain.map((e) => e.name).join(el.parentschain.length > 1 ? " > " : "")
+    el.label = label(path, null)
+  }
+  return categories
+}
+
+const getParentsChain = (category, categories) => {
+  let el = [category]
+  let parent = categories.find((e) => e.id === category.parent_id)
+  return parent ? getParentsChain(parent, categories).concat(el) : el
+}
+
+exports.getLastElement = (obj = []) => {
+  return obj[obj.length - 1]
+}

@@ -27,6 +27,8 @@
     "dependencies": {
         "@ant-design/icons": "^4.1.0",
         "antd": "^4.1.5",
+        "antd-img-crop": "^3.3.0",
+        "braft-editor": "^2.3.9",
         "css-loader": "^3.5.3",
         "deep-merge-js": "^1.0.6",
         "extract-text-webpack-plugin": "^3.0.2",
@@ -36,6 +38,9 @@
         "json-deep-copy": "^1.1.1",
         "less": "^3.11.1",
         "less-loader": "^6.0.0",
+        "multi-number-parse": "^1.0.12",
+        "parsecurrency": "^1.0.0",
+        "query-string": "^6.12.1",
         "react-country-flag": "^2.1.0",
         "react-google-recaptcha": "^2.0.1",
         "react-intl": "^4.5.1",

@@ -7,6 +7,7 @@ use Throwable;
 use Request;
 use Illuminate\Auth\AuthenticationException;
 use Response;
+use Illuminate\Support\Arr;
 
 class Handler extends ExceptionHandler
 {
@@ -61,5 +62,26 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         return parent::render($request, $exception);
+    }
+
+    protected function invalidJson($request, $exception)
+    {
+        $jsonResponse = parent::invalidJson($request, $exception);
+        $original = (array) $jsonResponse->getData();
+        $jsonResponse->setData(array_merge($original, [
+            'statusCode'    => $exception->status,
+            'errors'        => $this->expandDotNotationKeys((array) $original['errors']),
+        ]));
+
+        return $jsonResponse;
+    }
+
+    public  function expandDotNotationKeys(Array $array)
+    {
+        $result = [];
+        foreach ($array as $key => $value) {
+          Arr::set($result, $key, $value);
+        }
+        return $result;
     }
 }

@@ -2,6 +2,8 @@
 
 @l1: 64px;
 @primary-color: @green-6;
+@secondary-background-color: #ffeecc;
+@secondary-color: #f8af17;
 
 .l1-height {
   height: @l1;
@@ -47,8 +49,8 @@
     font-weight: normal;
   }
   .ant-avatar {
-    color: #f8af17 !important;
-    background: #ffeecc !important;
+    color: @secondary-color !important;
+    background: @secondary-background-color !important;
     width: 40px;
     height: 40px;
     .anticon {
@@ -72,9 +74,49 @@
     }
   }
 }
+.ant-steps-item-icon > .ant-steps-icon {
+  line-height: inherit;
+}
 
 @media only screen and (min-width: 1200px) {
   .content.opened {
     margin-left: 200px; 
   }
+}
+
+.ant-steps-item-process {
+  .ant-steps-item-icon {
+    background-color: @secondary-color !important;
+    color: @secondary-color !important;
+    border-color: @secondary-color;
+    .ant-steps-icon {
+      color: white !important;
+    }
+  }
+}
+
+.ant-steps-item-finish {
+  .ant-steps-item-icon {
+    background-color: @secondary-background-color !important;
+    color: @secondary-color !important;
+    border-color: @secondary-background-color;
+    .ant-steps-icon {
+      color: @secondary-color !important;
+    }
+  }
+}
+.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
+  background-color: @secondary-color;
+}
+
+.error-text {
+  color: #f85917
+}
+
+.bf-container {
+  border: 1px solid #cccccc;
+}
+
+.bf-content {
+  height: 200px;
 }

@@ -1,17 +1,33 @@
 const initialState = {
-  initialForm: { },
+  initialForm: { 
+    title: "Title",
+    description: "Description",
+    measurement_unit_id: null,
+    price: null,
+    quantity: 1,
+    packed: false,
+    quantity_in_stock: null,
+    product_attributes: [ ]
+  },
 
   error: {
     message: null,
-    errors: { }
+    errors: {
+      price: null,
+      min_quantity: null,
+      max_quantity: null,
+      quantity: null,
+      measurement_unit_id: null,
+      product_attributes: [ ]
+    }
   },
 
-  types: [],
+  wizardStep: 3,
   isFetching: true,
-  searchOptions: [],
+  category: {},
+  measurementUnits: [],
+  attributes: [],
   successfully_submitted: false,
-  selectedCategoryChain: [],
-  selectedSearchValue: null
 }
 
 exports.initialState = initialState

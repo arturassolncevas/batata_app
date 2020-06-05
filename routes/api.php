@@ -28,10 +28,16 @@ Route::post('signup/requestor', 'API\Signup\SignupController@register_requestor'
 
 //GENERAL
 Route::get('countries', 'API\General\CountriesController@index');
-Route::get('types', 'API\General\TypesController@index');
+Route::get('categories', 'API\General\CategoriesController@index');
+Route::get('attributes', 'API\General\AttributesController@index');
+Route::get('measurements', 'API\General\MeasurementsController@index');
 
 Route::group(['middleware' => 'auth:api'], function() {
   //AUTH
   Route::get('user/details', 'API\Users\UsersController@details');
   Route::get('logout', 'API\Authentication\LoginController@logout');
+  //PRODUCTS
+  Route::post('products/step_2', 'API\General\ProductsController@step_2');
+  Route::post('products/step_3', 'API\General\ProductsController@step_3');
+  Route::post('products/step_4', 'API\General\ProductsController@step_4');
 });

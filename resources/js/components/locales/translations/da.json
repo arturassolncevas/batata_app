@@ -1,1 +1,54 @@
-{ "name": "Navn" } 
+{
+  "name": "Name",
+  "pages": {
+    "login": {
+      "forgot_password": "Forgot password?",
+      "remember_me": "Remember me",
+      "sign_up": "Sign up",
+      "header": "Login",
+      "errors": {
+        "wrong_credentials": "Wrong username or password"
+      }
+    },
+    "signup": {
+      "header": "Signup",
+      "company_name": "Company name",
+      "accept_terms_and_conditions": "I hereby allow to be contacted",
+      "successfully_submitted": "Thank you for your request. We highly appreciate your interest. You will be hearing from us soon."
+    },
+    "new_product": {
+      "header": "New Product",
+      "wizard": {
+        "1": "Select category",
+        "2": "Add data",
+        "3": "Done"
+      },
+      "select_category": "Select",
+      "select_header": "Category",
+      "selected_category_warning": "Please select all categories"
+    }
+  },
+  "general": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Submit",
+    "phone": "Phone",
+    "country": "Country",
+    "search": "Search",
+    "category": "Category",
+    "next": "Next",
+    "title": "Title",
+    "description": "Description"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "marketplace": "Marketplace",
+    "products": "Products",
+    "orders": "Orders"
+  },
+  "countries": {
+    "Denmark": "Denmark",
+    "United Kingdom": "United Kingdom"
+  }
+}
