@@ -8,6 +8,10 @@ class DatabaseSeeder extends Seeder
     {
        $this->call(CompanySeeder::class);
        $this->call(UserSeeder::class);
-       $this->call(TypeSeeder::class);
+       $this->call(CategorySeeder::class);
+       $this->call(MeasurementUnitsSeeder::class);
+       $this->call(CategoryMeasurementUnitsSeeder::class);
+       $this->call(AttributeSeeder::class);
+       $this->call(OptionSeeder::class);
     }
 }

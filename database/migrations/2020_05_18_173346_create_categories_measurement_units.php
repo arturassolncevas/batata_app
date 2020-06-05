@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTypeMeasurementUnit extends Migration
+class CreateCategoriesMeasurementUnits extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateTypeMeasurementUnit extends Migration
      */
     public function up()
     {
-        Schema::create('type_measurement_unit', function (Blueprint $table) {
-            $table->uuid('type_id');
+        Schema::create('category_measurement_units', function (Blueprint $table) {
+            $table->uuid('category_id');
             $table->uuid('measurement_unit_id');
+            $table->boolean('default')->nullable();
 
-
-            $table->primary(['type_id', 'measurement_unit_id']);
-            $table->foreign('type_id')->references('id')->on('types');
+            $table->primary(['category_id', 'measurement_unit_id']);
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('measurement_unit_id')->references('id')->on('measurement_units');
         });
     }
@@ -31,6 +31,6 @@ class CreateTypeMeasurementUnit extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_measurement_unit');
+        Schema::dropIfExists('category_measurement_units');
     }
 }

@@ -17,8 +17,8 @@ class CreateOptions extends Migration
             $table->uuid('id')->primary();
             $table->uuid('attribute_id');
             $table->string('name');
+            $table->boolean('default')->nullable();
 
-            $table->unique(['attribute_id', 'name']);
             $table->foreign('attribute_id')->references('id')->on('attributes');
         });
     }
