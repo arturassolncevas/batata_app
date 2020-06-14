@@ -14,14 +14,16 @@ class CreateProductsAttributesOptions extends Migration
     public function up()
     {
         Schema::create('products_attributes_options', function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->uuid('product_id');
             $table->uuid('attribute_id');
             $table->uuid('option_id');
 
-            $table->primary(['product_id', 'attribute_id']);
+            $table->unique(['product_id', 'attribute_id', 'option_id']);
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('attribute_id')->references('id')->on('attributes');
             $table->foreign('option_id')->references('id')->on('options');
+            $table->timestamps();
         });
     }
 

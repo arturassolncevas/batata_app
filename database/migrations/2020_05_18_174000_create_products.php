@@ -25,6 +25,7 @@ class CreateProducts extends Migration
             $table->decimal('quantity', 8, 2);
             $table->decimal('min_quantity', 8, 2);
             $table->decimal('max_quantity', 8, 2);
+            $table->decimal('quantity_in_stock', 8, 2);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
