@@ -4,8 +4,6 @@ import store from '../redux/store'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   let { isLogged } = store.getState().authReducer
-    console.log("private route")
-    console.log(isLogged)
   return(
   <Route
     {...rest}

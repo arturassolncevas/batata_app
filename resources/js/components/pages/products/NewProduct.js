@@ -28,8 +28,9 @@ class NewProdutPage extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    /*
     let step = parseInt((qs.parse(this.props.history.location.search)["wizard-step"] || 1), 10)
+    console.log(step)
+    console.log(this.state.wizardStep)
     if (step !== 1 && this.state.wizardStep === 1) {
       this.props.history.push(`/products/new?${qs.stringify({ "wizard-step": 1 })}`)
       nextState.wizardStep = 1
@@ -37,27 +38,67 @@ class NewProdutPage extends Component {
     else if (step === 1 && this.state.wizardStep !== 1 ) {
       nextState.wizardStep = 1
     }
-    */
   }
 
   handleCategoryChange(value) {
-    this.setState({ ...this.state, category: value }, () => { this.state.formRef.current.resetFields() })
+    this.state.initialForm.category_id = value.id
+    this.setState({ ...this.state, category: value },
+      () => { this.state.wp2FormRef.current.resetFields() })
   }
 
   async handlWizardeNext(value) {
-    let resp_attributes = await requestClient.get(`/api/attributes?category_id=${this.state.category.id}`)
-    let resp_measurements = await requestClient.get(`/api/measurements?category_id=${this.state.category.id}`)
-    this.initialState.initialForm.product_attributes = resp_attributes.data.map( e => ({ attribute_id: e.id, option_id: null }))
-    this.state.initialForm.product_attributes = deepCopy(this.initialState.initialForm.product_attributes)
+
+    if (value == 2) {
+      let resp_attributes = await requestClient.get(`/api/attributes?category_id=${this.state.category.id}`)
+      let resp_measurements = await requestClient.get(`/api/measurements?category_id=${this.state.category.id}`)
+      this.initialState.initialForm.product_attributes = resp_attributes.data.map( e => ({ attribute_id: e.id, option_id: null }))
+      this.state.initialForm.product_attributes = deepCopy(this.initialState.initialForm.product_attributes)
+      this.state = { ...this.state, measurementUnits: resp_measurements.data, attributes: resp_attributes.data }
+    }
 
     this.setState({
-      ...this.state, measurementUnits: resp_measurements.data, attributes: resp_attributes.data, wizardStep: value,
-    }, () => { this.props.history.push(`/products/new?${qs.stringify({ "wizard-step": value - 1 })}`) })
+      ...this.state,
+      wizardStep: value,
+    }, () => { this.goNextPage(value) })
+
+  }
+
+  goNextPage(value) {
+    this.props.history.push(`/products/new?${qs.stringify({ "wizard-step": value })}`)
   }
 
   setErrors(error = {}) {
     this.state.error = merge(deepCopy(this.initialState.error), error)
     this.setState({ ...this.state })
+  }
+
+  async createProductRequest(wp3Values) {
+    let form = deepCopy(this.state.initialForm)
+    form = merge(form, this.state.wp2FormRef.current.getFieldsValue())
+    form = merge(form, wp3Values)
+    form.product_attributes = (form.product_attributes || [])
+      .map((e, i) => ({
+        attribute_id: this.state.initialForm.product_attributes[i].attribute_id,
+        option_id: e.option_id || null }))
+
+    requestClient.post('/api/products/', form)
+      .then(async (response) => {
+        switch (response.status) {
+          case 201:
+          case 200:
+            this.setErrors()
+            this.props.history.push(`/products`)
+          default:
+            break
+        }
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+            this.setErrors(error.response.data)
+            break
+        }
+      })
   }
 
   render() {
@@ -74,7 +115,6 @@ class NewProdutPage extends Component {
           <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.1' })} />
           <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.2' })} />
           <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.3' })} />
-          <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.4' })} />
         </Steps>
 
         <WizarPage1
@@ -84,20 +124,25 @@ class NewProdutPage extends Component {
         />
 
         <WizarPage2
-          style={{ display: this.state.wizardStep == 2 ? "" : "none"}}
           intl={this.props.intl}
           error={this.state.error}
-          initialForm={this.state.initialForm}
           category={this.state.category}
-          measurementUnits={this.state.measurementUnits}
           attributes={this.state.attributes}
-          setFormRef={(val) => { this.setState({ ...this.state, formRef: val }) }}
+          initialForm={this.state.initialForm}
           setErrors={(val) => { this.setErrors(val) } }
+          measurementUnits={this.state.measurementUnits}
+          style={{ display: this.state.wizardStep == 2 ? "" : "none"}}
           handleWizardNext={(value) => { this.handlWizardeNext(value) }}
+          setFormRef={(val) => { this.setState({ ...this.state, wp2FormRef: val }) }}
         />
 
         <WizarPage3
+          error={this.state.error}
+          initialForm={this.state.initialForm}
+          setErrors={(val) => { this.setErrors(val) } }
           style={{ display: this.state.wizardStep == 3 ? "" : "none"}}
+          setFormRef={(val) => { this.setState({ ...this.state, wp3FormRef: val }) }}
+          createProductRequest={(val) => { this.createProductRequest(val) }}
         />
       </div>
     )

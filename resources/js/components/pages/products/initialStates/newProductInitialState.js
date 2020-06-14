@@ -1,5 +1,6 @@
 const initialState = {
-  initialForm: { 
+  initialForm: {
+    category_id: null,
     title: "Title",
     description: "Description",
     measurement_unit_id: null,
@@ -7,7 +8,9 @@ const initialState = {
     quantity: 1,
     packed: false,
     quantity_in_stock: null,
-    product_attributes: [ ]
+    product_attributes: [],
+    title: null,
+    description: null
   },
 
   error: {
@@ -18,11 +21,13 @@ const initialState = {
       max_quantity: null,
       quantity: null,
       measurement_unit_id: null,
-      product_attributes: [ ]
+      product_attributes: [],
+      title: null,
+      description: null
     }
   },
 
-  wizardStep: 3,
+  wizardStep: 1,
   isFetching: true,
   category: {},
   measurementUnits: [],
