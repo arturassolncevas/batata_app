@@ -8,13 +8,24 @@ use App\Rules\Phonearea;
 class ProductRequest extends FormRequest
 {
     private $validation_steps = [
+      'step_1' => [
+        'category_id' => 'required',
+      ],
       'step_2' => [
         'price' => 'required|numeric|between:0.01,999999.99',
         'measurement_unit_id' => 'required',
         'quantity' => 'required|numeric',
-        'product_attributes.*' => 'product_attribute'
+        'product_attributes.*' => 'product_attribute',
+        'min_quantity' => 'numeric',
+        'max_quantity' => 'numeric'
       ],
-      'step_3' => []
+      'step_3' => [
+        'title' => 'max:255',
+        'description' => 'max:2500',
+      ],
+      'step_4' => [
+        'files' => 'array'
+      ]
     ];
     /**
      * Determine if the user is authorized to make this request.
@@ -46,10 +57,11 @@ class ProductRequest extends FormRequest
             case "step_3":
                 $result = $this->validation_steps['step_3'];
                 break;
-            case "step_4":
-                foreach ($this->validation_steps as $step_rules) {
-                    $result = array_merge($result, $step_rules);
-                }
+            case "create":
+                $result = $this->validation_steps['step_4'];
+                //foreach ($this->validation_steps as $step_rules) {
+                //    $result = array_merge($result, $step_rules);
+                //}
                 break;
         }
         return $result;
