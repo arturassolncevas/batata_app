@@ -44,7 +44,7 @@ const CategorySelectBoxes = (props) => {
   })
 }
 
-class WizardPage extends Component {
+class WizardPage1 extends Component {
 
   constructor(props) {
     super(props)
@@ -74,13 +74,13 @@ class WizardPage extends Component {
     this.setState({ ...this.state, autocompleteValue: value })
   }
 
-  handleSearhSelect(value, callback = null) {
-    let category = this.state.categories.find(e => e.id === value) || {}
-    this.setState({ ...this.state, category, autocompleteValue: null }, () => { callback(category) })
+  handleSearchSelect(value) {
+    this.handleCategoryChange(value)
   }
 
   handleCategoryChange(value) {
-    this.handleSearhSelect(value, (val) => { this.props.handleCategoryChange(val) } )
+    let category = this.state.categories.find(e => e.id === value) || {}
+    this.setState({ ...this.state, category, autocompleteValue: null }, () => { this.props.handleCategoryChange(category) })
   }
 
   async handleWizardNext() {
@@ -105,7 +105,7 @@ class WizardPage extends Component {
                 <AutoComplete
                   options={this.state.searchOptions}
                   onSearch={(value) => { this.handleSearch(value) }}
-                  onSelect={(value) => { this.handleSearhSelect(value) }}
+                  onSelect={(value) => { this.handleSearchSelect(value) }}
                   value={this.state.autocompleteValue}
                 >
                   <Input.Search placeholder={this.props.intl.formatMessage({ id: 'general.search' })} enterButton />
@@ -132,4 +132,4 @@ class WizardPage extends Component {
   }
 }
 
-export default injectIntl(WizardPage)
+export default injectIntl(WizardPage1)

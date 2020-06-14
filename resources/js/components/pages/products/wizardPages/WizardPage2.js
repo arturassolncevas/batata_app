@@ -83,7 +83,7 @@ class WizardPage2 extends Component {
 
   handleFormSubmit(values) {
     values.category_id = this.props.category.id
-    values.product_attributes = values.product_attributes
+    values.product_attributes = (values.product_attributes || [])
       .map((e, i) => ({
         attribute_id: this.props.initialForm.product_attributes[i].attribute_id,
         option_id: e.option_id || null }))
@@ -128,7 +128,7 @@ class WizardPage2 extends Component {
               {this.props.attributes.map((e, index) => (
                 <Form.Item 
                   required={!!e.required}
-                  label={e.name} key={e.id}
+                  label={this.props.intl.formatMessage({ id: `general.attribute_names.${e.name}` })} key={e.id}
                   name={["product_attributes", index, 'option_id']}
                   validateStatus={this.props.error.errors.product_attributes[index] && "error"}
                   help={this.props.error.errors.product_attributes[index] && this.props.error.errors.product_attributes[index].join(', ')}
@@ -140,7 +140,7 @@ class WizardPage2 extends Component {
               {/* Is packed ? (Switch) */}
 
               <Form.Item
-                label="Price per pack ?"
+                label={this.props.intl.formatMessage({ id: `pages.new_product.price_per_pack_question` })}
                 valuePropName="checked"
                 name="packed"
               >
@@ -156,7 +156,7 @@ class WizardPage2 extends Component {
 
               <Form.Item
                 required
-                label={`Price ${this.state.formattedPrice}`}
+                label={`${this.props.intl.formatMessage({ id: `general.price` })} ${this.state.formattedPrice}`}
               >
                 <Row>
                   <Col lg={8} >
@@ -206,7 +206,7 @@ class WizardPage2 extends Component {
 
               {/* Min Max Sales quantity */}
               <Form.Item
-                label={`Sales limit ${this.state.formattedSalesLimits}`}
+                label={`${this.props.intl.formatMessage({ id: `products.sales_limit` })} ${this.state.formattedSalesLimits}`}
               >
                 <Row>
                   <Col lg={8} >
@@ -245,7 +245,8 @@ class WizardPage2 extends Component {
                   <Col lg={8} >
                     <Form.Item
                       name="quantity_in_stock"
-                      label={`Currently in stock ${this.state.formattedStockQuantity}`}
+                      label={`${this.props.intl.formatMessage({ id: `products.quantity_in_stock` })} ${this.state.formattedStockQuantity}`}
+
                       validateStatus={this.props.error.errors.quantity_in_stock && "error"}
                       help={this.props.error.errors.quantity_in_stock && this.props.error.errors.quantity_in_stock.join(', ')}
                     >
@@ -259,7 +260,7 @@ class WizardPage2 extends Component {
                 </Row>
               <Row justify="end">
                 <Button type="primary" htmlType="submit">
-                  Next
+                  {this.props.intl.formatMessage({ id: 'general.next' })}
                 </Button>
               </Row>
             </Form>

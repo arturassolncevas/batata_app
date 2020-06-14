@@ -4,6 +4,8 @@ import ImgCrop from 'antd-img-crop';
 import { Upload, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import BraftEditor from 'braft-editor'
+import resizeImage from 'resize-image'
+import { injectIntl } from 'react-intl'
 import 'braft-editor/dist/index.css'
 
 const getBase64 = (file) => {
@@ -14,7 +16,7 @@ const getBase64 = (file) => {
       let img = new Image();
       img.onload = function () {
         resolve({
-          base64: reader.result,
+          base64: this.width > 1000 ? resizeImage.resize(img, 1000, 1000) : reader.result,
           size: { width: this.width, height: this.height }
         })
       }
@@ -33,6 +35,7 @@ class WizardPage3 extends Component {
   constructor(props) {
     super(props)
     this.formRef = React.createRef();
+    this.props.setFormRef(this.formRef)
     this.state = {
       previewVisible: false,
       previewImage: '',
@@ -53,8 +56,8 @@ class WizardPage3 extends Component {
   }
 
   async beforeCrop(file) {
-    let img_data = await getBase64(file)
-    this.setCropAspect(img_data.size.width / img_data.size.height)
+    //let img_data = await getBase64(file)
+    //this.setCropAspect(img_data.size.width / img_data.size.height)
     return true
   }
 
@@ -83,8 +86,45 @@ class WizardPage3 extends Component {
     this.setState({ ...this.state, editorState })
   }
 
-  handleFormSubmit(values) {
-    console.log(values.description.toHTML())
+  async handleFormSubmit(values) {
+    values.description = (values.description || {}).toHTML()
+    let success = await this.validateInputDataRequest(values)
+    if (success) { 
+      let wp3Values = {
+        ...values,
+        files: this.state.fileList.map( e => ({ base64: e.url }))
+      }
+      this.props.createProductRequest(wp3Values)
+    }
+  }
+
+  validateInputDataRequest(values) {
+    return requestClient.post('/api/products/step_3', values)
+      .then(async (response) => {
+        switch (response.status) {
+          case 200:
+            this.resetErrors()
+          default:
+            break
+        }
+        return true
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+            this.setErrors(error.response.data)
+            break
+        }
+        return null
+      })
+  }
+
+  setErrors(error = {}) {
+    this.props.setErrors(error)
+  }
+
+  resetErrors() {
+    this.setErrors()
   }
 
   render() {
@@ -115,10 +155,12 @@ class WizardPage3 extends Component {
               ref={this.formRef}
               name="basic"
               {...layout}
+              initialValues={this.props.initialForm}
               onFinish={(e) => { this.handleFormSubmit(e) }}
+
             >
               <Form.Item
-                label="Images"
+                label={this.props.intl.formatMessage({ id: 'products.images' })}
                 style={{ marginBottom: "0px" }}
               ></Form.Item>
               <ImgCrop rotate beforeCrop={(props) => this.beforeCrop(props)} modalWidth={1000}>
@@ -143,14 +185,18 @@ class WizardPage3 extends Component {
               </Modal>
 
               <Form.Item
-                label="Title"
+                label={this.props.intl.formatMessage({ id: 'products.title' })}
                 name="title"
+                validateStatus={this.props.error.errors.title && "error"}
+                help={this.props.error.errors.title && this.props.error.errors.title.join(', ')}
               >
                 <Input />
               </Form.Item>
               <Form.Item
-                label="Description"
+                label={this.props.intl.formatMessage({ id: 'products.description' })}
                 name="description"
+                validateStatus={this.props.error.errors.description && "error"}
+                help={this.props.error.errors.description && this.props.error.errors.description.join(', ')}
               >
                 <BraftEditor
                   language="en"
@@ -163,7 +209,7 @@ class WizardPage3 extends Component {
 
               <Row justify="end">
                 <Button type="primary" htmlType="submit">
-                  Next
+                  {this.props.intl.formatMessage({ id: 'general.next' })}
                 </Button>
               </Row>
 
@@ -174,4 +220,4 @@ class WizardPage3 extends Component {
   }
 }
 
-export default WizardPage3
+export default injectIntl(WizardPage3)

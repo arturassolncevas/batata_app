@@ -26,7 +26,8 @@
       },
       "select_category": "Select",
       "select_header": "Category",
-      "selected_category_warning": "Please select all categories"
+      "selected_category_warning": "Please select all categories",
+      "price_per_pack_question": "Price per pack?"
     }
   },
   "general": {
@@ -41,7 +42,11 @@
     "next": "Next",
     "title": "Title",
     "description": "Description",
-    "price": "Price"
+    "price": "Price",
+    "attribute_names": {
+      "Type": "Type",
+      "Color": "Color"
+    }
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -52,5 +57,13 @@
   "countries": {
     "Denmark": "Denmark",
     "United Kingdom": "United Kingdom"
+  },
+
+  "products" : {
+    "quantity_in_stock": "Quantity in stock",
+    "sales_limit": "Sales limit",
+    "description": "Description",
+    "title": "Title",
+    "images": "Images"
   }
 }
