@@ -20,7 +20,7 @@ let formatPrice = (item) => {
 }
 
 const sellerProductRow = (props) => (
-  <Row style={{ margin: "15px", padding: "10px", border: "1px solid #eaeaea" }}>
+  <Row style={{ margin: "15px 0px", padding: "10px", border: "1px solid #eaeaea" }}>
     <Col style={{ height: "120px", width: "120px" }}>
       <img style={{ height: "100%" }} src={setFrontImageThumbnailUrl(props.item)} />
     </Col>

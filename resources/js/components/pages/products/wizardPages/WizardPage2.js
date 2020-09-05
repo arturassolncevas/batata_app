@@ -5,23 +5,11 @@ import { withRouter } from 'react-router-dom'
 import { getLastElement } from '../helpers/helper'
 import { injectIntl } from 'react-intl'
 import merge from 'deep-merge-js'
+import { formatNumber } from '../../../shared/helpers/priceFormatter'
 
 const layout = {
   labelCol: { span: 24 },
   wrapperCol: { span: 24 },
-}
-
-const formatNumber = {
-  format: (value, symbol = null) => {
-    return symbol ? `${value} ${symbol}` : value
-  },
-  parse: (value, options = {}) => {
-    let { int } = options
-    let regex = new RegExp(int ? "[^\\d]" : "[^\\d|\\.]", "g")
-    value = value.replace(regex, '')
-    let commas = value.match(/\./g) || []
-    return commas.length > 1 ? "" : value
-  }
 }
 
 class WizardPage2 extends Component {
@@ -51,6 +39,7 @@ class WizardPage2 extends Component {
 
   handlePriceChange(callback) {
     let formFields = this.formRef.current.getFieldsValue(["price", "measurement_unit_id", "quantity", "packed"])
+    console.log(formFields)
     let price = new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(formFields.price)
     let quantity = new Intl.NumberFormat('da-DK').format(formFields.quantity)
     let unit = this.props.measurementUnits.find((e) => e.id === formFields.measurement_unit_id) || {}

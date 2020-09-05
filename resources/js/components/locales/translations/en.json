@@ -54,6 +54,7 @@
     "products": "Products",
     "orders": "Orders"
   },
+  
   "countries": {
     "Denmark": "Denmark",
     "United Kingdom": "United Kingdom"
@@ -64,6 +65,17 @@
     "sales_limit": "Sales limit",
     "description": "Description",
     "title": "Title",
-    "images": "Images"
+    "images": "Images",
+    "price": "Price"
+  },
+
+  "searchFilter": {
+    "price": {
+      "name": "Price",
+      "min": "Min",
+      "max": "Max"
+    },
+    "from": "From",
+    "to": "To"
   }
 }

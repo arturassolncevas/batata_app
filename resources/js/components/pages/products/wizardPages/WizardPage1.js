@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button } from 'antd';
 import { Input, AutoComplete, Select, Card, Row, Col, Form, Avatar } from 'antd';
 import qs from 'query-string';
-import { modifyTypes } from '../helpers/helper'
+import { modifyCategories } from '../helpers/helper'
 import { injectIntl } from 'react-intl'
 import AutoCompleteOptionLabel from '../components/AutocompleteOptionLabel'
 
@@ -59,7 +59,7 @@ class WizardPage1 extends Component {
 
   async fetchInitialData() {
     let resp = await requestClient.get('/api/categories')
-    let categories = modifyTypes(resp.data, AutoCompleteOptionLabel)
+    let categories = modifyCategories(resp.data, AutoCompleteOptionLabel)
     let category = categories.find(e => e.parent_id == null) || {}
     this.setState({ ...this.state, isFetching: false, categories, category })
   }

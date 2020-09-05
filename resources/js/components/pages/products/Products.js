@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import { PageHeader, Divider, Button, Row, Col } from 'antd';
+import { PageHeader, Divider, Button, Row, Col, AutoComplete, Input } from 'antd';
 import { DropboxOutlined, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom'
 import SellerProductRow from './components/SellerProductRow'
+import ProductFilter from '../../shared/products/ProductFilter';
+import { modifyCategories } from './helpers/helper'
 
 
 export default class ProductsPage extends Component {
   constructor(props) {
     super(props)
-    this.state = { isFetching: false, products: { data: [] } }
+    this.state = { isFetching: false, categories: [], products: { data: [] } }
   }
 
   componentDidMount() {
@@ -33,6 +35,14 @@ export default class ProductsPage extends Component {
               <Button className="site-button soft" type="primary" shape="circle" icon={<PlusOutlined />} size={"large"} />
             </Link>)]}
         />
+        <Divider className="site-devider after-header"></Divider>
+        <Row justify="center">
+          <Col xl={20}>
+            <ProductFilter
+              categories={modifyCategories(this.state.categories, null, true, true)}
+            />
+          </Col>
+        </Row>
         <Divider className="site-devider after-header"></Divider>
         <Row justify="center">
           <Col xl={20}>
