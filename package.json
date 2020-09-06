@@ -37,7 +37,7 @@
         "immutability-helper": "^3.0.2",
         "json-deep-copy": "^1.1.1",
         "less": "^3.11.1",
-        "less-loader": "^6.0.0",
+        "less-loader": "5.0",
         "multi-number-parse": "^1.0.12",
         "parsecurrency": "^1.0.0",
         "query-string": "^6.12.1",
