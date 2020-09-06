@@ -16,8 +16,9 @@ class ProductRequest extends FormRequest
         'measurement_unit_id' => 'required',
         'quantity' => 'required|numeric',
         'product_attributes.*' => 'product_attribute',
-        'min_quantity' => 'numeric',
-        'max_quantity' => 'numeric'
+        'min_quantity' => 'required|numeric',
+        'max_quantity' => 'required|numeric',
+        'quantity_in_stock' => 'required|numeric|min:0'
       ],
       'step_3' => [
         'title' => 'max:255',

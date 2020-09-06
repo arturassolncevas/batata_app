@@ -18,7 +18,7 @@ class CreateProducts extends Migration
             $table->uuid('user_id');
             $table->uuid('category_id');
             $table->string('title');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->decimal('price', 8, 2);
             $table->uuid('measurement_unit_id');
             $table->boolean('packed');

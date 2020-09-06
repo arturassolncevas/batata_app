@@ -87,7 +87,7 @@ class WizardPage3 extends Component {
   }
 
   async handleFormSubmit(values) {
-    values.description = (values.description || {}).toHTML()
+    values.description = values.description ? values.description.toHTML() : ""
     let success = await this.validateInputDataRequest(values)
     if (success) { 
       let wp3Values = {
