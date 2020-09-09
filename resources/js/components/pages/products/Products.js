@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom'
 import SellerProductRow from './components/SellerProductRow'
 import ProductFilter from '../../shared/products/ProductFilter';
 import { modifyCategories } from './helpers/helper'
+import { withRouter } from 'react-router-dom'
 
 
-export default class ProductsPage extends Component {
+class ProductsPage extends Component {
   constructor(props) {
     super(props)
     this.state = { isFetching: false, categories: [], products: { data: [] } }
@@ -40,6 +41,7 @@ export default class ProductsPage extends Component {
           <Col xl={20}>
             <ProductFilter
               categories={modifyCategories(this.state.categories, null, true, true)}
+              history={this.props.history}
             />
           </Col>
         </Row>
@@ -59,3 +61,5 @@ export default class ProductsPage extends Component {
     )
   }
 }
+
+export default withRouter(ProductsPage)

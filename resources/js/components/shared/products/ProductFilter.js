@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { Col, AutoComplete, Input, InputNumber, Cascader, Button, Row, Form } from 'antd';
-import { SearchOutlined, CaretDownOutlined, CarerUpOutlined, CaretUpOutlined } from '@ant-design/icons';
+import { SearchOutlined, CaretDownOutlined, CarerUpOutlined, CaretUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { injectIntl } from 'react-intl'
 import { formatNumber } from '../../shared/helpers/priceFormatter'
-
-function onChange(value, selectedOptions) {
-}
+import qs from 'query-string';
 
 function filter(inputValue, path) {
   return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
@@ -20,15 +18,28 @@ class ProductFilter extends Component {
   constructor(props) {
     super(props)
     this.formRef = React.createRef();
-    this.state = { advancedSearchOpened: true }
+    this.state = { advancedSearchOpened: true, category: {} }
   }
 
   handleAdvancedSearchClick() {
     this.setState({ ...this.state, advancedSearchOpened: !this.state.advancedSearchOpened })
   }
 
+  handleCategoryChange(value, options) {
+    let category = options.pop()
+    this.setState({ ...this.state, category: category || {} })
+  }
+
+
+  async handleSearch() {
+    let data = {
+      category_id: this.state.category.id,
+      ...this.formRef.current.getFieldsValue(),
+    }
+    this.props.history.push(`/products?${qs.stringify(data)}`)
+  }
+
   render() {
-    console.log(this.props)
     return (
       <Row style={{ flexDirection: "column" }}>
         <Row >
@@ -36,7 +47,7 @@ class ProductFilter extends Component {
             <Cascader
               style={{ width: "100%" }}
               options={this.props.categories}
-              onChange={onChange}
+              onChange={(val, options) => { this.handleCategoryChange(val, options) }}
               placeholder="Search product"
               showSearch={{ filter }}
               allowClear
@@ -45,7 +56,7 @@ class ProductFilter extends Component {
             </Cascader>
           </Col>
           <Col>
-            <Button type="primary" icon={<SearchOutlined />} style={{ padding: "4px 15px", width: "auto" }} />
+            <Button type="primary" icon={<SearchOutlined />} style={{ padding: "4px 15px", width: "auto" }} onClick={() => { this.handleSearch() }}/>
           </Col>
           <Col
             className="primary-color"
