@@ -44,6 +44,21 @@ let generateSalesData = () => {
   return salesData
 }
 
+const salesPieData = [
+	{
+		x: 'Vegetables',
+		y: 32,
+	},
+	{
+		x: 'Fruits',
+		y: 48,
+	},
+	{
+		x: 'Diary',
+		y: 20
+	}
+];
+
 export default function DashBoardPage() {
   return (
     <div>
@@ -63,6 +78,23 @@ export default function DashBoardPage() {
           <Bar height={250} data={generateSalesData()} />,
       </ChartCard>
         </Col>
+        <Col md={12}>
+        <ChartCard
+          title="Category Sales"
+          total={""}
+          contentHeight={300}
+        >
+	   <Pie
+	      hasLegend
+	      title="Category orders"
+	      subTitle=""
+	      total={""}
+	      data={salesPieData}
+	      valueFormat={val => ""}
+	      height={294}
+	    />
+	  </ChartCard>
+	</Col>
       </Row>
     </div>
   )
