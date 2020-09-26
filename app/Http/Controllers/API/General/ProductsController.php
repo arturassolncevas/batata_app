@@ -12,11 +12,13 @@ use App\Services\FileUtils;
 use App\Http\Resources\Product as ProductResource;
 use App\Http\Resources\ProductCollection;
 use Intervention\Image\Facades\Image;
+use Elasticsearch\ClientBuilder;
 use DB;
 
 class ProductsController extends Controller
 {
     public function index() {
+
       $products = Product::all();
       return response()->json(new ProductCollection($products));
     }
@@ -39,6 +41,7 @@ class ProductsController extends Controller
       $product_manager = new ProductManager($request, Auth::user());
       $product = $product_manager->create();
       $product->load("files");
+
       return new ProductResource($product);
     }
 }
@@ -68,11 +71,17 @@ class ProductManager {
     $this->product = null;
   }
 
-
   function create() {
     DB::transaction(function () {
       $this->params["user_id"] = $this->user->id;
       $this->product = Product::create($this->params);
+      $this->create_associations();
+      $this->index();
+    });
+    return $this->product;
+  }
+
+  function create_associations() {
       foreach ($this->associations as $name => $params) {
           switch ($name) {
             case "product_attributes":
@@ -83,8 +92,7 @@ class ProductManager {
               break;
           }
       }
-    });
-    return $this->product;
+      $this->index();
   }
 
   function create_attributes($attributes) {
@@ -113,5 +121,52 @@ class ProductManager {
         $data = Image::make($data)->resize(250, 250)->encode($extension);
         $this->product->save_file($data->__toString(), $file_name, $extension, "thumbnail", true);
     }
+  }
+
+  function index() {
+    $data = $this->generate_index_data();
+    $client = ClientBuilder::create()->build();
+    $return = $client->index($data);
+  }
+
+  function generate_index_data() {
+     $data = [
+      'id' => $this->product->id,
+      'index' => Product::$index_name,
+      'body' => [ 
+        'id' => $this->product->id,
+        'type' => $this->product->category->name,
+        'company_id' => $this->product->id,
+        'title' => $this->product->getTranslations()["title"],
+        'category_id' => $this->product->id,
+        'category_chain_ids' => $this->product->category->category_chain_ids(),
+        'category_chain_names' => $this->product->category->category_chain_names(),
+        'price' => [ 'value' => $this->product->price, 'currency' => 'dkk' ],
+        'measurement_unit'=>[
+          'id' => $this->product->measurement_unit->id,
+          'alias' => $this->product->measurement_unit->alias
+        ],
+        'quantity' => $this->product->quantity,
+        'packed' => $this->product->packed,
+        'attribute_options' => [],
+        'location' => [
+          'google' => [
+            'long' => '',
+            'lat' => ''
+          ]
+        ]
+      ]
+    ];
+
+    foreach ($this->product->attribute_options as $element) {
+      $attribute_option = [
+        "attribute_id" => $element->attribute->id,
+        "option_id" => $element->option->id,
+        "number_value" => null,
+        "text_value" => null
+      ];
+      array_push($data["body"]["attribute_options"], $attribute_option);
+    }
+    return $data;
   }
 }

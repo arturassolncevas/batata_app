@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Translatable\HasTranslations;
 
 class Product extends Model
 {
     use Concerns\UsesUuid;
+    use HasTranslations;
+
+    public static $index_name = "products";
 
     protected $fillable = [
       "price",
@@ -26,6 +30,8 @@ class Product extends Model
     protected $hidden = [
         'created_at', 'updated_at'
     ];
+
+    public $translatable = ['title'];
 
     private $file_base_path = "products";
 
@@ -52,6 +58,11 @@ class Product extends Model
     public function measurement_unit()
     {
         return $this->belongsTo('App\Models\MeasurementUnit');
+    }
+
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['title'] = [ 'en' =>  $this->attributes['title'], 'da' =>  $this->attributes['title'] ];
     }
 
     public function save_file($data, $file_name, $extension, $type, $public) {

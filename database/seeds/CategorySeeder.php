@@ -8,71 +8,71 @@ class CategorySeeder extends Seeder
     private $categories = [
       [
         "id" => "1d72728a-a127-11ea-bb37-0242ac130000",
-        "name" => "Food",
+        "name" => ["en" => "Food", "da" => "Fødevarer"],
         "children" => [
           [
             "id" => "1d72728a-a127-11ea-bb37-0242ac130001",
-            "name" => "Vegetables",
+            "name" => ["en" => "Vegetables", "da" => "Grøntsager"],
             "children" => [
               [ 
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130011",
-                "name" => "Lettuce"
+                "name" => ["en" => "Lettuce", "da" => "Salat"]
               ],
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130021",
-                "name" => "Potatoes"
+                "name" => ["en" => "Potatoes", "da" => "Kartofler"]
               ],
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130031",
-                "name" => "Tomatoes"
+                "name" => ["en" => "Tomatoes", "da" => "Tomater"]
               ],
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130041",
-                "name" => "Cucumbers"
+                "name" => ["en" => "Cucumbers", "da" => "Agurker"]
               ],
             ]
           ],
           [
             "id" => "1d72728a-a127-11ea-bb37-0242ac130002",
-            "name" => "Fruits",
+            "name" => ["en" => "Fruits", "da" => "Frugt"],
             "children" => [
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130012",
-                "name" => "Apples"
+                "name" => ["en" => "Apples", "da" => "Æbler"]
               ],
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130022",
-                "name" => "Grapes"
+                "name" => ["en" => "Grapes", "da" => "Druer"]
               ],
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130032",
-                "name" => "Oranges"
+                "name" => ["en" => "Oranges", "da" => "Appelsiner"]
               ],
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130042",
-                "name" => "Bananas"
+                "name" => ["en" => "Bananas", "da" => "Bananer"]
               ],
             ]
           ],
           [
             "id" => "1d72728a-a127-11ea-bb37-0242ac130003",
-            "name" => "Dairy Foods",
+            "name" => ["en" => "Dairy Foods", "da" => "Mejeriprodukter"],
             "children" => [
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130013",
-                "name" => "Milk"
+                "name" => ["en" => "Milk", "da" => "Mælk"]
               ],
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130023",
-                "name" => "Butter"
+                "name" => [ "en" => "Butter", "da" => "Smør"]
               ],
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130033",
-                "name" => "Cheese"
+                "name" => ["en" => "Cheese", "da" => "Ost"]
               ],
               [
                 "id" => "1d72728a-a127-11ea-bb37-0242ac130043",
-                "name" => "Eggs"
+                "name" => ["en" => "Eggs", "da" => "Æg"]
               ]
             ]
           ]

@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class Category extends Model
 {
     use Concerns\UsesUuid;
+    use HasTranslations;
+
     protected $fillable = [
     ];
 
@@ -17,10 +20,12 @@ class Category extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public $translatable = ['name'];
     
-    public function chidren()
+    public function children()
     {
-        return $this->hasMany('App\Models\Category', 'parent_id');
+        return $this->hasMany('App\Models\Category', 'parent_id', 'id');
     }
 
     public function parent()
@@ -36,6 +41,31 @@ class Category extends Model
     public function attributes()
     {
         return $this->hasMany('App\Models\Attribute');
+    }
+
+    public function category_chain_ids() {        
+      $result = []; 
+      if ($this->parent) {
+         $result = $this->parent->category_chain_ids();
+      }
+      array_push($result, $this->id);
+      return $result;
+    }
+
+    public function category_chain_names() {        
+      $result = []; 
+      $translations = $this->getTranslations();
+      if ($this->parent) {
+        $result = $this->parent->category_chain_names();
+      }
+      if ($translations["name"] ) {
+        foreach ($translations["name"] as $locale => $name) {
+          if (!isset($result[$locale]))
+            $result[$locale] = [];
+          array_push($result[$locale], $name);
+        }
+      }
+      return $result;
     }
 
 }
