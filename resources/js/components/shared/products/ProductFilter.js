@@ -4,7 +4,6 @@ import { SearchOutlined, CaretDownOutlined, CarerUpOutlined, CaretUpOutlined, Ar
 import { injectIntl } from 'react-intl'
 import { formatNumber } from '../../shared/helpers/priceFormatter'
 import qs from 'query-string';
-import { FormContext } from 'antd/lib/form/context';
 
 function filter(inputValue, path) {
   return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
@@ -47,11 +46,12 @@ class ProductFilter extends Component {
       ...formValues,
     }
     this.props.history.push(`/products?${qs.stringify(data)}`)
+    await this.props.callback(data)
   }
+
 
   render() {
     return (
-
       <Form
         ref={this.formRef}
         initialValues={this.state.forma}

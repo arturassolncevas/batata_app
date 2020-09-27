@@ -17,9 +17,10 @@ use DB;
 
 class ProductsController extends Controller
 {
-    public function index() {
-
+    public function filter() {
       $products = Product::all();
+      $ids = ProductManager::filter(request("data"));
+      $products = Product::whereIn("id", $ids )->get();
       return response()->json(new ProductCollection($products));
     }
 
@@ -70,6 +71,15 @@ class ProductManager {
     $this->user = $user;
     $this->product = null;
   }
+
+  /*
+    |--------------------------------------------------------------------------
+    | Product creation
+    |--------------------------------------------------------------------------
+    | Instance methods for product creation which includes insertings record in a database,
+    | assigning associations, creating files in s3 and indexing.
+    |
+    */
 
   function create() {
     DB::transaction(function () {
@@ -169,4 +179,35 @@ class ProductManager {
     }
     return $data;
   }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Product filtering
+    |--------------------------------------------------------------------------
+    | Classmethods for product filtering. Initially filters in
+    | elasticsearh and then fetches records from SQL db.
+    |
+    */
+
+    public static function filter($data) {
+      $query = [];
+
+      if (isset($data["category_id"]) && is_array($data["category_id"]) && count($data["category_id"]) > 0) {
+        $query["term"]["category_chain_ids"] = end($data["category_id"]);
+      }
+      
+      $query = empty($query) ? [ "match_all" => (object)[] ] : $query;
+      $request = [
+        "index" => Product::$index_name,
+        "body" => [ "query" => $query ]
+      ];
+
+      $client = ClientBuilder::create()->build();
+      $response = $client->search($request);
+      $hits = $response["hits"]["hits"];
+
+      $ids = array_map(function ($val) { return $val["_id"]; }, $hits);
+      return $ids;
+    }
 }
+

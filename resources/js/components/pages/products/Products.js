@@ -6,6 +6,7 @@ import SellerProductRow from './components/SellerProductRow'
 import ProductFilter from '../../shared/products/ProductFilter';
 import { modifyCategories } from './helpers/helper'
 import { withRouter } from 'react-router-dom'
+import qs from 'query-string';
 
 
 class ProductsPage extends Component {
@@ -19,9 +20,30 @@ class ProductsPage extends Component {
   }
 
   async fetchInitialData() {
-    let resp_products = await requestClient.get('/api/products?personal=true')
+    let resp_products = await requestClient.post('/api/products/filter?personal=true')
     let resp_categories = await requestClient.get('/api/categories')
     this.setState({ ...this.state, isFetching: false, products: resp_products.data, categories: resp_categories.data })
+  }
+
+  async filterProductRequest(data) {
+    requestClient.post('/api/products/filter', { data: data })
+      .then(async (response) => {
+        switch (response.status) {
+          case 201:
+          case 200:
+          default:
+            this.setState({ ...this.state, products: response.data })
+
+            break
+        }
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+            this.setErrors(error.response.data)
+            break
+        }
+      })
   }
 
   render() {
@@ -42,6 +64,7 @@ class ProductsPage extends Component {
             <ProductFilter
               categories={modifyCategories(this.state.categories, null, true, true)}
               history={this.props.history}
+              callback={(data) => { this.filterProductRequest(data) }}
             />
           </Col>
         </Row>
