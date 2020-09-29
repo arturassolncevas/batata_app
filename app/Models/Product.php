@@ -12,6 +12,7 @@ class Product extends Model
     use HasTranslations;
 
     public static $index_name = "products";
+    public static $pagination_size = 2;
 
     protected $fillable = [
       "price",

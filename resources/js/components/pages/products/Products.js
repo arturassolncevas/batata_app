@@ -6,34 +6,37 @@ import SellerProductRow from './components/SellerProductRow'
 import ProductFilter from '../../shared/products/ProductFilter';
 import { modifyCategories } from './helpers/helper'
 import { withRouter } from 'react-router-dom'
+import { Pagination } from 'antd';
 import qs from 'query-string';
 
 
 class ProductsPage extends Component {
   constructor(props) {
     super(props)
-    this.state = { isFetching: false, categories: [], products: { data: [] } }
+    this.state = { isFetching: false, categories: [], products: { data: [], pagination: { total: 10, page: 1, size: 20 } } }
   }
 
   componentDidMount() {
+    this.setQueryData
     this.fetchInitialData()
   }
 
   async fetchInitialData() {
-    let resp_products = await requestClient.post('/api/products/filter?personal=true')
+    await this.filterProductRequest(qs.parse(this.props.history.location.search))
     let resp_categories = await requestClient.get('/api/categories')
-    this.setState({ ...this.state, isFetching: false, products: resp_products.data, categories: resp_categories.data })
+    this.setState({ ...this.state, isFetching: false, categories: resp_categories.data })
   }
 
   async filterProductRequest(data) {
-    requestClient.post('/api/products/filter', { data: data })
+    requestClient.post('/api/products/filter', { data: { ...data,  personal: true } })
       .then(async (response) => {
         switch (response.status) {
           case 201:
           case 200:
           default:
             this.setState({ ...this.state, products: response.data })
-
+            let queryData = { ...qs.parse(this.props.history.location.search), page: response.data.pagination.page } 
+            this.props.history.push(`/products?${qs.stringify(queryData)}`)
             break
         }
       })
@@ -44,6 +47,11 @@ class ProductsPage extends Component {
             break
         }
       })
+  }
+
+  async handlePaginationPageChange(page, pageSize) {
+   let queryData = { ...qs.parse(this.props.history.location.search), page } 
+   await this.filterProductRequest(queryData)
   }
 
   render() {
@@ -64,7 +72,7 @@ class ProductsPage extends Component {
             <ProductFilter
               categories={modifyCategories(this.state.categories, null, true, true)}
               history={this.props.history}
-              callback={(data) => { this.filterProductRequest(data) }}
+              callback={(data) => { this.filterProductRequest({ ...data, page: this.state.products.pagination.page }) }}
             />
           </Col>
         </Row>
@@ -80,6 +88,12 @@ class ProductsPage extends Component {
              ))}
           </Col>
         </Row>
+        <Pagination
+          current={this.state.products.pagination.page}
+          pageSize={this.state.products.pagination.size}
+          total={this.state.products.pagination.total}
+          onChange={(page, pageSize) => { this.handlePaginationPageChange(page, pageSize) } }
+        />
       </div>
     )
   }

@@ -28,6 +28,9 @@ class ProductFilter extends Component {
 
   setQueryValues() {
     let queryObject = qs.parse(this.props.history.location.search)
+    if (!Array.isArray(queryObject.category_id && (queryObject.category_id || "").length > 0)) {
+      queryObject.category_id = [queryObject.category_id]
+    }
     this.formRef.current.setFieldsValue(queryObject)
   }
 

@@ -18,10 +18,15 @@ use DB;
 class ProductsController extends Controller
 {
     public function filter() {
-      $products = Product::all();
-      $ids = ProductManager::filter(request("data"));
-      $products = Product::whereIn("id", $ids )->get();
-      return response()->json(new ProductCollection($products));
+      $search_params = request("data");  
+      $pagination = [
+        "size" => Product::$pagination_size,
+        "page" => isset($search_params["page"]) ? (int)$search_params["page"] : 1
+      ];
+
+      $filtered = ProductManager::filter(request("data"), $pagination);
+      $products = Product::whereIn("id", $filtered["ids"] )->get();
+      return response()->json(new ProductCollection($products, $filtered["pagination"]));
     }
 
     public function step_2(ProductRequest $request)
@@ -189,25 +194,43 @@ class ProductManager {
     |
     */
 
-    public static function filter($data) {
+    public static function filter($data, $pagination) {
       $query = [];
 
       if (isset($data["category_id"]) && is_array($data["category_id"]) && count($data["category_id"]) > 0) {
         $query["term"]["category_chain_ids"] = end($data["category_id"]);
       }
-      
+
       $query = empty($query) ? [ "match_all" => (object)[] ] : $query;
       $request = [
         "index" => Product::$index_name,
-        "body" => [ "query" => $query ]
+        "_source" => ["id"],
+        "body" => [ 
+          "query" => $query,
+          "size" => $pagination["size"],
+          "from" => $pagination["size"] * ($pagination["page"] - 1)
+          ]
       ];
 
       $client = ClientBuilder::create()->build();
       $response = $client->search($request);
-      $hits = $response["hits"]["hits"];
+      $hits = $response["hits"];
 
-      $ids = array_map(function ($val) { return $val["_id"]; }, $hits);
-      return $ids;
+      if (count($hits["hits"]) == 0 && $hits["total"] > 0) {
+        $pagination["page"] = 1;
+        $request["body"]["from"] = $pagination["size"] * ($pagination["page"] - 1);
+        $response = $client->search($request);
+        $hits = $response["hits"];
+      }
+
+      $result = [ 
+          "ids" => array_map(function ($val) { return $val["_id"]; }, $hits["hits"]),
+          "pagination" => [
+            "size" => $pagination["size"],
+            "page" => count($hits["hits"]) > 0 ? $pagination["page"] : 1,
+            "total" => $hits["total"]["value"]
+            ]
+      ];
+      return $result;
     }
 }
-

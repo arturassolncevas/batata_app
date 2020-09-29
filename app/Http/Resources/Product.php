@@ -23,7 +23,6 @@ class Product extends JsonResource
           'category' => new CategoryResource($this->category),
           'attributes' => ProductAttributeOptionResource::collection($this->attribute_options),
           'description' => $this->description,
-          'email' => $this->email,
           'id' => $this->id,
           'max_quantity' => $this->max_quantity,
           'min_quantity' => $this->min_quantity,
