@@ -44,8 +44,8 @@ function Root() {
         <IntlProvider
           locale={locales}
           formats={formats}
-          defaultLocale={locales[0]}
-          messages={messages[locales[0]]}
+          defaultLocale={locales[1]}
+          messages={messages[locales[1]]}
         >
           <Index />
         </IntlProvider>

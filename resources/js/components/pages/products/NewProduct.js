@@ -17,6 +17,10 @@ import parsem from 'multi-number-parse'
 
 const { Step } = Steps;
 
+export function intl() {
+  return NewProdutPage.instance.props.intl;
+}
+
 class NewProdutPage extends Component {
   constructor(props) {
     super(props)
@@ -106,15 +110,15 @@ class NewProdutPage extends Component {
       <div>
         <PageHeader
           className="site-page-header"
-          title={this.props.intl.formatMessage({ id: 'pages.new_product.header' })}
+          title={this.props.intl.formatMessage({ id: 'pages.newProduct.header' })}
           avatar={{ icon: (<DropboxOutlined className="header-icon" />) }}
         />
         <Divider className="site-devider after-header"></Divider>
 
         <Steps current={this.state.wizardStep - 1}>
-          <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.1' })} />
-          <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.2' })} />
-          <Step title={this.props.intl.formatMessage({ id: 'pages.new_product.wizard.3' })} />
+          <Step title={this.props.intl.formatMessage({ id: 'pages.newProduct.wizard.1' })} />
+          <Step title={this.props.intl.formatMessage({ id: 'pages.newProduct.wizard.2' })} />
+          <Step title={this.props.intl.formatMessage({ id: 'pages.newProduct.wizard.3' })} />
         </Steps>
 
         <WizarPage1

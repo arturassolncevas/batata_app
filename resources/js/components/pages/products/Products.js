@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import { PageHeader, Divider, Button, Row, Col, AutoComplete, Input } from 'antd';
+import { PageHeader, Divider, Button, Row, Col, Pagination } from 'antd';
 import { DropboxOutlined, PlusOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom'
 import SellerProductRow from './components/SellerProductRow'
 import ProductFilter from '../../shared/products/ProductFilter';
 import { modifyCategories } from './helpers/helper'
 import { withRouter } from 'react-router-dom'
-import { Pagination } from 'antd';
+import { injectIntl } from 'react-intl'
 import qs from 'query-string';
-
 
 class ProductsPage extends Component {
   constructor(props) {
@@ -59,7 +58,7 @@ class ProductsPage extends Component {
       <div>
         <PageHeader
           className="site-page-header"
-          title="Products"
+          title={this.props.intl.formatMessage({ id: 'pages.products.index.header' })}
           avatar={{ icon: (<DropboxOutlined className="header-icon" />) }}
           extra={[(
             <Link key="1" to="/products/new">
@@ -99,4 +98,4 @@ class ProductsPage extends Component {
   }
 }
 
-export default withRouter(ProductsPage)
+export default withRouter(injectIntl(ProductsPage))

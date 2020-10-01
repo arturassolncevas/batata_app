@@ -1,9 +1,11 @@
 import React from 'react'
 import { Skeleton, Switch, List, Button, Row, Col, Tooltip, Tag } from 'antd';
 import { StarOutlined, LikeOutlined, EditFilled, DeleteFilled } from '@ant-design/icons';
+import { injectIntl } from 'react-intl'
 
 let unitsFormat = (item, val) => {
   let formatted = `${val || 0}${item.packed ? " (packs)" : (item.measurement_unit.alias || "")}`
+
   return formatted
 }
 
@@ -30,7 +32,7 @@ const sellerProductRow = (props) => (
           <Row>
             <strong style={{ fontSize: "17px" }}>{props.item.category.name}</strong>
             <Tag style={{ margin: "4px" }} color={props.item.category.active ? "error" : "success"}>
-              {props.item.category.active ? "Inactive" : "Active"}
+              {props.item.category.active ? props.intl.formatMessage({ id: 'general.inactive' }) : props.intl.formatMessage({ id: 'general.active' })}
             </Tag>
           </Row>
         </Col>
@@ -40,9 +42,9 @@ const sellerProductRow = (props) => (
           })}
         </Col>
         <Row>
-          <Col style={{ marginRight: "15px" }}>Stock balance: <strong>{unitsFormat(props.item, props.item.quantity_in_stock)}</strong></Col>
-          <Col style={{ marginRight: "15px" }}>Min order: <strong>{unitsFormat(props.item, props.item.min_quantity)}</strong></Col>
-          <Col style={{ marginRight: "15px" }}>Max order: <strong>{unitsFormat(props.item, props.item.max_quantity)}</strong></Col>
+          <Col style={{ marginRight: "15px" }}>{props.intl.formatMessage({ id: 'models.product.quantityInStock' })}: <strong>{unitsFormat(props.item, props.item.quantity_in_stock)}</strong></Col>
+          <Col style={{ marginRight: "15px" }}>{props.intl.formatMessage({ id: 'models.product.minQuantity' })}: <strong>{unitsFormat(props.item, props.item.min_quantity)}</strong></Col>
+          <Col style={{ marginRight: "15px" }}>{props.intl.formatMessage({ id: 'models.product.maxQuantity' })}: <strong>{unitsFormat(props.item, props.item.max_quantity)}</strong></Col>
         </Row>
       </Row>
     </Col>
@@ -64,4 +66,4 @@ const sellerProductRow = (props) => (
   </Row>
 )
 
-export default sellerProductRow
+export default injectIntl(sellerProductRow)

@@ -1,34 +1,54 @@
 {
-  "name": "Name",
+  "name": "Navn",
   "pages": {
     "login": {
-      "forgot_password": "Forgot password?",
-      "remember_me": "Remember me",
+      "forgot_password": "Glemt adgangskode?",
+      "remember_me": "Husk mig",
       "sign_up": "Sign up",
-      "header": "Login",
+      "header": "Log på",
       "errors": {
-        "wrong_credentials": "Wrong username or password"
+        "wrong_credentials": "Forkert brugernavn eller adgangskode"
       }
     },
     "signup": {
       "header": "Signup",
-      "company_name": "Company name",
-      "accept_terms_and_conditions": "I hereby allow to be contacted",
-      "successfully_submitted": "Thank you for your request. We highly appreciate your interest. You will be hearing from us soon."
+      "company_name": "Firmanavn",
+      "accept_terms_and_conditions": "Jeg tillader hermed at blive kontaktet",
+      "successfully_submitted": "Tak for din anmodning. Vi sætter stor pris på din interesse. Du hører snart fra os."
     },
-    "new_product": {
-      "header": "New Product",
+    "newProduct": {
+      "header": "Ny Produkt",
       "wizard": {
-        "1": "Select category",
-        "2": "Add data",
-        "3": "Done"
+        "1": "Vælg Kategori",
+        "2": "Udfyld data",
+        "3": "Færdi"
       },
-      "select_category": "Select",
-      "select_header": "Category",
-      "selected_category_warning": "Please select all categories"
+      "selectCategory": "Vælg",
+      "selectHeader": "Kategori",
+      "selectedCategoryWarning": "Vælg alle kategorier",
+      "pricePerPackQuestion": "Price per pack?"
+    },
+    "products": {
+      "index": {
+        "header": "Produkter"
+      }
+    }
+  },
+  "shared": {
+    "productFilter": {
+      "advancedSearch": "Søgemuligheder",
+      "price": {
+        "name": "Pris",
+        "min": "Min",
+        "max": "Max"
+      },
+      "from": "From",
+      "to": "To"
     }
   },
   "general": {
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
     "name": "Name",
     "email": "Email",
     "password": "Password",
@@ -37,18 +57,32 @@
     "country": "Country",
     "search": "Search",
     "category": "Category",
-    "next": "Next",
+    "next": "Næste",
     "title": "Title",
-    "description": "Description"
+    "description": "Description",
+    "pack": "Pakke",
+    "packs": "Pakker",
+    "price": "Pris"
   },
   "menu": {
     "dashboard": "Dashboard",
     "marketplace": "Marketplace",
-    "products": "Products",
-    "orders": "Orders"
+    "products": "Produkter",
+    "orders": "Ordre"
   },
   "countries": {
     "Denmark": "Denmark",
     "United Kingdom": "United Kingdom"
+  },
+  "models": {
+    "product": {
+      "quantityInStock": "På lager",
+      "minQuantity": "Min antal",
+      "maxQuantity": "Max antal",
+      "salesLimit": "Sales limit",
+      "images": "Billeder",
+      "title": "Titel",
+      "description": "Beskrivelse"
+    }
   }
 }

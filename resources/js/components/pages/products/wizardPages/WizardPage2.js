@@ -130,7 +130,7 @@ class WizardPage2 extends Component {
               {/* Is packed ? (Switch) */}
 
               <Form.Item
-                label={this.props.intl.formatMessage({ id: `pages.new_product.price_per_pack_question` })}
+                label={this.props.intl.formatMessage({ id: `pages.newProduct.pricePerPackQuestion` })}
                 valuePropName="checked"
                 name="packed"
               >
@@ -196,7 +196,7 @@ class WizardPage2 extends Component {
 
               {/* Min Max Sales quantity */}
               <Form.Item
-                label={`${this.props.intl.formatMessage({ id: `products.sales_limit` })} ${this.state.formattedSalesLimits}`}
+                label={`${this.props.intl.formatMessage({ id: `models.product.salesLimit` })} ${this.state.formattedSalesLimits}`}
               >
                 <Row>
                   <Col lg={8} >
@@ -235,7 +235,7 @@ class WizardPage2 extends Component {
                   <Col lg={8} >
                     <Form.Item
                       name="quantity_in_stock"
-                      label={`${this.props.intl.formatMessage({ id: `products.quantity_in_stock` })} ${this.state.formattedStockQuantity}`}
+                      label={`${this.props.intl.formatMessage({ id: `models.product.quantityInStock` })} ${this.state.formattedStockQuantity}`}
 
                       validateStatus={this.props.error.errors.quantity_in_stock && "error"}
                       help={this.props.error.errors.quantity_in_stock && this.props.error.errors.quantity_in_stock.join(', ')}

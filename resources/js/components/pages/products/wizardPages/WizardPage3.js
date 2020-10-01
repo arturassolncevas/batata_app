@@ -160,7 +160,7 @@ class WizardPage3 extends Component {
 
             >
               <Form.Item
-                label={this.props.intl.formatMessage({ id: 'products.images' })}
+                label={this.props.intl.formatMessage({ id: 'models.product.images' })}
                 style={{ marginBottom: "0px" }}
               ></Form.Item>
               <ImgCrop rotate beforeCrop={(props) => this.beforeCrop(props)} modalWidth={1000}>
@@ -185,7 +185,7 @@ class WizardPage3 extends Component {
               </Modal>
 
               <Form.Item
-                label={this.props.intl.formatMessage({ id: 'products.title' })}
+                label={this.props.intl.formatMessage({ id: 'models.product.title' })}
                 name="title"
                 validateStatus={this.props.error.errors.title && "error"}
                 help={this.props.error.errors.title && this.props.error.errors.title.join(', ')}
@@ -193,7 +193,7 @@ class WizardPage3 extends Component {
                 <Input />
               </Form.Item>
               <Form.Item
-                label={this.props.intl.formatMessage({ id: 'products.description' })}
+                label={this.props.intl.formatMessage({ id: 'models.product.description' })}
                 name="description"
                 validateStatus={this.props.error.errors.description && "error"}
                 help={this.props.error.errors.description && this.props.error.errors.description.join(', ')}

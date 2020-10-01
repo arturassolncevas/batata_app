@@ -110,7 +110,8 @@ class ProductFilter extends Component {
               cursor: "pointer",
               fontWeight: "bold"
             }}
-          > Advanced search
+          > 
+            {this.props.intl.formatMessage({ id: 'shared.productFilter.advancedSearch' })}
             {this.state.advancedSearchOpened ? <CaretUpOutlined /> : <CaretDownOutlined />}
           </Col>
         </Row>
@@ -118,7 +119,7 @@ class ProductFilter extends Component {
         <Row style={{ display: !this.state.advancedSearchOpened && "none" }}>
           <Col>
           <Form.Item
-            label={this.props.intl.formatMessage({ id: 'searchFilter.price.name' })}
+            label={this.props.intl.formatMessage({ id: 'shared.productFilter.price.name' })}
             name="price_to"
           >
             <Input.Group compact>
@@ -126,7 +127,7 @@ class ProductFilter extends Component {
                 name="price_from"
               >
                 <InputNumber
-                  placeholder={this.props.intl.formatMessage({ id: 'searchFilter.price.min' })}
+                  placeholder={this.props.intl.formatMessage({ id: 'shared.productFilter.price.min' })}
                   formatter={value => formatNumber.format(value)}
                   parser={value => formatNumber.parse(value)}
                   min={0}
@@ -139,7 +140,7 @@ class ProductFilter extends Component {
                 name="price_to"
               >
                 <InputNumber
-                  placeholder={this.props.intl.formatMessage({ id: 'searchFilter.price.max' })}
+                  placeholder={this.props.intl.formatMessage({ id: 'shared.productFilter.price.max' })}
                   formatter={value => formatNumber.format(value)}
                   parser={value => formatNumber.parse(value)}
                   min={0}

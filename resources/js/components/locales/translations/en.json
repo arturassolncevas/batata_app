@@ -28,9 +28,29 @@
       "select_header": "Category",
       "selected_category_warning": "Please select all categories",
       "price_per_pack_question": "Price per pack?"
+    },
+
+    "products": {
+      "index": {
+        "header": "Product"
+      }
+    }
+  },
+  "shared": {
+    "productFilter": {
+      "advancedSearch": "Advanced search",
+      "price": {
+        "name": "Price",
+        "min": "Min",
+        "max": "Max"
+      },
+      "from": "From",
+      "to": "To"
     }
   },
   "general": {
+    "active": "Active",
+    "inactive": "Inactive",
     "name": "Name",
     "email": "Email",
     "password": "Password",
@@ -43,10 +63,8 @@
     "title": "Title",
     "description": "Description",
     "price": "Price",
-    "attribute_names": {
-      "Type": "Type",
-      "Color": "Color"
-    }
+    "pack": "Pack",
+    "packs": "Packs"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -77,5 +95,11 @@
     },
     "from": "From",
     "to": "To"
+  },
+
+  "models": {
+    "product": {
+      "quantityInStock": "Stock balance"
+    }
   }
 }

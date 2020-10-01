@@ -18,7 +18,7 @@ const CategorySelectBoxes = (props) => {
       <Form.Item key={index}>
         <Select key={type.id}
           value={type.id || undefined}
-          placeholder={props.intl.formatMessage({ id: 'pages.new_product.select_category' })}
+          placeholder={props.intl.formatMessage({ id: 'pages.newProduct.selectCategory' })}
           optionLabelProp="label"
           {...rest}
         >
@@ -90,7 +90,7 @@ class WizardPage1 extends Component {
       this.setState({
         ...this.state,
         selectedCategoryWarning: this.props.intl.formatMessage({
-          id: 'pages.new_product.selected_category_warning'
+          id: 'pages.newProduct.selectedCategoryWarning'
       })})
     }
   }
@@ -111,7 +111,7 @@ class WizardPage1 extends Component {
                   <Input.Search placeholder={this.props.intl.formatMessage({ id: 'general.search' })} enterButton />
                 </AutoComplete>
               </Form.Item>
-              <h3>{this.props.intl.formatMessage({ id: 'pages.new_product.select_header' })}</h3>
+              <h3>{this.props.intl.formatMessage({ id: 'pages.newProduct.selectHeader' })}</h3>
               <CategorySelectBoxes
                 showSearch
                 category={this.state.category}
