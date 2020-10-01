@@ -8,6 +8,14 @@
  - [Elasticsearch](https://www.elastic.co/) v7.9.1+
  - [Minio](https://min.io/) from version RELEASE.2020-06-03
 
+Install php curl & gd
+```sh
+$ sudo apt-get install php7.x-curl sudo apt-get install php7.x-gd
+```
+Install php curl
+```sh
+$ sudo apt-get install php7.x-curl
+```
 Install php dependencies
 ```sh
 $ sudo composer install
@@ -23,6 +31,10 @@ $ php artisan db:seed
 Run passport install
 ```sh
 $ php artisan passport:install
+```
+Run yarn install
+```sh
+$ yarn watch
 ```
 Run yarn watch (development)
 ```sh
