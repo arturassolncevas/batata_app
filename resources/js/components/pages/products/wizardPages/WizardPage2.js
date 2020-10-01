@@ -117,7 +117,8 @@ class WizardPage2 extends Component {
               {this.props.attributes.map((e, index) => (
                 <Form.Item 
                   required={!!e.required}
-                  label={this.props.intl.formatMessage({ id: `general.attribute_names.${e.name}` })} key={e.id}
+                  label={e.name}
+                  key={e.id}
                   name={["product_attributes", index, 'option_id']}
                   validateStatus={this.props.error.errors.product_attributes[index] && "error"}
                   help={this.props.error.errors.product_attributes[index] && this.props.error.errors.product_attributes[index].join(', ')}

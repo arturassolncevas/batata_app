@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Col, AutoComplete, Input, InputNumber, Cascader, Button, Row, Form } from 'antd';
+import { Col, AutoComplete, Input, InputNumber, Cascader, Button, Row, Form, Select } from 'antd';
 import { SearchOutlined, CaretDownOutlined, CarerUpOutlined, CaretUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { injectIntl } from 'react-intl'
 import { formatNumber } from '../../shared/helpers/priceFormatter'
-import qs from 'query-string';
+import qs2 from 'query-string';
+import qs from 'qs';
 
 function filter(inputValue, path) {
   return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
@@ -18,7 +19,8 @@ class ProductFilter extends Component {
   constructor(props) {
     super(props)
     this.formRef = React.createRef();
-    this.state = { advancedSearchOpened: true }
+    this.state = { advancedSearchOpened: true, attributes: [] }
+    window.lalala = qs2
 
   }
 
@@ -27,20 +29,28 @@ class ProductFilter extends Component {
   }
 
   setQueryValues() {
-    let queryObject = qs.parse(this.props.history.location.search)
-    if (!Array.isArray(queryObject.category_id && (queryObject.category_id || "").length > 0)) {
-      queryObject.category_id = [queryObject.category_id]
-    }
+    let queryObject = qs.parse(this.props.history.location.search.replace("?", ""))
+
     this.formRef.current.setFieldsValue(queryObject)
+    if (queryObject.category_id) {
+      let id = queryObject.category_id[queryObject.category_id.length - 1]
+      this.fetchAttributes(id)
+    }
+
   }
 
   handleAdvancedSearchClick() {
     this.setState({ ...this.state, advancedSearchOpened: !this.state.advancedSearchOpened })
   }
 
-  handleCategoryChange(value, options) {
+  async handleCategoryChange(value, options) {
     let category = options.pop()
-    this.setState({ ...this.state, category: category || {} })
+    this.fetchAttributes(category.id)
+  }
+
+  async fetchAttributes(category_id) {
+    let resp_attributes = await requestClient.get(`/api/attributes?category_id=${category_id}`)
+    this.setState({ ...this.state, attributes: resp_attributes.data}) 
   }
 
   async handleSearch() {
@@ -48,6 +58,8 @@ class ProductFilter extends Component {
     let data = {
       ...formValues,
     }
+    console.log(data)
+    console.log(qs.stringify(data))
     this.props.history.push(`/products?${qs.stringify(data)}`)
     await this.props.callback(data)
   }
@@ -104,6 +116,7 @@ class ProductFilter extends Component {
         </Row>
 
         <Row style={{ display: !this.state.advancedSearchOpened && "none" }}>
+          <Col>
           <Form.Item
             label={this.props.intl.formatMessage({ id: 'searchFilter.price.name' })}
             name="price_to"
@@ -135,6 +148,18 @@ class ProductFilter extends Component {
 
             </Input.Group>
           </Form.Item>
+              {this.state.attributes.map((e, index) => (
+                <Form.Item 
+                  required={!!e.required}
+                  label={e.name} key={e.id}
+                  name={["product_attributes", index, 'option_id']}
+                  // validateStatus={this.props.error.errors.product_attributes[index] && "error"}
+                  // help={this.props.error.errors.product_attributes[index] && this.props.error.errors.product_attributes[index].join(', ')}
+               >
+                  <Select key={e.id}> {e.options.map(e => (<Select.Option key={e.id} value={e.id}>{e.name}</Select.Option>))} </Select>
+                </Form.Item>
+              ))}
+          </Col>
         </Row>
       </Form>
     )

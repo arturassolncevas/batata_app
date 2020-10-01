@@ -3,7 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\ProductFile;
+use App\Http\Resources\Attribute;
+use App\Http\Resources\Option;
 
 class ProductAttributeOption extends JsonResource
 {
@@ -16,8 +17,8 @@ class ProductAttributeOption extends JsonResource
     public function toArray($request)
     {
         return [
-          'attribute' => $this->attribute,
-          'option' => $this->option
+          'attribute' => new Attribute($this->attribute),
+          'option' => new Option($this->option)
         ];
     }
 }
