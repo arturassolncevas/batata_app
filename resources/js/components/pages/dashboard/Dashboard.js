@@ -46,6 +46,21 @@ let generateSalesData = () => {
   return salesData
 }
 
+const salesPieData = [
+	{
+		x: 'Vegetables',
+		y: 32,
+	},
+	{
+		x: 'Fruits',
+		y: 48,
+	},
+	{
+		x: 'Diary',
+		y: 20
+	}
+]
+
 const tableColumns = [
   {
     title: '',
@@ -136,13 +151,7 @@ export default function DashBoardPage() {
       <Divider className="site-devider after-header"></Divider>
       <Row style={{}}>
         <Col md={12}>
-          <ChartCard
-            title="Sales orders"
-            total={"Total: 934"}
-            contentHeight={300}
-          >
-            <Bar height={250} data={generateSalesData()} />,
-          </ChartCard>
+        <Table columns={tableColumns} dataSource={tableData} scroll={{ y: 300 }} />
         </Col>
         <Col md={12}>
           <ChartCard
@@ -160,7 +169,7 @@ export default function DashBoardPage() {
           >
             <span>
               <Trend flag="up" style={{ marginLeft: 8, color: 'rgba(0,0,0,.85)' }}>
-                -12%
+                -36%
           </Trend>
             </span>
           </ChartCard>
@@ -173,7 +182,7 @@ export default function DashBoardPage() {
           >
             <span>
               <Trend flag="up" style={{ marginLeft: 8, color: 'rgba(0,0,0,.85)' }}>
-                +11%
+                +25%
           </Trend>
             </span>
           </ChartCard>
@@ -191,8 +200,33 @@ export default function DashBoardPage() {
           </ChartCard>
 
         </Col>
-        <span style={{ margin: "0px 0px 10px 15px", color: "rgba(0, 0, 0, 0.85)", fontSize: "30px"}}>Low stock</span>
-        <Table columns={tableColumns} dataSource={tableData} scroll={{ y: 300 }} />
+        <Col md={12}>
+        <ChartCard
+          title="Category Sales"
+          total={""}
+          contentHeight={300}
+        >
+	   <Pie
+	      hasLegend
+	      title="Category orders"
+	      subTitle=""
+	      total={""}
+	      data={salesPieData}
+	      valueFormat={val => ""}
+	      height={294}
+	    />
+	  </ChartCard>
+	</Col>
+
+        <Col md={12}>
+          <ChartCard
+            title="Sales orders"
+            total={"Total: 934"}
+            contentHeight={300}
+          >
+            <Bar height={250} data={generateSalesData()} />,
+          </ChartCard>
+	  </Col>
       </Row>
     </div>
   )
