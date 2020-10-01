@@ -41,6 +41,7 @@ class ElasticSearchIndexes extends Command
     public function handle()
     {
       $client = ClientBuilder::create()->build();
+      $client->indices()->delete([ "index" => Product::$index_name]);
       foreach ($this->indexes() as $params) {
         $pars = $params;
         $client->indices()->create($params);
