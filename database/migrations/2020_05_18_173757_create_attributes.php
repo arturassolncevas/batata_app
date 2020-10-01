@@ -16,7 +16,7 @@ class CreateAttributes extends Migration
         Schema::create('attributes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('category_id');
-            $table->string('name');
+            $table->json('name');
             $table->boolean('required')->nullable();
             $table->string('ui_element_type');
             $table->integer('priority_order');

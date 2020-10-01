@@ -17,6 +17,7 @@ class CreateCategoriesMeasurementUnits extends Migration
             $table->uuid('category_id');
             $table->uuid('measurement_unit_id');
             $table->boolean('default')->nullable();
+            $table->integer('priority_order');
 
             $table->primary(['category_id', 'measurement_unit_id']);
             $table->foreign('category_id')->references('id')->on('categories');

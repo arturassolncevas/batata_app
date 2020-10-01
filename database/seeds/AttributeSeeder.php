@@ -9,7 +9,7 @@ class AttributeSeeder extends Seeder
       [ 
         "id" => "80536412-a12d-11ea-bb37-0242ac130000",
         "category_id" => "1d72728a-a127-11ea-bb37-0242ac130031",
-        "name" => "Type",
+        "name" => ["en" => "Type", "da" => "Type"],
         "required" => true,
         "ui_element_type" => "select_box",
         "priority_order" => 1
@@ -17,7 +17,7 @@ class AttributeSeeder extends Seeder
       [ 
         "id" => "80536412-a12d-11ea-bb37-0242ac130001",
         "category_id" => "1d72728a-a127-11ea-bb37-0242ac130031",
-        "name" => "Color",
+        "name" => ["en" => "Color", "da" => "Farve"],
         "ui_element_type" => "select_box",
         "priority_order" => 2
       ]

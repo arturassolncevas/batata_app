@@ -16,8 +16,9 @@ class CreateOptions extends Migration
         Schema::create('options', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('attribute_id');
-            $table->string('name');
+            $table->json('name');
             $table->boolean('default')->nullable();
+            $table->integer('priority_order');
 
             $table->foreign('attribute_id')->references('id')->on('attributes');
         });
