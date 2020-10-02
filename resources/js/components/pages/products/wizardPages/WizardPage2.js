@@ -39,26 +39,26 @@ class WizardPage2 extends Component {
 
   handlePriceChange(callback) {
     let formFields = this.formRef.current.getFieldsValue(["price", "measurement_unit_id", "quantity", "packed"])
-    console.log(formFields)
     let price = new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(formFields.price)
     let quantity = new Intl.NumberFormat('da-DK').format(formFields.quantity)
     let unit = this.props.measurementUnits.find((e) => e.id === formFields.measurement_unit_id) || {}
-    let formatted = `${price} / ${quantity}${unit.alias || ""}${formFields.packed ? " (pack)" : ""}`
+    let formatted = `${price} / ${quantity}${unit.alias || ""}`
+    formatted += formFields.packed ? ` (${this.props.intl.formatMessage({ id: "general.pack" })})` : ""
     this.setState({ ...this.state, formattedPrice: formatted }, callback)
   }
 
   handleLimitChange(callback) {
     let formFields = this.formRef.current.getFieldsValue(["min_quantity", "max_quantity", "measurement_unit_id", "packed"])
     let unit = this.props.measurementUnits.find((e) => e.id === formFields.measurement_unit_id) || {}
-    let min = `Min: ${formFields.min_quantity || "*"}${formFields.packed ? " (pack)" : (unit.alias || "")}`
-    let max = `Max: ${formFields.max_quantity || "*"}${formFields.packed ? " (pack)" : (unit.alias || "")}`
+    let min = `${this.props.intl.formatMessage({ id: "general.min" })}: ${formFields.min_quantity || "*"}${formFields.packed ? " ("+this.props.intl.formatMessage({ id: "general.packs" })+")" : (unit.alias || "")}`
+    let max = `${this.props.intl.formatMessage({ id: "general.max" })}: ${formFields.max_quantity || "*"}${formFields.packed ? " ("+this.props.intl.formatMessage({ id: "general.packs" })+")" : (unit.alias || "")}`
     this.setState({ ...this.state, formattedSalesLimits: `${min} - ${max}` }, callback)
   }
 
   setFormattedStockQuantity() {
     let formFields = this.formRef.current.getFieldsValue(["measurement_unit_id", "packed", "quantity_in_stock"])
     let unit = this.props.measurementUnits.find((e) => e.id === formFields.measurement_unit_id) || {}
-    let formatted = `${formFields.quantity_in_stock || 0}${formFields.packed ? " (packs)" : (unit.alias || "")}`
+    let formatted = `${formFields.quantity_in_stock || 0}${formFields.packed ? " ("+this.props.intl.formatMessage({ id: "general.packs" })+")" : (unit.alias || "")}`
     this.setState({ ...this.state, formattedStockQuantity: formatted })
   }
 
@@ -135,8 +135,8 @@ class WizardPage2 extends Component {
                 name="packed"
               >
                 <Switch
-                  checkedChildren={"Yes"}
-                  unCheckedChildren={"No"}
+                  checkedChildren={this.props.intl.formatMessage({ id: "general.yes" })}
+                  unCheckedChildren={this.props.intl.formatMessage({ id: "general.no" })}
                   size={"large"}
                   onChange={() => { this.updateFormatted() }}
                 />

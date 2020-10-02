@@ -24,7 +24,7 @@ class ProductsController extends Controller
         "page" => isset($search_params["page"]) ? (int)$search_params["page"] : 1
       ];
 
-      $filtered = ProductManager::filter(request("data"), $pagination);
+      $filtered = ProductManager::filter($search_params, $pagination);
       $products = Product::whereIn("id", $filtered["ids"] )->get();
       return response()->json(new ProductCollection($products, $filtered["pagination"]));
     }
@@ -195,13 +195,42 @@ class ProductManager {
     */
 
     public static function filter($data, $pagination) {
-      $query = [];
-
+      $must = [];
+      
       if (isset($data["category_id"]) && is_array($data["category_id"]) && count($data["category_id"]) > 0) {
-        $query["term"]["category_chain_ids"] = end($data["category_id"]);
+         array_push($must, [ "term" => [ "category_chain_ids" => end($data["category_id"])] ]);
       }
 
-      $query = empty($query) ? [ "match_all" => (object)[] ] : $query;
+      if (isset($data["product_attributes"]) && is_array($data["product_attributes"]) && count($data["product_attributes"]) > 0) {
+        foreach ($data["product_attributes"] as $element) {
+          if (!isset($element["option_id"])) {
+            continue;
+          }
+          $nested= [ "nested" => [
+              "path" => "attribute_options",
+              "query" => [
+                "bool" => [
+                  "must" => [
+                    [
+                      "term" => [
+                        "attribute_options.attribute_id" => $element["attribute_id"],
+                      ]
+                    ],
+                    [
+                      "term" => [
+                        "attribute_options.option_id" => $element["option_id"],
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ];
+          array_push($must, $nested);
+        }
+      }
+
+      $query = empty($must) ? [ "match_all" => (object)[] ] : [ "bool" => [ "must" => $must ] ];
       $request = [
         "index" => Product::$index_name,
         "_source" => ["id"],

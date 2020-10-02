@@ -20,8 +20,6 @@ class ProductFilter extends Component {
     super(props)
     this.formRef = React.createRef();
     this.state = { advancedSearchOpened: true, attributes: [] }
-    window.lalala = qs2
-
   }
 
   componentDidMount() {
@@ -58,6 +56,12 @@ class ProductFilter extends Component {
     let data = {
       ...formValues,
     }
+    
+    data.product_attributes = (data.product_attributes || [])
+      .map((e, i) => ({
+        attribute_id: this.state.attributes[i].id,
+        option_id: e.option_id || null }))
+
     console.log(data)
     console.log(qs.stringify(data))
     this.props.history.push(`/products?${qs.stringify(data)}`)
@@ -85,7 +89,7 @@ class ProductFilter extends Component {
                 style={{ width: "100%" }}
                 options={this.props.categories}
                 onChange={(val, options) => { this.handleCategoryChange(val, options) }}
-                placeholder="Search product"
+                placeholder={this.props.intl.formatMessage({ id: "shared.productFilter.searchCategory" })}
                 showSearch={{ filter }}
                 allowClear
                 changeOnSelect

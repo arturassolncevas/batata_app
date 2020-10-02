@@ -2,7 +2,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use App\Models\Product;
 
 class ProductCollection extends ResourceCollection
 {

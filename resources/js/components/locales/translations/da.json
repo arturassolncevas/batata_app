@@ -17,16 +17,16 @@
       "successfully_submitted": "Tak for din anmodning. Vi sætter stor pris på din interesse. Du hører snart fra os."
     },
     "newProduct": {
-      "header": "Ny Produkt",
+      "header": "Nyt Produkt",
       "wizard": {
         "1": "Vælg Kategori",
         "2": "Udfyld data",
-        "3": "Færdi"
+        "3": "Færdig"
       },
       "selectCategory": "Vælg",
       "selectHeader": "Kategori",
       "selectedCategoryWarning": "Vælg alle kategorier",
-      "pricePerPackQuestion": "Price per pack?"
+      "pricePerPackQuestion": "Er det en pakke ?"
     },
     "products": {
       "index": {
@@ -36,6 +36,7 @@
   },
   "shared": {
     "productFilter": {
+      "searchCategory": "Vælg kategorie",
       "advancedSearch": "Søgemuligheder",
       "price": {
         "name": "Pris",
@@ -55,14 +56,18 @@
     "submit": "Submit",
     "phone": "Phone",
     "country": "Country",
-    "search": "Search",
+    "search": "Søg",
     "category": "Category",
     "next": "Næste",
     "title": "Title",
     "description": "Description",
     "pack": "Pakke",
     "packs": "Pakker",
-    "price": "Pris"
+    "price": "Pris",
+    "yes": "Ja",
+    "no": "Nej",
+    "min": "Min",
+    "max": "Max"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -79,7 +84,7 @@
       "quantityInStock": "På lager",
       "minQuantity": "Min antal",
       "maxQuantity": "Max antal",
-      "salesLimit": "Sales limit",
+      "salesLimit": "Bestillings limit",
       "images": "Billeder",
       "title": "Titel",
       "description": "Beskrivelse"

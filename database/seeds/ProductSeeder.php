@@ -19,8 +19,6 @@ class ProductSeeder extends Seeder
         "quantity" => 1,
         "quantity_in_stock" => 300,
         ""
-
-
       ],
     ];
 
