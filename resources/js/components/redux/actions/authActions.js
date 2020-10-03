@@ -7,13 +7,15 @@ export const selectTodos = state => state.authReducer;
 export const signIn = () => {
   return async (dispatch) => {
     return requestClient.get('/api/user/details')
-      .then((response) => {
+      .then(async (response) => {
         switch (response.status) {
           case 200:
-            dispatch({
+            await dispatch({
               type: ACTIONS.AUTH_SIGNIN,
               payload: response.data
             })
+            localStorage.setItem("details", JSON.stringify(response.data))
+            console.log("after signin")
           default:
             break
         }

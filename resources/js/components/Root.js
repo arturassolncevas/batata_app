@@ -8,6 +8,7 @@ import { DatePicker } from 'antd'
 
 import Locale from './locales/Locale'
 import { setupRequestClient } from './services/RequesClient'
+import { setup as setupHelpers } from './helpers/helpers'
 import { IntlProvider } from 'react-intl'
 import flatten from 'flat'
 
@@ -20,6 +21,8 @@ import messages_da from './locales/translations/da.json'
 
 //Setup
 setupRequestClient()
+setupHelpers()
+
 const locales = ['en', 'da']
 
 const messages = {

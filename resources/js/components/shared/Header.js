@@ -5,8 +5,6 @@ import { MenuFoldOutlined, MenufoldOutlined } from '@ant-design/icons'
 import logoImage from '../../../images/batata-logo.svg'
 const { Header } = Layout;
 
-
-
 const menu = (handleLogout) => {
   return (
     <Menu>
@@ -28,6 +26,8 @@ const menu = (handleLogout) => {
   )
 }
 
+const userDetails = JSON.parse(localStorage.getItem("details") || "{}")
+
 export default (props) => {
   const { handleMenuClick, handleLogOut } = props
   return (<Header className="header" style={{ padding: '0px' }} >
@@ -44,7 +44,7 @@ export default (props) => {
         </div>
       </Col>
       <Col style={{ display: "flex", justifyContent: "flex-end" }}>
-        <div style={{ color: "white" }}>Arturas</div>
+        <div style={{ color: "white" }}><strong>{userDetails.name}</strong> {` (${userDetails.email})`}</div>
         <div style={{
         }}>
           <Dropdown overlay={menu(handleLogOut)} trigger={['click']}>

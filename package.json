@@ -33,6 +33,7 @@
         "antd-img-crop": "^3.3.0",
         "braft-editor": "^2.3.9",
         "css-loader": "^3.5.3",
+        "currency.js": "^2.0.3",
         "deep-merge-js": "^1.0.6",
         "extract-text-webpack-plugin": "^3.0.2",
         "flat": "^5.0.0",
