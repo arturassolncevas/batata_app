@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
         $table->string('provider')->nullable();
       });
        $this->call(CompanySeeder::class);
+       $this->call(LanguageSeeder::class);
+       $this->call(CurrencySeeder::class);
        $this->call(UserSeeder::class);
        $this->call(CategorySeeder::class);
        $this->call(MeasurementUnitsSeeder::class);

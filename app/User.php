@@ -38,4 +38,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function language()
+    {
+        return $this->belongsTo('App\Models\Language');
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo('App\Models\Currency');
+    }
 }

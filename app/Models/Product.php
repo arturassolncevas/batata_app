@@ -61,10 +61,13 @@ class Product extends Model
         return $this->belongsTo('App\Models\MeasurementUnit');
     }
 
-    public function setFirstNameAttribute($value)
+/*     public function setFirstNameAttribute($value)
     {
-        $this->attributes['title'] = [ 'en' =>  $this->attributes['title'], 'da' =>  $this->attributes['title'] ];
-    }
+        $this->attributes['title'] = [ 
+          'en' =>  $this->attributes['title'],
+          'da' =>  $this->attributes['title']
+        ];
+    } */
 
     public function save_file($data, $file_name, $extension, $type, $public) {
         $file_path = $this->file_base_path."/".$this->getKey()."/".$type."/".strval($file_name);

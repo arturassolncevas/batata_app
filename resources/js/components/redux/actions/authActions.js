@@ -15,12 +15,18 @@ export const signIn = () => {
               payload: response.data
             })
             localStorage.setItem("details", JSON.stringify(response.data))
-            console.log("after signin")
+            return response.data
           default:
             break
         }
       }).catch((error) => {
-        console.log("error in action")
+        switch (error.response.status) {
+          case 401:
+            console.log("Unauthorized")
+            break;
+          default:
+            console.log("error in action")
+        }
       })
   }
 }
@@ -28,13 +34,14 @@ export const signIn = () => {
 export const logOut = () => {
   return async (dispatch) => {
     return requestClient.get('/api/logout')
-      .then((response) => {
+      .then(async (response) => {
         switch (response.status) {
           case 200:
             localStorage.removeItem("token")
-            dispatch({
+            await dispatch({
               type: ACTIONS.AUTH_LOGOUT,
             })
+            localStorage.removeItem("details")
           default:
             break
         }

@@ -156,7 +156,7 @@ class ProductManager {
         'category_id' => $this->product->id,
         'category_chain_ids' => $this->product->category->category_chain_ids(),
         'category_chain_names' => $this->product->category->category_chain_names(),
-        'price' => [ 'value' => $this->product->price, 'currency' => 'dkk' ],
+        'price' => [ 'value' => $this->product->price, 'currency' => $this->user->currency->iso_code ],
         'measurement_unit'=>[
           'id' => $this->product->measurement_unit->id,
           'alias' => $this->product->measurement_unit->alias
@@ -206,7 +206,7 @@ class ProductManager {
           if (!isset($element["option_id"])) {
             continue;
           }
-          $nested= [ "nested" => [
+          $nested = [ "nested" => [
               "path" => "attribute_options",
               "query" => [
                 "bool" => [

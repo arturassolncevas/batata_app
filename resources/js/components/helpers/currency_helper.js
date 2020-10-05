@@ -3,11 +3,12 @@ import currency from 'currency.js'
 class CurrencyHelper {
   constructor() {
     this.currency = currency
+    this.options  = { symbol: "€",  separator: ".", decimal: ",", pattern: "# !" }
   }
 
   setOptions(data = {}) {
-    let { symbol = "€",  separator = ".", decimal = ",", pattern = "# !" } = data
-    this.value = (value) => this.currency(value, { symbol, separator, decimal, pattern })
+    this.options = { ...this.options, ...data }
+    this.value = (value) => this.currency(value, this.options)
   }
 }
 

@@ -33,6 +33,7 @@ class Category extends Model
         return $this->belongsTo('App\Models\Category', 'parent_id', 'id');
     }
 
+
     public function measurement_units()
     {
         return $this->belongsToMany('App\Models\MeasurementUnit', 'category_measurement_units')->using('App\Models\CategoryMeasurementUnit');

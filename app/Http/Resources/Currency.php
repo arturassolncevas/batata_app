@@ -3,9 +3,8 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\ProductFile;
 
-class MeasurementUnit extends JsonResource
+class Currency extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +16,12 @@ class MeasurementUnit extends JsonResource
     {
         return [
           'id' => $this->id,
+          'name' => $this->name,
+          'parent_id' => $this->parent_id,
+          'iso_code' => $this->iso_code,
           'alias' => $this->alias,
-          'max_decimal_points' => $this->max_decimal_points,
-          'priority_order' => $this->priority_order
+          'symbol' => $this->symbol,
+          'format_options' => json_decode($this->format_options)
         ];
     }
 }

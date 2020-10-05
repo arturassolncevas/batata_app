@@ -4,11 +4,16 @@ export const formatNumber = {
   },
 
   parse: (value, options = {}) => {
-    console.log(value)
-    let { int } = options
-    let regex = new RegExp(int ? "[^\\d]" : "[^\\d|\\.]", "g")
+    if (!value)
+      return ""
+    let { maxDecimalPoints = 3 } = options
+    let regex = new RegExp(maxDecimalPoints <= 0 ? "[^\\d]" : "[^\\d|\\.]", "g")
     value = value.replace(regex, '')
-    let commas = value.match(/\./g) || []
-    return commas.length > 1 ? "" : value
+    let devided = value.split(".")
+    if (devided.length >= 2) {
+      devided[1] = devided[1].slice(0, maxDecimalPoints)
+      value = devided[0] + "." + devided[1]
+    }
+    return value
   }
 }

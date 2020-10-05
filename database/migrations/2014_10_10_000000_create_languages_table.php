@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMeasurementUnits extends Migration
+class CreateLanguagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateMeasurementUnits extends Migration
      */
     public function up()
     {
-        Schema::create('measurement_units', function (Blueprint $table) {
+        Schema::create('languages', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->json('alias');
-            $table->integer('max_decimal_points');
+            $table->json('name');
+            $table->string('alias');
+            $table->string('code')->unique();;
+            $table->timestamps();
         });
     }
 
@@ -27,6 +29,6 @@ class CreateMeasurementUnits extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('measurement_units');
+        Schema::dropIfExists('languages');
     }
 }

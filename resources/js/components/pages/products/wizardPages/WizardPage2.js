@@ -15,7 +15,7 @@ const layout = {
 class WizardPage2 extends Component {
   constructor(props) {
     super(props)
-    this.state = { measurementUnits: [], attributes: [], formattedPrice: null, formattedSalesLimits: null, formattedStockQuantity: null, error: {
+    this.state = { selectedMeasurementUnit: {},  attributes: [], formattedPrice: null, formattedSalesLimits: null, formattedStockQuantity: null, error: {
       errors: { measurement_unit_id: null }
     } }
     this.formRef = React.createRef();
@@ -33,13 +33,18 @@ class WizardPage2 extends Component {
     return path
   }
 
+  handleMeasurementUnitChange(value) {
+    let selectedMeasurementUnit = this.props.measurementUnits.find(e => e.id === value)
+    this.setState({ ...this.state, selectedMeasurementUnit }, () => { this.updateFormatted()})
+  }
+
   updateFormatted() {
     this.handlePriceChange(() => this.handleLimitChange(this.setFormattedStockQuantity))
   }
 
   handlePriceChange(callback) {
     let formFields = this.formRef.current.getFieldsValue(["price", "measurement_unit_id", "quantity", "packed"])
-    let price = new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(formFields.price)
+    let price = currencyHelper.value(formFields.price).format()
     let quantity = new Intl.NumberFormat('da-DK').format(formFields.quantity)
     let unit = this.props.measurementUnits.find((e) => e.id === formFields.measurement_unit_id) || {}
     let formatted = `${price} / ${quantity}${unit.alias || ""}`
@@ -64,6 +69,13 @@ class WizardPage2 extends Component {
 
   setErrors(error = {}) {
     this.props.setErrors(error)
+  }
+
+  setParser(value, options = {}) {
+    let decimalPoints = this.state.selectedMeasurementUnit.max_decimal_points
+    if (options.checkIfPacked)
+      decimalPoints = this.formRef.current.getFieldsValue(["packed"]).packed ? 0 : decimalPoints
+    return formatNumber.parse(value, { maxDecimalPoints: decimalPoints || 0 })
   }
 
   resetErrors() {
@@ -157,8 +169,8 @@ class WizardPage2 extends Component {
                   >
                     <InputNumber
                       style={{ width: "100%" }}
-                      formatter={value => formatNumber.format(value, "kr")}
-                      parser={value => formatNumber.parse(value)}
+                      formatter={value => formatNumber.format(value, currencyHelper.options.symbol)}
+                      parser={value => formatNumber.parse(value, { maxDecimalPoints: 2 })}
                       onChange={() => { this.handlePriceChange() }}
                     />
                   </Form.Item>
@@ -174,7 +186,7 @@ class WizardPage2 extends Component {
                       style={{ width: "100%" }}
                       placeholder="Antal"
                       formatter={value => formatNumber.format(value)}
-                      parser={value => formatNumber.parse(value, { int: true })}
+                      parser={value => this.setParser(value)}
                       onChange={() => { this.handlePriceChange() }}
                     />
                   </Form.Item>
@@ -186,7 +198,7 @@ class WizardPage2 extends Component {
                       validateStatus={this.props.error.errors.measurement_unit_id && "error"}
                       help={this.props.error.errors.measurement_unit_id && this.props.error.errors.measurement_unit_id.join(', ')}
                     >
-                      <Select onChange={() => { this.updateFormatted() }} >
+                      <Select onChange={(val) => { this.handleMeasurementUnitChange(val) }} >
                         {this.props.measurementUnits.map(e => (<Select.Option key={e.id} value={e.id}>{e.alias}</Select.Option>))}
                       </Select>
                     </Form.Item>
@@ -209,7 +221,6 @@ class WizardPage2 extends Component {
                         style={{ width: "100%" }}
                         placeholder="Min"
                         onChange={() => { this.handleLimitChange() }}
-                        parser={ value => formatNumber.parse(value, { int: true })}
                       />
                     </Form.Item>
                   </Col>
@@ -223,6 +234,8 @@ class WizardPage2 extends Component {
                         style={{ width: "100%" }}
                         placeholder="Max"
                         onChange={() => { this.handleLimitChange() }}
+                        formatter={value => formatNumber.format(value)}
+                        parser={value => this.setParser(value, { checkIfPacked: true })}
                       />
                     </Form.Item>
                   </Col>
