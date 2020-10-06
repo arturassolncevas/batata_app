@@ -39,13 +39,19 @@ class WizardPage2 extends Component {
   }
 
   updateFormatted() {
+    let formFields = this.formRef.current.getFieldsValue(["quantity", "min_quantity", "max_quantity", "quantity_in_stock"])
+    let formValues = Object.keys(formFields).map(e => {
+      return formFields[e] ? { name: e, value: this.setParser(formFields[e].toString(), { checkIfPacked: e !== "quantity" }) } : null
+    })
+    var filtered = formValues.filter( el => el != null );
+    this.formRef.current.setFields(filtered)
     this.handlePriceChange(() => this.handleLimitChange(this.setFormattedStockQuantity))
   }
 
   handlePriceChange(callback) {
     let formFields = this.formRef.current.getFieldsValue(["price", "measurement_unit_id", "quantity", "packed"])
     let price = currencyHelper.value(formFields.price).format()
-    let quantity = new Intl.NumberFormat('da-DK').format(formFields.quantity)
+    let quantity = formatNumber.format(formFields.quantity)
     let unit = this.props.measurementUnits.find((e) => e.id === formFields.measurement_unit_id) || {}
     let formatted = `${price} / ${quantity}${unit.alias || ""}`
     formatted += formFields.packed ? ` (${this.props.intl.formatMessage({ id: "general.pack" })})` : ""
@@ -221,6 +227,8 @@ class WizardPage2 extends Component {
                         style={{ width: "100%" }}
                         placeholder="Min"
                         onChange={() => { this.handleLimitChange() }}
+                        formatter={value => formatNumber.format(value)}
+                        parser={value => this.setParser(value, { checkIfPacked: true })}
                       />
                     </Form.Item>
                   </Col>
@@ -257,6 +265,8 @@ class WizardPage2 extends Component {
                         style={{ width: "100%" }}
                         parser={ value => formatNumber.parse(value, { int: true })}
                         onChange={() => { this.setFormattedStockQuantity() }}
+                        formatter={value => formatNumber.format(value)}
+                        parser={value => this.setParser(value, { checkIfPacked: true })}
                       />
                     </Form.Item>
                   </Col>
