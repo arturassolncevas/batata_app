@@ -14,7 +14,9 @@ export const signIn = () => {
               type: ACTIONS.AUTH_SIGNIN,
               payload: response.data
             })
-            localStorage.setItem("details", JSON.stringify(response.data))
+            let userDetails = response.data
+            localStorage.setItem("details", JSON.stringify(userDetails))
+            currencyHelper.setOptions(userDetails.currency.format_options)
             return response.data
           default:
             break

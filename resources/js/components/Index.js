@@ -25,10 +25,8 @@ class Index extends Component {
   }
 
   async componentDidMount() {
-    let userDetails = await this.props.signIn()
+    await this.props.signIn()
     this.state.initialLoadStatus = "finished"
-    if (userDetails)
-      currencyHelper.setOptions(userDetails.currency.format_options)
     this.setState({ ...this.state })
   }
 
