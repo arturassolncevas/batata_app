@@ -1,6 +1,6 @@
 import React from 'react'
-import { Skeleton, Switch, List, Button, Row, Col, Tooltip, Tag } from 'antd';
-import { StarOutlined, LikeOutlined, EditFilled, DeleteFilled } from '@ant-design/icons';
+import { Button, Row, Col, Tooltip, Tag } from 'antd';
+import { EditFilled, DeleteFilled } from '@ant-design/icons';
 import { injectIntl } from 'react-intl'
 
 
@@ -16,11 +16,12 @@ let setFrontImageThumbnailUrl = (item) => {
   return (item.files.find(e => e.type === "thumbnail" ) || {}).url
 }
 
-let formatPrice = (item) => {
-  let price = new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(item.price)
-  let quantity = new Intl.NumberFormat('da-DK').format(item.quantity)
-  let unit = item.measurement_unit
-  let formatted = `${price} / ${quantity}${unit.alias || ""}${item.packed ? " (pack)" : ""}`
+let formatPrice = (item, intl) => {
+  let price = currencyHelper.value(item.price).format()
+  let decimalPoints = item.measurement_unit.max_decimal_points
+  let quantity = numberHelper.parse(item.quantity.toString(), { maxDecimalPoints: decimalPoints || 0 })
+  let formatted = `${price} / ${quantity}${item.measurement_unit.alias || ""}`
+  formatted += item.packed ? ` (${intl.formatMessage({ id: "general.pack" })})` : ""
   return formatted
 }
 
@@ -51,7 +52,7 @@ const sellerProductRow = (props) => (
         </Row>
       </Row>
     </Col>
-<Col style={{ display: "flex", alignItems: "center", fontSize: "17px", fontWeight: "bold", margin: "15px" }}>{ formatPrice(props.item) }</Col>
+<Col style={{ display: "flex", alignItems: "center", fontSize: "17px", fontWeight: "bold", margin: "15px" }}>{ formatPrice(props.item, props.intl) }</Col>
     <Col>
       <Row style={{ "flexDirection": "row", height: "100%", justifyContent: "center", alignItems: "center" }}>
         <Col>

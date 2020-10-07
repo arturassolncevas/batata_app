@@ -9,6 +9,8 @@ import { withRouter } from 'react-router-dom'
 import { injectIntl } from 'react-intl'
 import qs from 'query-string';
 
+
+
 class ProductsPage extends Component {
   constructor(props) {
     super(props)
@@ -85,14 +87,16 @@ class ProductsPage extends Component {
                 item={e}
               />
              ))}
+
+          <Pagination
+            style={{textAlign: "right"}}
+            current={this.state.products.pagination.page}
+            pageSize={this.state.products.pagination.size}
+            total={this.state.products.pagination.total}
+            onChange={(page, pageSize) => { this.handlePaginationPageChange(page, pageSize) } }
+          />
           </Col>
         </Row>
-        <Pagination
-          current={this.state.products.pagination.page}
-          pageSize={this.state.products.pagination.size}
-          total={this.state.products.pagination.total}
-          onChange={(page, pageSize) => { this.handlePaginationPageChange(page, pageSize) } }
-        />
       </div>
     )
   }
