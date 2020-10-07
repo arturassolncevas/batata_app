@@ -3,10 +3,13 @@ import { Skeleton, Switch, List, Button, Row, Col, Tooltip, Tag } from 'antd';
 import { StarOutlined, LikeOutlined, EditFilled, DeleteFilled } from '@ant-design/icons';
 import { injectIntl } from 'react-intl'
 
-let unitsFormat = (item, val) => {
-  let formatted = `${val || 0}${item.packed ? " (packs)" : (item.measurement_unit.alias || "")}`
 
-  return formatted
+let unitsFormat = (item, value, intl, options = { checkIfPacked: true }) => {
+  let decimalPoints = item.measurement_unit.max_decimal_points
+  if (options.checkIfPacked)
+    decimalPoints = item.packed ? 0 : decimalPoints
+  let formatted = numberHelper.parse(value.toString(), { maxDecimalPoints: decimalPoints || 0 })
+  return `${formatted || 0}${item.packed ? " (" + intl.formatMessage({ id: "general.packs" }) + ")" : (item.measurement_unit.alias || "")}`
 }
 
 let setFrontImageThumbnailUrl = (item) => {
@@ -42,9 +45,9 @@ const sellerProductRow = (props) => (
           })}
         </Col>
         <Row>
-          <Col style={{ marginRight: "15px" }}>{props.intl.formatMessage({ id: 'models.product.quantityInStock' })}: <strong>{unitsFormat(props.item, props.item.quantity_in_stock)}</strong></Col>
-          <Col style={{ marginRight: "15px" }}>{props.intl.formatMessage({ id: 'models.product.minQuantity' })}: <strong>{unitsFormat(props.item, props.item.min_quantity)}</strong></Col>
-          <Col style={{ marginRight: "15px" }}>{props.intl.formatMessage({ id: 'models.product.maxQuantity' })}: <strong>{unitsFormat(props.item, props.item.max_quantity)}</strong></Col>
+          <Col style={{ marginRight: "15px" }}>{props.intl.formatMessage({ id: 'models.product.quantityInStock' })}: <strong>{unitsFormat(props.item, props.item.quantity_in_stock, props.intl)}</strong></Col>
+          <Col style={{ marginRight: "15px" }}>{props.intl.formatMessage({ id: 'models.product.minQuantity' })}: <strong>{unitsFormat(props.item, props.item.min_quantity, props.intl)}</strong></Col>
+          <Col style={{ marginRight: "15px" }}>{props.intl.formatMessage({ id: 'models.product.maxQuantity' })}: <strong>{unitsFormat(props.item, props.item.max_quantity, props.intl)}</strong></Col>
         </Row>
       </Row>
     </Col>

@@ -46,11 +46,13 @@ class WizardPage3 extends Component {
   }
 
   async handleChange({ file, fileList }) {
-    fileList = fileList.slice(-4);
-    let file_data = await getBase64(file)
-    let file_in_list = fileList.find(e => e.uid === file.uid)
-    file_in_list.url = file_data.base64
-    file_in_list.status = "done"
+    let fileInList = fileList.find(e => e.uid === file.uid)
+    if (fileInList) {
+      fileList = fileList.slice(-4);
+      let file_data = await getBase64(file)
+      fileInList.url = file_data.base64
+      fileInList.status = "done"
+    }
     this.state.fileList = [...fileList]
     this.setState({ ...this.state })
   }

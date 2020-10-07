@@ -32,6 +32,14 @@ class Product extends Model
         'created_at', 'updated_at'
     ];
 
+    protected $casts = [
+      "price" => "float",
+      "quantity" => "float",
+      "min_quantity" => "float",
+      "max_quantity" => "float",
+      "quantity_in_stock" => "float"
+    ];
+
     public $translatable = ['title'];
 
     private $file_base_path = "products";

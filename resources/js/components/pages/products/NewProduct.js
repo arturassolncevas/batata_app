@@ -33,14 +33,15 @@ class NewProdutPage extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     let step = parseInt((qs.parse(this.props.history.location.search)["wizard-step"] || 1), 10)
-    console.log(step)
-    console.log(this.state.wizardStep)
     if (step !== 1 && this.state.wizardStep === 1) {
       this.props.history.push(`/products/new?${qs.stringify({ "wizard-step": 1 })}`)
       nextState.wizardStep = 1
     }
     else if (step === 1 && this.state.wizardStep !== 1 ) {
       nextState.wizardStep = 1
+    }
+    else if (step === 2 && this.state.wizardStep !== 2) {
+      nextState.wizardStep = 2
     }
   }
 

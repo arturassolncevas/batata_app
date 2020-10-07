@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 import { Row, Col, Card, Form, Input, InputNumber, Select, Switch, Button } from 'antd'
-import qs from 'query-string';
 import { withRouter } from 'react-router-dom'
-import { getLastElement } from '../helpers/helper'
 import { injectIntl } from 'react-intl'
-import merge from 'deep-merge-js'
-import { formatNumber } from '../../../shared/helpers/priceFormatter'
 
 const layout = {
   labelCol: { span: 24 },
@@ -24,6 +20,7 @@ class WizardPage2 extends Component {
   }
 
   componentDidMount() {
+  console.log("in format")
     this.updateFormatted()
   }
 
@@ -51,7 +48,7 @@ class WizardPage2 extends Component {
   handlePriceChange(callback) {
     let formFields = this.formRef.current.getFieldsValue(["price", "measurement_unit_id", "quantity", "packed"])
     let price = currencyHelper.value(formFields.price).format()
-    let quantity = formatNumber.format(formFields.quantity)
+    let quantity = formFields.quantity
     let unit = this.props.measurementUnits.find((e) => e.id === formFields.measurement_unit_id) || {}
     let formatted = `${price} / ${quantity}${unit.alias || ""}`
     formatted += formFields.packed ? ` (${this.props.intl.formatMessage({ id: "general.pack" })})` : ""
@@ -81,7 +78,7 @@ class WizardPage2 extends Component {
     let decimalPoints = this.state.selectedMeasurementUnit.max_decimal_points
     if (options.checkIfPacked)
       decimalPoints = this.formRef.current.getFieldsValue(["packed"]).packed ? 0 : decimalPoints
-    return formatNumber.parse(value, { maxDecimalPoints: decimalPoints || 0 })
+    return numberHelper.parse(value, { maxDecimalPoints: decimalPoints || 0 })
   }
 
   resetErrors() {
@@ -175,8 +172,8 @@ class WizardPage2 extends Component {
                   >
                     <InputNumber
                       style={{ width: "100%" }}
-                      formatter={value => formatNumber.format(value, currencyHelper.options.symbol)}
-                      parser={value => formatNumber.parse(value, { maxDecimalPoints: 2 })}
+                      formatter={value => numberHelper.format(value, currencyHelper.options.symbol)}
+                      parser={value => numberHelper.parse(value, { maxDecimalPoints: 2 })}
                       onChange={() => { this.handlePriceChange() }}
                     />
                   </Form.Item>
@@ -191,7 +188,7 @@ class WizardPage2 extends Component {
                     <InputNumber
                       style={{ width: "100%" }}
                       placeholder="Antal"
-                      formatter={value => formatNumber.format(value)}
+                      formatter={value => numberHelper.format(value)}
                       parser={value => this.setParser(value)}
                       onChange={() => { this.handlePriceChange() }}
                     />
@@ -227,7 +224,7 @@ class WizardPage2 extends Component {
                         style={{ width: "100%" }}
                         placeholder="Min"
                         onChange={() => { this.handleLimitChange() }}
-                        formatter={value => formatNumber.format(value)}
+                        formatter={value => numberHelper.format(value)}
                         parser={value => this.setParser(value, { checkIfPacked: true })}
                       />
                     </Form.Item>
@@ -242,7 +239,7 @@ class WizardPage2 extends Component {
                         style={{ width: "100%" }}
                         placeholder="Max"
                         onChange={() => { this.handleLimitChange() }}
-                        formatter={value => formatNumber.format(value)}
+                        formatter={value => numberHelper.format(value)}
                         parser={value => this.setParser(value, { checkIfPacked: true })}
                       />
                     </Form.Item>
@@ -263,9 +260,9 @@ class WizardPage2 extends Component {
                     >
                       <InputNumber
                         style={{ width: "100%" }}
-                        parser={ value => formatNumber.parse(value, { int: true })}
+                        parser={ value => numberHelper.parse(value, { int: true })}
                         onChange={() => { this.setFormattedStockQuantity() }}
-                        formatter={value => formatNumber.format(value)}
+                        formatter={value => numberHelper.format(value)}
                         parser={value => this.setParser(value, { checkIfPacked: true })}
                       />
                     </Form.Item>
