@@ -29,6 +29,12 @@ class ProductsController extends Controller
       return response()->json(new ProductCollection($products, $filtered["pagination"]));
     }
 
+    public function find() {
+      $id = request()->route('id');
+      $product = Product::find($id);
+      return response()->json(new ProductResource($product));
+    }
+
     public function step_2(ProductRequest $request)
     { 
       $validated = $request->validated();

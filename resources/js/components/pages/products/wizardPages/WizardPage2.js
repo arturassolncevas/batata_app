@@ -20,7 +20,6 @@ class WizardPage2 extends Component {
   }
 
   componentDidMount() {
-  console.log("in format")
     this.updateFormatted()
   }
 

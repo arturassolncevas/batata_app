@@ -5,6 +5,7 @@ import HomePage from './pages/home/Home'
 
 import ProductsPage from './pages/products/Products'
 import NewProductPage from './pages/products/NewProduct'
+import EditProductPage from './pages/products/EditProduct'
 
 import DashBoardPage from './pages/dashboard/Dashboard'
 import OrdersPage from './pages/orders/Orders'
@@ -52,6 +53,7 @@ class Index extends Component {
 
               <PrivateRoute exact path="/products" component={ProductsPage} />
               <PrivateRoute exact path="/products/new" component={NewProductPage} />
+              <PrivateRoute exact path="/products/:id/edit" component={EditProductPage} />
 
               <PrivateRoute path="/marketplace" component={MarketPlacePage} />
               <Route><Redirect to={{ pathname: "/not-found" }} /></Route>

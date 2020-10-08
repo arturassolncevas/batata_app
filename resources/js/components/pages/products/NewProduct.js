@@ -31,6 +31,11 @@ class NewProdutPage extends Component {
   componentDidMount() {
   }
 
+  async fetchInitialData() {
+    let resp = await requestClient.get('/api/products/')
+    this.setState({ ...this.state, isFetching: false, categories, category })
+  }
+
   componentWillUpdate(nextProps, nextState) {
     let step = parseInt((qs.parse(this.props.history.location.search)["wizard-step"] || 1), 10)
     if (step !== 1 && this.state.wizardStep === 1) {
