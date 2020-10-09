@@ -28,6 +28,9 @@
       "selectedCategoryWarning": "Vælg alle kategorier",
       "pricePerPackQuestion": "Er det en pakke ?"
     },
+    "editProduct": {
+      "header": "Rediger Produkt"
+    },
     "products": {
       "index": {
         "header": "Produkter"

@@ -34,6 +34,7 @@ const initialState = {
   measurementUnits: [],
   attributes: [],
   successfully_submitted: false,
+  selectedMeasurementUnit: {}
 }
 
 exports.initialState = initialState
