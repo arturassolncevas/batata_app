@@ -7,7 +7,7 @@ import ProductFilter from '../../shared/products/ProductFilter';
 import { modifyCategories } from './helpers/helper'
 import { withRouter } from 'react-router-dom'
 import { injectIntl } from 'react-intl'
-import qs from 'query-string';
+import qs from 'qs';
 
 
 
@@ -85,6 +85,7 @@ class ProductsPage extends Component {
                 categories={this.state.categories}
                 key={i}
                 item={e}
+                history={this.props.history}
               />
              ))}
 

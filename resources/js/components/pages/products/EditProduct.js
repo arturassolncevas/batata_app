@@ -18,15 +18,16 @@ class ProductFormatter {
     this.options = {
       priceFormat: "",
       quantityFormat: "",
-      currencySymbol: ""
+      currencySymbol: "",
+      salesLimitFormat: ""
     }
   }
 
   formattedPrice({ price, quantity }) {
     let str = this.options.priceFormat;
     [
-      ["<<price>>", price],
-      ["<<quantity>>", quantity]
+      ["<<price>>", price || ""],
+      ["<<quantity>>", quantity || ""]
     ].forEach((e) => {
       str = str.replace(RegExp(e[0]), e[1])
     })
@@ -34,9 +35,9 @@ class ProductFormatter {
   }
 
   formattedQuantity({ quantity }) {
-    let str = this.options.currencyFormat
+    let str = this.options.salesLimitFormat;
     [
-      ["<<quantity>>", quantity]
+      ["<<quantity>>", quantity || "*"]
     ].forEach((e) => { str = str.replace(RegExp(e[0]), e[1]) })
     return str
   }
@@ -45,7 +46,8 @@ class ProductFormatter {
     this.options = merge(this.options, { currencySymbol, measurementUnitAlias, packed })
     this.options.priceFormat = `<<price>> ${this.options.currencySymbol || ""}/ <<quantity>> ${this.options.measurementUnitAlias}`
     this.options.priceFormat += packed ? ` (${intl.formatMessage({ id: "general.pack" })})` : ""
-    this.options.stockQuantityFormat = "<<quantity>> " + thi.options.packed ? `(${intl.formatMessage({ id: "general.packs" })})` : this.options.measurementUnitAlias
+    this.options.salesLimitFormat = "<<quantity>> "
+    this.options.salesLimitFormat += this.options.packed ? `(${intl.formatMessage({ id: "general.packs" })})` : this.options.measurementUnitAlias
   }
 }
 
@@ -76,7 +78,10 @@ class EditProduct extends Component {
       initialForm: { ...this.initialState.initialForm },
       measurementUnits: resp_measurements.data,
       selectedMeasurementUnit: measurement_unit
-    }, () => { this.formRef.current.resetFields() })
+    }, () => {
+      this.formRef.current.resetFields()
+      this.updateFormatted()
+    })
   }
 
   handlePriceChange(callback) {
@@ -88,7 +93,11 @@ class EditProduct extends Component {
 
   handleMeasurementUnitChange(value) {
     let selectedMeasurementUnit = this.state.measurementUnits.find(e => e.id === value)
-    this.setState({ ...this.state, selectedMeasurementUnit }, () => { this.updateFormatted()})
+    let formFields = this.formRef.current.getFieldsValue(["packed"])
+    this.setState({ ...this.state, selectedMeasurementUnit }, () => { 
+      this.productFormatter.setOptions({ measurementUnitAlias: this.state.selectedMeasurementUnit.alias, packed: formFields.packed, intl: this.props.intl })
+      this.updateFormatted()
+    })
   }
 
   updateFormatted() {
@@ -96,9 +105,9 @@ class EditProduct extends Component {
     let formValues = Object.keys(formFields).map(e => {
       return formFields[e] ? { name: e, value: this.setParser(formFields[e].toString(), { checkIfPacked: e !== "quantity" }) } : null
     })
-    var filtered = formValues.filter( el => el != null );
+    var filtered = formValues.filter(el => el != null);
     this.formRef.current.setFields(filtered)
-    this.handlePriceChange(() => this.handleLimitChange(this.setFormattedStockQuantity))
+    this.handlePriceChange(() => this.handleLimitChange(() => { this.handleStockQuantityChange() }))
   }
 
   setParser(value, options = {}) {
@@ -106,6 +115,25 @@ class EditProduct extends Component {
     if (options.checkIfPacked)
       decimalPoints = this.formRef.current.getFieldsValue(["packed"]).packed ? 0 : decimalPoints
     return numberHelper.parse(value, { maxDecimalPoints: decimalPoints || 0 })
+  }
+
+  handleLimitChange(callback) {
+    let formFields = this.formRef.current.getFieldsValue(["min_quantity", "max_quantity"])
+    let min = this.productFormatter.formattedQuantity({ quantity: formFields.min_quantity })
+    let max = this.productFormatter.formattedQuantity({ quantity: formFields.max_quantity })
+    let formatted = `${this.props.intl.formatMessage({ id: "general.min" })} ${min} - ${this.props.intl.formatMessage({ id: "general.max" })} ${max}`
+    this.setState({ ...this.state, formattedSalesLimits: formatted }, callback)
+  }
+
+  handlePackedChange(val) {
+    this.productFormatter.setOptions({ measurementUnitAlias: this.state.selectedMeasurementUnit.alias, packed: val, intl: this.props.intl })
+    this.updateFormatted()
+  }
+
+  handleStockQuantityChange() {
+    let formFields = this.formRef.current.getFieldsValue(["quantity_in_stock"])
+    let formatted = this.productFormatter.formattedQuantity({ quantity: formFields.quantity_in_stock })
+    this.setState({ ...this.state, formattedQuantityInStock: formatted })
   }
 
   render() {
@@ -140,7 +168,7 @@ class EditProduct extends Component {
                     checkedChildren={this.props.intl.formatMessage({ id: "general.yes" })}
                     unCheckedChildren={this.props.intl.formatMessage({ id: "general.no" })}
                     size={"large"}
-                    onChange={() => { }}
+                    onChange={(val) => { this.handlePackedChange(val) }}
                   />
                 </Form.Item>
 
@@ -185,13 +213,64 @@ class EditProduct extends Component {
                         validateStatus={this.state.error.errors.measurement_unit_id && "error"}
                         help={this.state.error.errors.measurement_unit_id && this.state.error.errors.measurement_unit_id.join(', ')}
                       >
-                        <Select onChange={(val) => {  }} >
+                        <Select onChange={(val) => { this.handleMeasurementUnitChange(val) }} >
                           {this.state.measurementUnits.map(e => (<Select.Option key={e.id} value={e.id}>{e.alias}</Select.Option>))}
                         </Select>
                       </Form.Item>
                     </Col>
                   </Row>
                 </Form.Item>
+                {/* Min Max Sales quantity */}
+                <Form.Item
+                  label={`${this.props.intl.formatMessage({ id: `models.product.salesLimit` })} ${this.state.formattedSalesLimits}`}
+                >
+                  <Row>
+                    <Col lg={8} >
+                      <Form.Item
+                        name="min_quantity"
+                      >
+                        <InputNumber
+                          style={{ width: "100%" }}
+                          placeholder="Min"
+                          onChange={() => { this.handleLimitChange() }}
+                          formatter={value => numberHelper.format(value)}
+                          parser={value => this.setParser(value, { checkIfPacked: true })}
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col lg={8} >
+                      <Form.Item
+                        name="max_quantity"
+                      >
+                        <InputNumber
+                          style={{ width: "100%" }}
+                          placeholder="Max"
+                          onChange={() => { this.handleLimitChange() }}
+                          formatter={value => numberHelper.format(value)}
+                          parser={value => this.setParser(value, { checkIfPacked: true })}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form.Item>
+                {/* Currently in stock */}
+
+                <Row>
+                  <Col lg={8} >
+                    <Form.Item
+                      name="quantity_in_stock"
+                      label={`${this.props.intl.formatMessage({ id: `models.product.quantityInStock` })} ${this.state.formattedQuantityInStock}`}
+                    >
+                      <InputNumber
+                        style={{ width: "100%" }}
+                        parser={value => numberHelper.parse(value, { int: true })}
+                        onChange={() => { this.handleStockQuantityChange() }}
+                        formatter={value => numberHelper.format(value)}
+                        parser={value => this.setParser(value, { checkIfPacked: true })}
+                      />
+                    </Form.Item>
+                  </Col>
+                </Row>
               </Form>
             </Card>
           </Col>

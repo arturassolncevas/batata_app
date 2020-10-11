@@ -3,7 +3,6 @@ import { Col, AutoComplete, Input, InputNumber, Cascader, Button, Row, Form, Sel
 import { SearchOutlined, CaretDownOutlined, CarerUpOutlined, CaretUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { injectIntl } from 'react-intl'
 import { formatNumber } from '../../shared/helpers/priceFormatter'
-import qs2 from 'query-string';
 import qs from 'qs';
 
 function filter(inputValue, path) {

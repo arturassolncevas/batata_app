@@ -154,6 +154,7 @@ class ProductManager {
      $data = [
       'id' => $this->product->id,
       'index' => Product::$index_name,
+      'refresh' => "wait_for",
       'body' => [ 
         'id' => $this->product->id,
         'type' => $this->product->category->name,
@@ -246,6 +247,7 @@ class ProductManager {
           "from" => $pagination["size"] * ($pagination["page"] - 1)
           ]
       ];
+
 
       $client = ClientBuilder::create()->build();
       $response = $client->search($request);

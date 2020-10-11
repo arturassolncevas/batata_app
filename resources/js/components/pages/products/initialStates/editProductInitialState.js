@@ -34,7 +34,10 @@ const initialState = {
   measurementUnits: [],
   attributes: [],
   successfully_submitted: false,
-  selectedMeasurementUnit: {}
+  selectedMeasurementUnit: {},
+  formattedSalesLimits: null,
+  formattedPrice: null
+
 }
 
 exports.initialState = initialState
