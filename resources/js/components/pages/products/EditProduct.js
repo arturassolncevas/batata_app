@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { Row, Col, Card, Form, Input, InputNumber, Select, Switch, Button, PageHeader, Divider } from 'antd'
 import { withRouter } from 'react-router-dom'
 import { initialState } from './initialStates/editProductInitialState'
-import { DropboxOutlined, QqSquareFilled } from '@ant-design/icons';
+import { DropboxOutlined, QqSquareFilled, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+
+import ImgCrop from 'antd-img-crop';
+import { Upload, Modal } from 'antd';
 import { injectIntl } from 'react-intl'
 import deepCopy from 'json-deep-copy'
 import qs from 'query-string';
@@ -11,6 +14,24 @@ import merge from 'deep-merge-js'
 const layout = {
   labelCol: { span: 24 },
   wrapperCol: { span: 24 },
+}
+
+const getBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file instanceof File || file instanceof Blob ? file : file.originFileObj);
+    reader.onload = () => {
+      let img = new Image();
+      img.onload = function () {
+        resolve({
+          base64: this.width > 1000 ? resizeImage.resize(img, 1000, 1000) : reader.result,
+          size: { width: this.width, height: this.height }
+        })
+      }
+      img.src = reader.result
+    }
+    reader.onerror = error => reject(error);
+  });
 }
 
 class ProductFormatter {
@@ -58,6 +79,7 @@ class EditProduct extends Component {
     this.initialState = initialState
     this.state = deepCopy(initialState)
     this.formRef = React.createRef();
+    this.initialForm = null
   }
 
   componentDidMount() {
@@ -67,21 +89,34 @@ class EditProduct extends Component {
   async fetchInitialData() {
     let id = this.props.match.params.id
     let resp_product = await requestClient.get(`/api/products/${id}`)
-    let { category_id, measurement_unit, packed } = resp_product.data
+    let { category_id, measurement_unit, packed, attributes, files } = resp_product.data
     let resp_measurements = await requestClient.get(`/api/measurements?category_id=${category_id}`)
+
     this.productFormatter = new ProductFormatter()
     this.productFormatter.setOptions({ measurementUnitAlias: measurement_unit.alias, packed, intl: this.props.intl })
-    this.initialState.initialForm = merge(this.initialState.initialForm, resp_product.data)
+
+    this.initialForm = merge(this.state.initialForm, resp_product.data)
+    this.fetchAttributes(category_id)
+
     this.setState({
       ...this.state,
       isFetching: false,
-      initialForm: { ...this.initialState.initialForm },
+      initialForm: {
+        ...this.initialForm,
+        product_attributes: attributes.map(e => ({ option_id: e.option.id })),
+       },
+      fileList: files.filter(e => e.type === "thumbnail").map((e, i) => ({ uid: e.id, group_id: e.group_id, status: "done", url: e.url })),
       measurementUnits: resp_measurements.data,
       selectedMeasurementUnit: measurement_unit
     }, () => {
       this.formRef.current.resetFields()
       this.updateFormatted()
     })
+  }
+
+  async fetchAttributes(category_id) {
+    let resp_attributes = await requestClient.get(`/api/attributes?category_id=${category_id}`)
+    this.setState({ ...this.state, attributes: resp_attributes.data}) 
   }
 
   handlePriceChange(callback) {
@@ -136,7 +171,40 @@ class EditProduct extends Component {
     this.setState({ ...this.state, formattedQuantityInStock: formatted })
   }
 
+  async uploadImage(props) {
+    this.setState({...this.state, imageLoading: true} )      
+    let data = {
+      base64: await getBase64(props.file),
+      group_id: "id"
+    }
+
+    requestClient.post('/api/product_files/upload_image', props)
+      .then(async (response) => {
+        switch (response.status) {
+          case 201:
+          case 200:
+          default:
+            this.setState({...this.state, imageLoading: false} )
+            break
+        }
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+            console.log("error")
+            break
+        }
+      })
+  }
+
   render() {
+
+    const uploadButton = (
+      <div>
+        {this.state.imageLoading ? <LoadingOutlined /> : <PlusOutlined />}
+        <div className="ant-upload-text">Upload</div>
+      </div>
+    )
     return (
       <div>
         <PageHeader
@@ -156,6 +224,19 @@ class EditProduct extends Component {
                 initialValues={this.state.initialForm}
                 onFinish={() => { }}
               >
+
+                {/* Attributes */}
+                {this.state.attributes.map((e, index) => (
+                  <Form.Item 
+                    required={!!e.required}
+                    label={e.name} key={e.id}
+                    name={["product_attributes", index, 'option_id']}
+                    validateStatus={this.state.error.errors.product_attributes[index] && "error"}
+                    help={this.state.error.errors.product_attributes[index] && this.state.error.errors.product_attributes[index].join(', ')}
+                >
+                    <Select key={e.id}> {e.options.map(e => (<Select.Option key={e.id} value={e.id}>{e.name}</Select.Option>))} </Select>
+                  </Form.Item>
+                ))}
 
                 {/* Is packed ? (Switch) */}
 
@@ -232,7 +313,7 @@ class EditProduct extends Component {
                         <InputNumber
                           style={{ width: "100%" }}
                           placeholder="Min"
-                          onChange={() => { this.handleLimitChange() }}
+                          //onChange={() => { this.handleLimitChange() }}
                           formatter={value => numberHelper.format(value)}
                           parser={value => this.setParser(value, { checkIfPacked: true })}
                         />
@@ -271,6 +352,23 @@ class EditProduct extends Component {
                     </Form.Item>
                   </Col>
                 </Row>
+                <Form.Item
+                  label={this.props.intl.formatMessage({ id: 'models.product.images' })}
+                  style={{ marginBottom: "0px" }}
+                ></Form.Item>
+                <ImgCrop rotate modalWidth={1000}>
+                  <Upload
+                    //action={(file) => (this.uploadImage(file))}
+                    customRequest={(props) => { this.uploadImage(props) }}
+                    listType="picture-card"
+                    fileList={this.state.fileList}
+                    //onPreview={(file) => { this.handlePreview(file) }}
+                    onChange={(val) => { }}
+                  >
+                    {this.state.fileList.length >= 8 ? null : uploadButton}
+                  </Upload>
+                </ImgCrop>
+
               </Form>
             </Card>
           </Col>

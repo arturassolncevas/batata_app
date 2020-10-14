@@ -15,8 +15,10 @@ class ProductFile extends JsonResource
     public function toArray($request)
     {
         return [
+          "id" => $this->id,
           "type" => $this->type,
-          "url" => $this->url
+          "url" => $this->url,
+          "group_id" => $this->group_id
         ];
     }
 }

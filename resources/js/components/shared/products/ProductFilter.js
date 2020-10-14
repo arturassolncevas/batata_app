@@ -61,8 +61,6 @@ class ProductFilter extends Component {
         attribute_id: this.state.attributes[i].id,
         option_id: e.option_id || null }))
 
-    console.log(data)
-    console.log(qs.stringify(data))
     this.props.history.push(`/products?${qs.stringify(data)}`)
     await this.props.callback(data)
   }

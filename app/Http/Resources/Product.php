@@ -34,7 +34,20 @@ class Product extends JsonResource
           'quantity_in_stock' => $this->quantity_in_stock,
           'title' => $this->title,
           'user_id' => $this->title,
-          'files' => ProductFileResource::collection($this->files)
+          'files' =>  ProductFileResource::collection($this->files),
+          'grouped_files' => $this->group_files(ProductFileResource::collection($this->files))
         ];
     }
+
+    private function group_files($files = []) {
+        $arr = array();
+        foreach ($files as $file) {
+          if (!array_key_exists($file->group_id, $arr)) {
+            $arr[$file->group_id] = [];
+          }
+          array_push($arr[$file->group_id], $file);
+        }
+        return $arr;
+    }
+
 }

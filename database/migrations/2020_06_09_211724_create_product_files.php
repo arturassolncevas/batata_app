@@ -21,9 +21,11 @@ class CreateProductFiles extends Migration
             $table->boolean('public');
             $table->string('path');
             $table->string('url');
+            $table->uuid('group_id');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');
+            $table->index('group_id');
         });
     }
 

@@ -14,7 +14,8 @@ class ProductFile extends Model
             'type',
             'path',
             'url',
-            'public'
+            'public',
+            "group_id"
     ];
 
     public function getUrlAttribute($value)

@@ -36,7 +36,8 @@ const initialState = {
   successfully_submitted: false,
   selectedMeasurementUnit: {},
   formattedSalesLimits: null,
-  formattedPrice: null
+  formattedPrice: null,
+  fileList: []
 
 }
 
