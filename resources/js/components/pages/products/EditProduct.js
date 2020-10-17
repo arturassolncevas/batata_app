@@ -363,7 +363,7 @@ class EditProduct extends Component {
                         <InputNumber
                           style={{ width: "100%" }}
                           placeholder="Min"
-                          //onChange={() => { this.handleLimitChange() }}
+                          onChange={() => { this.handleLimitChange() }}
                           formatter={value => numberHelper.format(value)}
                           parser={value => this.setParser(value, { checkIfPacked: true })}
                         />
