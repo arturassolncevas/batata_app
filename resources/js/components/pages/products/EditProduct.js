@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom'
 import { initialState } from './initialStates/editProductInitialState'
 import { DropboxOutlined, QqSquareFilled, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 
+import BraftEditor from 'braft-editor'
+
 import ImgCrop from 'antd-img-crop';
 import { Upload, Modal } from 'antd';
 import { injectIntl } from 'react-intl'
@@ -89,23 +91,24 @@ class EditProduct extends Component {
   async fetchInitialData() {
     let id = this.props.match.params.id
     let resp_product = await requestClient.get(`/api/products/${id}`)
-    let { category_id, measurement_unit, packed, attributes, files } = resp_product.data
+    let { category_id, measurement_unit, packed, attributes, files, description } = resp_product.data
     let resp_measurements = await requestClient.get(`/api/measurements?category_id=${category_id}`)
 
     this.productFormatter = new ProductFormatter()
     this.productFormatter.setOptions({ measurementUnitAlias: measurement_unit.alias, packed, intl: this.props.intl })
 
-    this.initialForm = merge(this.state.initialForm, resp_product.data)
+    this.initialForm = merge(this.state.initialForm, { ...resp_product.data, description: BraftEditor.createEditorState(description) })
     this.fetchAttributes(category_id)
 
     this.setState({
       ...this.state,
+      product: resp_product.data,
       isFetching: false,
       initialForm: {
         ...this.initialForm,
-        product_attributes: attributes.map(e => ({ option_id: e.option.id })),
-       },
-      fileList: files.filter(e => e.type === "thumbnail").map((e, i) => ({ uid: e.id, group_id: e.group_id, status: "done", url: e.url })),
+        product_attributes: attributes.map(e => ({ attribute_id: e.attribute.id, option_id: e.option.id })),
+      },
+      fileList: files.filter(e => e.type === "thumbnail").map((e, i) => ({ uid: e.id, group_id: e.group_id, group_priority: e.group_priority, status: "done", url: e.url })),
       measurementUnits: resp_measurements.data,
       selectedMeasurementUnit: measurement_unit
     }, () => {
@@ -116,7 +119,7 @@ class EditProduct extends Component {
 
   async fetchAttributes(category_id) {
     let resp_attributes = await requestClient.get(`/api/attributes?category_id=${category_id}`)
-    this.setState({ ...this.state, attributes: resp_attributes.data}) 
+    this.setState({ ...this.state, attributes: resp_attributes.data })
   }
 
   handlePriceChange(callback) {
@@ -129,7 +132,7 @@ class EditProduct extends Component {
   handleMeasurementUnitChange(value) {
     let selectedMeasurementUnit = this.state.measurementUnits.find(e => e.id === value)
     let formFields = this.formRef.current.getFieldsValue(["packed"])
-    this.setState({ ...this.state, selectedMeasurementUnit }, () => { 
+    this.setState({ ...this.state, selectedMeasurementUnit }, () => {
       this.productFormatter.setOptions({ measurementUnitAlias: this.state.selectedMeasurementUnit.alias, packed: formFields.packed, intl: this.props.intl })
       this.updateFormatted()
     })
@@ -171,34 +174,82 @@ class EditProduct extends Component {
     this.setState({ ...this.state, formattedQuantityInStock: formatted })
   }
 
+  async handleOnRemoveImage(file) {
+    requestClient.delete(`/api/product_files/delete_image/${file.uid}`).then(async (response) => {
+      let fileInList = fileList.find(e => e.uid === file.uid)
+      if (fileInList)
+        thi.state
+    })
+  }
+
+  async handleOnImagesChange({ file, fileList }) {
+    if (file.status === "removed") {
+      requestClient.delete(`/api/product_files/delete_image/${file.uid}`).then(async (response) => {
+        this.state.fileList = fileList
+        this.setState(this.state)
+      })
+    }
+  }
+
   async uploadImage(props) {
-    this.setState({...this.state, imageLoading: true} )      
+    this.setState({ ...this.state, imageLoading: true })
+    let lastFile = this.state.fileList[this.state.fileList.length - 1] || {}
     let data = {
       base64: await getBase64(props.file),
-      group_id: "id"
+      group_priority: (lastFile.group_priority || 0) + 1,
+      product_id: this.state.product.id
     }
 
-    requestClient.post('/api/product_files/upload_image', props)
+    requestClient.post('/api/product_files/upload_image', data)
       .then(async (response) => {
         switch (response.status) {
           case 201:
           case 200:
           default:
-            this.setState({...this.state, imageLoading: false} )
+            let file = response.data
+            this.state.fileList.push({ uid: file.id, group_id: file.group_id, group_priority: file.group_priority, status: "done", url: file.url })
+            this.setState({ ...this.state, imageLoading: false })
             break
         }
       })
       .catch((error) => {
         switch ((error.response || {}).status) {
           default:
-            console.log("error")
+            console.log(error)
             break
         }
       })
   }
 
-  render() {
+  handleFormSubmit(values) {
+    values.category_id = this.state.product.category_id
+    values.description = values.description ? values.description.toHTML() : ""
+    values.product_attributes = (values.product_attributes || [])
+      .map((e, i) => ({
+        attribute_id: this.state.initialForm.product_attributes[i].attribute_id,
+        option_id: e.option_id || null }))
 
+    requestClient.patch(`/api/products/${this.state.product.id}`, values)
+      .then(async (response) => {
+        switch (response.status) {
+          case 200:
+            //this.resetErrors()
+            //this.props.handleWizardNext(3)
+          default:
+            break
+        }
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+            this.setErrors(error.response.data)
+            break
+        }
+      })
+  }
+
+
+  render() {
     const uploadButton = (
       <div>
         {this.state.imageLoading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -222,18 +273,17 @@ class EditProduct extends Component {
                 {...layout}
                 name="basic"
                 initialValues={this.state.initialForm}
-                onFinish={() => { }}
+                onFinish={(values) => { this.handleFormSubmit(values) }}
               >
-
                 {/* Attributes */}
                 {this.state.attributes.map((e, index) => (
-                  <Form.Item 
+                  <Form.Item
                     required={!!e.required}
                     label={e.name} key={e.id}
                     name={["product_attributes", index, 'option_id']}
                     validateStatus={this.state.error.errors.product_attributes[index] && "error"}
                     help={this.state.error.errors.product_attributes[index] && this.state.error.errors.product_attributes[index].join(', ')}
-                >
+                  >
                     <Select key={e.id}> {e.options.map(e => (<Select.Option key={e.id} value={e.id}>{e.name}</Select.Option>))} </Select>
                   </Form.Item>
                 ))}
@@ -363,12 +413,35 @@ class EditProduct extends Component {
                     listType="picture-card"
                     fileList={this.state.fileList}
                     //onPreview={(file) => { this.handlePreview(file) }}
-                    onChange={(val) => { }}
+                    onChange={(props) => { this.handleOnImagesChange(props) }}
+                    onRemove={(val) => { }}
                   >
                     {this.state.fileList.length >= 8 ? null : uploadButton}
                   </Upload>
                 </ImgCrop>
 
+                <Form.Item
+                  label={this.props.intl.formatMessage({ id: 'models.product.title' })}
+                  name="title"
+                >
+                  <Input />
+                </Form.Item>
+
+                <Form.Item
+                  label={this.props.intl.formatMessage({ id: 'models.product.description' })}
+                  name="description"
+                >
+                  <BraftEditor
+                    language="en"
+                    onSave={this.submitContent}
+                    title={"title1"}
+                  />
+                </Form.Item>
+                <Row justify="end">
+                  <Button type="primary" htmlType="submit">
+                    {this.props.intl.formatMessage({ id: 'general.next' })}
+                  </Button>
+                </Row>
               </Form>
             </Card>
           </Col>

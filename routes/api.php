@@ -41,7 +41,9 @@ Route::group(['middleware' => 'auth:api'], function() {
   Route::post('products/step_2', 'API\General\ProductsController@step_2');
   Route::post('products/step_3', 'API\General\ProductsController@step_3');
   Route::post('products', 'API\General\ProductsController@create');
+  Route::patch('products/{id}', 'API\General\ProductsController@update');
   Route::post('product_files/upload_image', 'API\General\ProductFilesController@upload_image');
+  Route::delete('product_files/delete_image/{id}', 'API\General\ProductFilesController@delete_image');
   Route::get('products/{id}', 'API\General\ProductsController@find');
   Route::get('products', 'API\General\ProductsController@index');
 });

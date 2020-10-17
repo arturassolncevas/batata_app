@@ -77,11 +77,11 @@ class Product extends Model
         ];
     } */
 
-    public function save_file($data, $file_name, $extension, $type, $public, $group_id = null) {
+    public function save_file($data, $file_name, $extension, $type, $public, $group_id = null, $group_priority = 0) {
         $file_path = $this->file_base_path."/".$this->getKey()."/".$type."/".strval($file_name);
-        $params = [ "extension" => $extension, "type" => $type, "url" => $file_path, "public" => $public, "path" => $file_path, "group_id" => $group_id ];
-        $this->files()->save(new ProductFile($params));
-
-        $file = Storage::disk('minio')->put($file_path, $data, $public ? "public" : "private");
+        $params = [ "extension" => $extension, "type" => $type, "url" => $file_path, "public" => $public, "path" => $file_path, "group_id" => $group_id, "group_priority" => $group_priority ];
+        $file = $this->files()->save(new ProductFile($params));
+        Storage::disk('minio')->put($file_path, $data, $public ? "public" : "private");
+        return $file;
     }
 }

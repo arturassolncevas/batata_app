@@ -54,7 +54,16 @@ class ProductsController extends Controller
       $product_manager = new ProductManager($request, Auth::user());
       $product = $product_manager->create();
       $product->load("files");
+      return new ProductResource($product);
+    }
 
+    public function update(ProductRequest $request) {
+      $validated = $request->validated();
+      $product_manager = new ProductManager($request, Auth::user());
+      $id = request()->route('id');
+      $product = Product::findOrFail($id);
+      $product = $product_manager->update($product);
+      $product->load("files");
       return new ProductResource($product);
     }
 }
@@ -103,6 +112,18 @@ class ProductManager {
     return $this->product;
   }
 
+  function update($product) {
+    DB::transaction(function () use(&$product) {
+      $this->params["user_id"] = $this->user->id;
+      $this->association = ["product_attributes"];
+      $this->product = $product;
+      $this->product->update($this->params);
+      $this->create_associations();
+      $this->index();
+    });
+    return $this->product;
+  }
+
   function create_associations() {
       foreach ($this->associations as $name => $params) {
           switch ($name) {
@@ -114,7 +135,6 @@ class ProductManager {
               break;
           }
       }
-      $this->index();
   }
 
   function create_attributes($attributes) {
@@ -138,11 +158,11 @@ class ProductManager {
         $base64 = FileUtils::strip_base64_extension($base64); 
         $file_name = strval($x).".".$extension;
         $data = base64_decode($base64);
-        $this->product->save_file($data, $file_name, $extension, "image", true, $group_id);
+        $this->product->save_file($data, $file_name, $extension, "image", true, $group_id, $x);
 
         //Thumbnail
         $data = Image::make($data)->resize(250, 250)->encode($extension);
-        $this->product->save_file($data->__toString(), $file_name, $extension, "thumbnail", true, $group_id);
+        $this->product->save_file($data->__toString(), $file_name, $extension, "thumbnail", true, $group_id, $x);
     }
   }
 

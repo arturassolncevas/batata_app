@@ -59,10 +59,15 @@ class ProductRequest extends FormRequest
                 $result = $this->validation_steps['step_3'];
                 break;
             case "create":
-                $result = $this->validation_steps['step_4'];
+                $result = array_merge($result, $this->validation_steps['step_2']);
+                $result = array_merge($result, $this->validation_steps['step_3']);
+                $result = array_merge($result, $this->validation_steps['step_4']);
                 //foreach ($this->validation_steps as $step_rules) {
                 //    $result = array_merge($result, $step_rules);
                 //}
+            case "update":
+                $result = array_merge($result, $this->validation_steps['step_2']);
+                $result = array_merge($result, $this->validation_steps['step_3']);
                 break;
         }
         return $result;

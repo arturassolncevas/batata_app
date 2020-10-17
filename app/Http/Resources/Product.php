@@ -34,7 +34,7 @@ class Product extends JsonResource
           'quantity_in_stock' => $this->quantity_in_stock,
           'title' => $this->title,
           'user_id' => $this->title,
-          'files' =>  ProductFileResource::collection($this->files),
+          'files' =>  ProductFileResource::collection($this->files()->orderBy('group_priority')->get()),
           'grouped_files' => $this->group_files(ProductFileResource::collection($this->files))
         ];
     }

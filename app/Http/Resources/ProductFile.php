@@ -18,7 +18,8 @@ class ProductFile extends JsonResource
           "id" => $this->id,
           "type" => $this->type,
           "url" => $this->url,
-          "group_id" => $this->group_id
+          "group_id" => $this->group_id,
+          "group_priority" => $this->group_priority
         ];
     }
 }
