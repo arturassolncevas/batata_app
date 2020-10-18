@@ -36,7 +36,8 @@ class ProductsPage extends Component {
           case 200:
           default:
             this.setState({ ...this.state, products: response.data })
-            let queryData = { ...qs.parse(this.props.history.location.search), page: response.data.pagination.page } 
+            let queryData = qs.parse(this.props.history.location.search.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
+            queryData = { ...queryData, page: response.data.pagination.page } 
             this.props.history.push(`/products?${qs.stringify(queryData)}`)
             break
         }
@@ -73,7 +74,7 @@ class ProductsPage extends Component {
             <ProductFilter
               categories={modifyCategories(this.state.categories, null, true, true)}
               history={this.props.history}
-              callback={(data) => { this.filterProductRequest({ ...data, page: this.state.products.pagination.page }) }}
+              callback={(data) => { this.filterProductRequest({ ...data, page: 1 }) }}
             />
           </Col>
         </Row>
