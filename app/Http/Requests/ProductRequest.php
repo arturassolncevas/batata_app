@@ -22,7 +22,7 @@ class ProductRequest extends FormRequest
       ],
       'step_3' => [
         'title' => 'max:255',
-        'description' => 'max:2500',
+        'description' => 'max:6000',
       ],
       'step_4' => [
         'files' => 'array'

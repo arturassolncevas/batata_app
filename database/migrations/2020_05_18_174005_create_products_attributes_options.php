@@ -17,7 +17,7 @@ class CreateProductsAttributesOptions extends Migration
             $table->uuid('id')->primary();
             $table->uuid('product_id');
             $table->uuid('attribute_id');
-            $table->uuid('option_id');
+            $table->uuid('option_id')->nullable();
 
             $table->unique(['product_id', 'attribute_id', 'option_id']);
             $table->foreign('product_id')->references('id')->on('products');

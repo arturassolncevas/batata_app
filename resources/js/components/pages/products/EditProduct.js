@@ -155,6 +155,11 @@ class EditProduct extends Component {
     return numberHelper.parse(value, { maxDecimalPoints: decimalPoints || 0 })
   }
 
+  setErrors(error = {}) {
+    this.state.error = merge(deepCopy(this.initialState.error), error)
+    this.setState(this.state)
+  }
+
   handleLimitChange(callback) {
     let formFields = this.formRef.current.getFieldsValue(["min_quantity", "max_quantity"])
     let min = this.productFormatter.formattedQuantity({ quantity: formFields.min_quantity })
@@ -233,6 +238,7 @@ class EditProduct extends Component {
       .then(async (response) => {
         switch (response.status) {
           case 200:
+            this.props.history.push('/products')
             //this.resetErrors()
             //this.props.handleWizardNext(3)
           default:
@@ -313,6 +319,8 @@ class EditProduct extends Component {
                     <Col lg={8} >
                       <Form.Item
                         name="price"
+                        validateStatus={this.state.error.errors.price && "error"}
+                        help={this.state.error.errors.price && this.state.error.errors.price.join(', ')}
                       >
                         <InputNumber
                           style={{ width: "100%" }}
@@ -359,6 +367,8 @@ class EditProduct extends Component {
                     <Col lg={8} >
                       <Form.Item
                         name="min_quantity"
+                        validateStatus={this.state.error.errors.min_quantity && "error"}
+                        help={this.state.error.errors.min_quantity && this.state.error.errors.min_quantity.join(', ')}
                       >
                         <InputNumber
                           style={{ width: "100%" }}
@@ -372,6 +382,8 @@ class EditProduct extends Component {
                     <Col lg={8} >
                       <Form.Item
                         name="max_quantity"
+                        validateStatus={this.state.error.errors.max_quantity && "error"}
+                        help={this.state.error.errors.max_quantity && this.state.error.errors.max_quantity.join(', ')}
                       >
                         <InputNumber
                           style={{ width: "100%" }}
@@ -391,6 +403,8 @@ class EditProduct extends Component {
                     <Form.Item
                       name="quantity_in_stock"
                       label={`${this.props.intl.formatMessage({ id: `models.product.quantityInStock` })} ${this.state.formattedQuantityInStock}`}
+                      validateStatus={this.state.error.errors.quantity_in_stock && "error"}
+                      help={this.state.error.errors.quantity_in_stock && this.state.error.errors.quantity_in_stock.join(', ')}
                     >
                       <InputNumber
                         style={{ width: "100%" }}
@@ -423,6 +437,8 @@ class EditProduct extends Component {
                 <Form.Item
                   label={this.props.intl.formatMessage({ id: 'models.product.title' })}
                   name="title"
+                  validateStatus={this.state.error.errors.title && "error"}
+                  help={this.state.error.errors.title && this.state.error.errors.title.join(', ')}
                 >
                   <Input />
                 </Form.Item>
@@ -430,6 +446,8 @@ class EditProduct extends Component {
                 <Form.Item
                   label={this.props.intl.formatMessage({ id: 'models.product.description' })}
                   name="description"
+                  validateStatus={this.state.error.errors.description && "error"}
+                  help={this.state.error.errors.description && this.state.error.errors.description.join(', ')}
                 >
                   <BraftEditor
                     language="en"
