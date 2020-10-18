@@ -129,7 +129,6 @@ class ProductFilter extends Component {
           <Col>
           <Form.Item
             label={this.props.intl.formatMessage({ id: 'shared.productFilter.price.name' })}
-            name="price_to"
           >
             <Input.Group compact>
               <Form.Item

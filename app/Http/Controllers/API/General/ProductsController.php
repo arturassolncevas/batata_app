@@ -225,13 +225,24 @@ class ProductManager {
 
     public static function filter($data, $pagination) {
       $must = [];
+
+      if (isset($data["price_from"]) || isset($data["price_to"])) {
+          $query = [ "range" => [ "price.value" => [] ] ];
+          $from = (float)$data["price_from"];
+          $to = (float)$data["price_to"];
+          if ($from)
+            $query["range"]["price.value"]["gte"] = $from;
+          if ($to)
+            $query["range"]["price.value"]["lte"] = $to;
+          array_push($must, $query);
+      }
       
       if (isset($data["category_id"]) && is_array($data["category_id"]) && count($data["category_id"]) > 0) {
-         array_push($must, [ "term" => [ "category_chain_ids" => end($data["category_id"])] ]);
+          array_push($must, [ "term" => [ "category_chain_ids" => end($data["category_id"])] ]);
       }
 
       if (isset($data["product_attributes"]) && is_array($data["product_attributes"]) && count($data["product_attributes"]) > 0) {
-        foreach ($data["product_attributes"] as $element) {
+          foreach ($data["product_attributes"] as $element) {
           if (!isset($element["option_id"])) {
             continue;
           }
