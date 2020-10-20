@@ -17,6 +17,7 @@ class CreateProducts extends Migration
             $table->uuid('id')->primary();
             $table->uuid('user_id');
             $table->uuid('category_id');
+            $table->uuid('company_id');
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
@@ -30,6 +31,7 @@ class CreateProducts extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('measurement_unit_id')->references('id')->on('measurement_units');
         });
     }

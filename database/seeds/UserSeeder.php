@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Company;
 use App\Models\Language;
 use App\Models\Currency;
+use App\Models\Role;
 use App\User;
 
 class UserSeeder extends Seeder
@@ -22,30 +23,37 @@ class UserSeeder extends Seeder
 
       $this->users = [
         [
-          "id" => "630c2218-a128-11ea-bb37-0242ac130000",
-          "name" => "Peter Larsen",
-          "email" => "pl@mail.com",
-          "password" => bcrypt('password'),
-          "company_id" => $this->seller_companies[rand(0, count($this->seller_companies) - 1)]->id,
-          "currency_id" => $this->currency_dkk->id,
-          "language_id" => $this->language_da->id
+          "params" => [
+            "id" => "630c2218-a128-11ea-bb37-0242ac130000",
+            "name" => "Peter Larsen",
+            "email" => "pl@mail.com",
+            "password" => bcrypt('password'),
+            "company_id" => $this->seller_companies[rand(0, count($this->seller_companies) - 1)]->id,
+            "currency_id" => $this->currency_dkk->id,
+            "language_id" => $this->language_da->id
+          ],
+          "roles" => ["admin"]
         ],
         [
-          "id" => "630c2218-a128-11ea-bb37-0242ac130001",
-          "name" => "Lisa Holm",
-          "email" => "lh@mail.com",
-          "password" => bcrypt('password'),
-          "company_id" => $this->buyer_companies[rand(0, count($this->seller_companies) - 1)]->id,
-          "currency_id" => $this->currency_dkk->id,
-          "language_id" => $this->language_en->id
+          "params" => [
+            "id" => "630c2218-a128-11ea-bb37-0242ac130001",
+            "name" => "Lisa Holm",
+            "email" => "lh@mail.com",
+            "password" => bcrypt('password'),
+            "company_id" => $this->buyer_companies[rand(0, count($this->seller_companies) - 1)]->id,
+            "currency_id" => $this->currency_dkk->id,
+            "language_id" => $this->language_en->id
+          ],
+          "roles" => ["employee"]
         ],
       ];
     }
 
     public function run()
     {
-      foreach($this->users as $user) {
-        User::create($user);
+      foreach($this->users as $data) {
+        $user = User::create($data["params"]);
+        $user->assignRole(Role::where("name", $data["roles"])->get());
       }
     }
 }

@@ -31,4 +31,9 @@ class Company extends Model
      */
     protected $casts = [
     ];
+
+    public function users()
+    {
+        return $this->hasMany('App\Models\User');
+    }
 }

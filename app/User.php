@@ -6,11 +6,13 @@ namespace App;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     use Models\Concerns\UsesUuid;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -43,6 +45,11 @@ class User extends Authenticatable
     public function language()
     {
         return $this->belongsTo('App\Models\Language');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company');
     }
 
     public function currency()

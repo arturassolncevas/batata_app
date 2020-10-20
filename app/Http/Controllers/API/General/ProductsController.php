@@ -14,11 +14,13 @@ use App\Http\Resources\ProductCollection;
 use Intervention\Image\Facades\Image;
 use Elasticsearch\ClientBuilder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Gate;
 use DB;
 
 class ProductsController extends Controller
 {
     public function filter() {
+      Gate::authorize('filter-products');
       $search_params = request("data");  
       $pagination = [
         "size" => Product::$pagination_size,
@@ -38,18 +40,21 @@ class ProductsController extends Controller
 
     public function step_2(ProductRequest $request)
     { 
+      Gate::authorize('step2-products');
       $validated = $request->validated();
       return response()->json($validated); 
     }
 
     public function step_3(ProductRequest $request)
     { 
+      Gate::authorize('step3-products');
       $validated = $request->validated();
       return response()->json($validated); 
     }
 
     public function create(ProductRequest $request)
     { 
+      $this->authorize('create', Product::class);
       $validated = $request->validated();
       $product_manager = new ProductManager($request, Auth::user());
       $product = $product_manager->create();
@@ -58,10 +63,11 @@ class ProductsController extends Controller
     }
 
     public function update(ProductRequest $request) {
-      $validated = $request->validated();
-      $product_manager = new ProductManager($request, Auth::user());
       $id = request()->route('id');
       $product = Product::findOrFail($id);
+      $this->authorize('update', $product);
+      $validated = $request->validated();
+      $product_manager = new ProductManager($request, Auth::user());
       $product = $product_manager->update($product);
       $product->load("files");
       return new ProductResource($product);
@@ -83,6 +89,8 @@ class ProductManager {
   ];
 
   public static $product_associations = [
+    "company",
+    "user",
     "product_attributes",
     "files",
   ];
@@ -104,8 +112,10 @@ class ProductManager {
 
   function create() {
     DB::transaction(function () {
-      $this->params["user_id"] = $this->user->id;
-      $this->product = Product::create($this->params);
+      $this->product = new Product($this->params);
+      $this->product->user()->associate($this->user);
+      $this->product->company()->associate($this->user->company);
+      $this->product->save();
       $this->create_associations();
       $this->index();
     });
@@ -114,7 +124,6 @@ class ProductManager {
 
   function update($product) {
     DB::transaction(function () use(&$product) {
-      $this->params["user_id"] = $this->user->id;
       $this->association = ["product_attributes"];
       $this->product = $product;
       $this->product->update($this->params);
@@ -173,6 +182,7 @@ class ProductManager {
   }
 
   function generate_index_data() {
+    
      $data = [
       'id' => $this->product->id,
       'index' => Product::$index_name,
@@ -180,7 +190,7 @@ class ProductManager {
       'body' => [ 
         'id' => $this->product->id,
         'type' => $this->product->category->name,
-        'company_id' => $this->product->id,
+        'company_id' => $this->product->company->id,
         'title' => $this->product->getTranslations()["title"],
         'category_id' => $this->product->id,
         'category_chain_ids' => $this->product->category->category_chain_ids(),

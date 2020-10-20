@@ -23,6 +23,7 @@ class User extends JsonResource
           'company_id' => $this->company_id,
           'currency' => new CurrencyResource($this->currency),
           'language' => new LanguageResource($this->language),
+          'roles' => array_map( function($val) { return $val["name"]; }, $this->roles->toArray())
         ];
     }
 }

@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, Suspense } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import PrivateRoute from './services/PrivateRoute'
 import HomePage from './pages/home/Home'
 
-import ProductsPage from './pages/products/Products'
-import NewProductPage from './pages/products/NewProduct'
-import EditProductPage from './pages/products/EditProduct'
+const ProductsPage = React.lazy(() => import('./pages/products/Products'));
+const NewProductPage = React.lazy(() => import('./pages/products/NewProduct'));
+const EditProductPage = React.lazy(() => import('./pages/products/EditProduct'));
 
 import DashBoardPage from './pages/dashboard/Dashboard'
 import OrdersPage from './pages/orders/Orders'
@@ -37,9 +37,17 @@ class Index extends Component {
         <Switch>
           <Route exact path='/not-found'>
             <Result
-              status="404"
+              status="405"
               title="404"
               subTitle="Sorry, the page you visited does not exist."
+              extra={<Button type="primary">Back Home</Button>}
+            />
+          </Route>3000
+          <Route exact path='/unauthorized'>
+            <Result
+              status="403"
+              title="403"
+              subTitle="You dont have rights to access current page"
               extra={<Button type="primary">Back Home</Button>}
             />
           </Route>
@@ -51,7 +59,7 @@ class Index extends Component {
               <PrivateRoute path="/dashboard" component={DashBoardPage} />
               <PrivateRoute path="/orders" component={OrdersPage} />
 
-              <PrivateRoute exact path="/products" component={ProductsPage} />
+              <PrivateRoute exact path="/products" component={ProductsPage} allowed_roles={[]} />
               <PrivateRoute exact path="/products/new" component={NewProductPage} />
               <PrivateRoute exact path="/products/:id/edit" component={EditProductPage} />
 

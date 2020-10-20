@@ -5,6 +5,7 @@ import { initialState } from './initialStates/editProductInitialState'
 import { DropboxOutlined, QqSquareFilled, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 
 import BraftEditor from 'braft-editor'
+import 'braft-editor/dist/index.css'
 
 import ImgCrop from 'antd-img-crop';
 import { Upload, Modal } from 'antd';

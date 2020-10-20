@@ -11,6 +11,7 @@ use App\Models\ProductFile;
 use App\Services\FileUtils;
 use Illuminate\Support\Str;
 use App\Models\Product;
+use Illuminate\Support\Facades\Gate;
 use DB;
 
 class ProductFilesController extends Controller
@@ -19,6 +20,7 @@ class ProductFilesController extends Controller
     { 
       $input = $request->all();
       $product = Product::find($input["product_id"]);
+      Gate::authorize('upload-image-product-files', [$product]);
       $file = null;
        DB::transaction(function() use(&$input, &$product, &$file) {
         //Image
@@ -41,14 +43,14 @@ class ProductFilesController extends Controller
     function delete_image(Request $request) {
       $id = request()->route('id');
       $product_file = ProductFile::find($id);
-
-       DB::transaction(function() use(&$product_file) {
-        //Image
-        if ($product_file->group_id)
+      Gate::authorize('delete-image-product-files', [$product_file->product]);
+      DB::transaction(function() use(&$product_file) {
+        if ($product_file->group_id) {
           $images = ProductFile::where('group_id', $product_file->group_id);
-        $paths = $images->get()->pluck('path')->toArray();
-        $images->delete();
-        Storage::disk('minio')->delete($paths);
+          $paths = $images->get()->pluck('path')->toArray();
+          $images->delete();
+          Storage::disk('minio')->delete($paths);
+        }
       });
     }
 

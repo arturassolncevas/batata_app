@@ -36,4 +36,9 @@ class ProductFile extends Model
       return ['png', 'jpg'];
     }
 
+    public function product()
+    {
+        return $this->belongsTo('App\Models\Product');
+    }
+
 }
