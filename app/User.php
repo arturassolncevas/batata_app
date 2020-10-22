@@ -7,6 +7,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Config;
 
 class User extends Authenticatable
 {
@@ -56,4 +57,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Currency');
     }
+
+    public function collation() {
+      return Config::get('app.COLLATION_'.$this->language->alias);
+    }
+
 }

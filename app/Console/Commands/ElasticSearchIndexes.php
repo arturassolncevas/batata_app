@@ -69,6 +69,7 @@ class ElasticSearchIndexes extends Command
                           ]
                           ],
                   "category_id" => [ "type" => "keyword" ],
+                  "company_id" => [ "type" => "keyword" ],
                   "category_chain_ids" => [
                           "type" => "keyword"
                   ],

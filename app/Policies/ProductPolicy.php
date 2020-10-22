@@ -43,7 +43,6 @@ class ProductPolicy
      */
     public function update(User $user, Product $product)
     {
-      return false;
       return $this->create($user) && $product->company->id == $user->company->id;
     }
 
