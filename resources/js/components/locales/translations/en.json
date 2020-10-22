@@ -5,7 +5,7 @@
       "forgot_password": "Forgot password?",
       "remember_me": "Remember me",
       "sign_up": "Sign up",
-      "header": "Login",
+      "header": "Sign in",
       "errors": {
         "wrong_credentials": "Wrong username or password"
       }
@@ -13,32 +13,34 @@
     "signup": {
       "header": "Signup",
       "company_name": "Company name",
-      "accept_terms_and_conditions": "I hereby allow to be contacted",
-      "successfully_submitted": "Thank you for your request. We highly appreciate your interest. You will be hearing from us soon."
+      "accept_terms_and_conditions": "I agree to be contacted",
+      "successfully_submitted": "Thank you for your request. You will be hearing from us soon."
     },
-    "new_product": {
+    "newProduct": {
       "header": "New Product",
       "wizard": {
-        "1": "Category",
-        "2": "Data",
-        "3": "Images & Description",
-        "4": "Done"
+        "1": "Choose Category",
+        "2": "Fill in data",
+        "3": "Finish"
       },
-      "select_category": "Select",
-      "select_header": "Category",
-      "selected_category_warning": "Please select all categories",
-      "price_per_pack_question": "Price per pack?"
+      "selectCategory": "Select",
+      "selectHeader": "Category",
+      "selectedCategoryWarning": "Select all categories",
+      "pricePerPackQuestion": "Is it a pack ?"
     },
-
+    "editProduct": {
+      "header": "Edit Product"
+    },
     "products": {
       "index": {
-        "header": "Product"
+        "header": "Products"
       }
     }
   },
   "shared": {
     "productFilter": {
-      "advancedSearch": "Advanced search",
+      "searchCategory": "Select Category",
+      "advancedSearch": "Advanced Search",
       "price": {
         "name": "Price",
         "min": "Min",
@@ -62,9 +64,13 @@
     "next": "Next",
     "title": "Title",
     "description": "Description",
-    "price": "Price",
     "pack": "Pack",
-    "packs": "Packs"
+    "packs": "Packs",
+    "price": "Price",
+    "yes": "Yes",
+    "no": "No",
+    "min": "Min",
+    "max": "Max"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -72,34 +78,19 @@
     "products": "Products",
     "orders": "Orders"
   },
-  
   "countries": {
     "Denmark": "Denmark",
     "United Kingdom": "United Kingdom"
   },
-
-  "products" : {
-    "quantity_in_stock": "Quantity in stock",
-    "sales_limit": "Sales limit",
-    "description": "Description",
-    "title": "Title",
-    "images": "Images",
-    "price": "Price"
-  },
-
-  "searchFilter": {
-    "price": {
-      "name": "Price",
-      "min": "Min",
-      "max": "Max"
-    },
-    "from": "From",
-    "to": "To"
-  },
-
   "models": {
     "product": {
-      "quantityInStock": "Stock balance"
+      "quantityInStock": "In stock",
+      "minQuantity": "Min total",
+      "maxQuantity": "Max total",
+      "salesLimit": "Order limit",
+      "images": "Images",
+      "title": "Title",
+      "description": "Description"
     }
   }
 }

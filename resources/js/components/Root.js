@@ -44,14 +44,9 @@ function Root() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <IntlProvider
-          locale={locales}
-          formats={formats}
-          defaultLocale={locales[1]}
-          messages={messages[locales[1]]}
-        >
+        <Locale>
           <Index />
-        </IntlProvider>
+        </Locale>
       </BrowserRouter>
     </Provider>
   );

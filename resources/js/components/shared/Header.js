@@ -26,10 +26,10 @@ const menu = (handleLogout) => {
   )
 }
 
-const userDetails = JSON.parse(localStorage.getItem("details") || "{}")
 
 export default (props) => {
   const { handleMenuClick, handleLogOut } = props
+  let userDetails = JSON.parse(localStorage.getItem("details") || "{}")
   return (<Header className="header" style={{ padding: '0px' }} >
     <Row justify="space-between">
       <Col style={{ display: "flex" }}>

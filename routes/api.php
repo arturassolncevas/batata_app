@@ -19,20 +19,18 @@ use Illuminate\Support\Facades\Route;
                   ->header('Content-Type', 'application/json');
 });*/
 
-//AUTH
-Route::post('login', 'API\Authentication\LoginController@login');
-Route::post('register', 'API\Authentication\RegisterController@register');
 
-//SIGNUP
-Route::post('signup/requestor', 'API\Signup\SignupController@register_requestor');
+  //AUTH
+  Route::post('login', 'API\Authentication\LoginController@login');
+  Route::post('register', 'API\Authentication\RegisterController@register');
 
-//GENERAL
-Route::get('countries', 'API\General\CountriesController@index');
-Route::get('categories', 'API\General\CategoriesController@index');
-Route::get('attributes', 'API\General\AttributesController@index');
-Route::get('measurements', 'API\General\MeasurementsController@index');
+  //SIGNUP
+  Route::post('signup/requestor', 'API\Signup\SignupController@register_requestor');
 
-Route::group(['middleware' => 'auth:api'], function() {
+  //GENERAL
+  Route::get('countries', 'API\General\CountriesController@index');
+
+Route::group(['middleware' => ['auth:api', 'locales' ]], function() {
   //AUTH
   Route::get('user/details', 'API\Users\UsersController@details');
   Route::get('logout', 'API\Authentication\LoginController@logout');
@@ -46,4 +44,9 @@ Route::group(['middleware' => 'auth:api'], function() {
   Route::delete('product_files/delete_image/{id}', 'API\General\ProductFilesController@delete_image');
   Route::get('products/{id}', 'API\General\ProductsController@find');
   Route::get('products', 'API\General\ProductsController@index');
+
+  //GENERAL
+  Route::get('categories', 'API\General\CategoriesController@index');
+  Route::get('attributes', 'API\General\AttributesController@index');
+  Route::get('measurements', 'API\General\MeasurementsController@index');
 });

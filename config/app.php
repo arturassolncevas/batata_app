@@ -25,6 +25,9 @@ return [
     'GOOGLE_RECAPTCHA_SECRET' => env('GOOGLE_RECAPTCHA_SECRET'),
     'GOOGLE_RECAPTCHA_KEY' => env('GOOGLE_RECAPTCHA_KEY'),
 
+    'COLLATION_da' => env('COLLATION_da'),
+    'COLLATION_en' => env('COLLATION_en'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
