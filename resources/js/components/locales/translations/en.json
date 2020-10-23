@@ -92,5 +92,9 @@
       "title": "Title",
       "description": "Description"
     }
+  },
+  "sort": {
+    "price": "Price",
+    "placeholder": "Sort after ..."
   }
 }

@@ -23,10 +23,10 @@ class CreateProducts extends Migration
             $table->decimal('price', 8, 2);
             $table->uuid('measurement_unit_id');
             $table->boolean('packed');
-            $table->decimal('quantity', 8, 2);
-            $table->decimal('min_quantity', 8, 2);
-            $table->decimal('max_quantity', 8, 2);
-            $table->decimal('quantity_in_stock', 8, 2);
+            $table->decimal('quantity', 9,3 );
+            $table->decimal('min_quantity', 9, 3);
+            $table->decimal('max_quantity', 9, 3);
+            $table->decimal('quantity_in_stock', 9, 3);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

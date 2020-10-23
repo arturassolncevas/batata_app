@@ -15,6 +15,7 @@ use Intervention\Image\Facades\Image;
 use Elasticsearch\ClientBuilder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Collection;
 use DB;
 
 class ProductsController extends Controller
@@ -26,11 +27,17 @@ class ProductsController extends Controller
         "size" => Product::$pagination_size,
         "page" => isset($search_params["page"]) ? (int)$search_params["page"] : 1
       ];
-
-      $filtered = ProductManager::filter($search_params, $pagination);
+      $sorting = [
+        "sort_by" => isset($search_params["sort_by"]) ? $search_params["sort_by"] : null,
+        "direction" => isset($search_params["direction"]) ? $search_params["direction"] : "asc"
+      ];
+      $filtered = ProductManager::filter($search_params, $pagination, $sorting);
       $products = Product::whereIn("id", $filtered["ids"] )->get();
-      return response()->json(new ProductCollection($products, $filtered["pagination"]));
+      $sorted = $products->sortBy(function($e) use ($filtered) { return array_search($e->id, $filtered["ids"]); });
+      return response()->json(new ProductCollection($sorted, $filtered["pagination"]));
     }
+
+
 
     public function find() {
       $id = request()->route('id');
@@ -233,7 +240,7 @@ class ProductManager {
     |
     */
 
-    public static function filter($data, $pagination) {
+    public static function filter($data, $pagination, $sorting) {
       $must = [];
 
       if (isset($data["price_from"]) || isset($data["price_to"])) {
@@ -287,7 +294,8 @@ class ProductManager {
         "body" => [ 
           "query" => $query,
           "size" => $pagination["size"],
-          "from" => $pagination["size"] * ($pagination["page"] - 1)
+          "from" => $pagination["size"] * ($pagination["page"] - 1),
+          "sort" => [["price.value" => ["order" => $sorting["direction"]]]]
           ]
       ];
 

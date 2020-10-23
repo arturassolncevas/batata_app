@@ -4,24 +4,20 @@ import { StarOutlined, LikeOutlined, EditFilled, DeleteFilled } from '@ant-desig
 import { injectIntl } from 'react-intl'
 
 
-let unitsFormat = (item, value, intl, options = { checkIfPacked: true }) => {
-  let decimalPoints = item.measurement_unit.max_decimal_points
-  if (options.checkIfPacked)
-    decimalPoints = item.packed ? 0 : decimalPoints
-  let formatted = numberHelper.parse(value.toString(), { maxDecimalPoints: decimalPoints || 0 })
-  return `${formatted || 0}${item.packed ? " (" + intl.formatMessage({ id: "general.packs" }) + ")" : (item.measurement_unit.alias || "")}`
+let unitsFormat = (item, value, intl, options = {}) => {
+  let productFormatter = new ProductFormatter()
+  productFormatter.setOptions({ measurementUnitAlias: item.measurement_unit.alias, packed: item.packed, intl })
+  return productFormatter.formattedQuantity({ quantity: value })
 }
 
 let setFrontImageThumbnailUrl = (item) => {
   return (item.files.find(e => e.type === "thumbnail") || {}).url
 }
 
-let formatPrice = (item) => {
-  let price = new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK' }).format(item.price)
-  let quantity = new Intl.NumberFormat('da-DK').format(item.quantity)
-  let unit = item.measurement_unit
-  let formatted = `${price} / ${quantity}${unit.alias || ""}${item.packed ? " (pack)" : ""}`
-  return formatted
+let formatPrice = (item, intl) => {
+  let productFormatter = new ProductFormatter()
+  productFormatter.setOptions({ measurementUnitAlias: item.measurement_unit.alias, packed: item.packed, intl })
+  return productFormatter.formattedPrice({ price: currencyHelper.value(item.price).format(), quantity: item.quantity })
 }
 
 const sellerProductRow = (props) => (
@@ -51,7 +47,7 @@ const sellerProductRow = (props) => (
         </Row>
       </Row>
     </Col>
-    <Col style={{ display: "flex", alignItems: "center", fontSize: "17px", fontWeight: "bold", margin: "15px" }}>{formatPrice(props.item)}</Col>
+    <Col style={{ display: "flex", alignItems: "center", fontSize: "17px", fontWeight: "bold", margin: "15px" }}>{formatPrice(props.item, props.intl)}</Col>
     <Col>
       <Row style={{ "flexDirection": "row", height: "100%", justifyContent: "center", alignItems: "center" }}>
         <Col>

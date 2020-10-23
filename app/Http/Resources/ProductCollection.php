@@ -22,7 +22,7 @@ class ProductCollection extends ResourceCollection
     public function toArray($request)
     {
       return [
-        'data' => $this->collection,
+        'data' => $this->collection->toArray(),
         'pagination' => $this->pagination
       ];
     }

@@ -37,12 +37,12 @@ class Index extends Component {
         <Switch>
           <Route exact path='/not-found'>
             <Result
-              status="405"
+              status="404"
               title="404"
               subTitle="Sorry, the page you visited does not exist."
               extra={<Button type="primary">Back Home</Button>}
             />
-          </Route>3000
+          </Route>
           <Route exact path='/unauthorized'>
             <Result
               status="403"

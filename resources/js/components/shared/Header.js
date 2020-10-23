@@ -26,7 +26,6 @@ const menu = (handleLogout) => {
   )
 }
 
-
 export default (props) => {
   const { handleMenuClick, handleLogOut } = props
   let userDetails = JSON.parse(localStorage.getItem("details") || "{}")
