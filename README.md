@@ -20,6 +20,14 @@ Install php dependencies
 ```sh
 $ sudo composer install
 ```
+Create elasticsearch index
+```sh
+$ php artisan elasticsearch:create_indexes
+```
+Make sure your system has following locales: ('da_DK.utf8'). Create collation in database
+```sh
+CREATE COLLATION da_dk (LOCALE = 'da_DK.utf8')
+```
 Migrate database
 ```sh
 $ php artisan migrate
