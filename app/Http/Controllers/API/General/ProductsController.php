@@ -28,13 +28,13 @@ class ProductsController extends Controller
         "page" => isset($search_params["page"]) ? (int)$search_params["page"] : 1
       ];
       $sorting = [
-        "sort_by" => isset($search_params["sort_by"]) ? $search_params["sort_by"] : null,
+        "sort_by" => isset($search_params["sort_by"]) ? $search_params["sort_by"] : "",
         "direction" => isset($search_params["direction"]) ? $search_params["direction"] : "asc"
       ];
       $filtered = ProductManager::filter($search_params, $pagination, $sorting);
       $products = Product::whereIn("id", $filtered["ids"] )->get();
       $sorted = $products->sortBy(function($e) use ($filtered) { return array_search($e->id, $filtered["ids"]); });
-      return response()->json(new ProductCollection($sorted, $filtered["pagination"]));
+      return response()->json(new ProductCollection($sorted, $filtered["pagination"], $filtered["sorting"]));
     }
 
 
@@ -243,7 +243,8 @@ class ProductManager {
     public static function filter($data, $pagination, $sorting) {
       $must = [];
 
-      if (isset($data["price_from"]) || isset($data["price_to"])) {
+      //PRICE
+      if (isset($data["price_from"]) && strlen($data["price_from"]) > 0 || isset($data["price_to"]) && strlen($data["price_to"]) > 0) {
           $query = [ "range" => [ "price.value" => [] ] ];
           $from = (float)$data["price_from"];
           $to = (float)$data["price_to"];
@@ -253,11 +254,11 @@ class ProductManager {
             $query["range"]["price.value"]["lte"] = $to;
           array_push($must, $query);
       }
-      
+      //CATEGORY
       if (isset($data["category_id"]) && is_array($data["category_id"]) && count($data["category_id"]) > 0) {
           array_push($must, [ "term" => [ "category_chain_ids" => end($data["category_id"])] ]);
       }
-
+      //ATTRIBUTES
       if (isset($data["product_attributes"]) && is_array($data["product_attributes"]) && count($data["product_attributes"]) > 0) {
           foreach ($data["product_attributes"] as $element) {
           if (!isset($element["option_id"])) {
@@ -295,15 +296,24 @@ class ProductManager {
           "query" => $query,
           "size" => $pagination["size"],
           "from" => $pagination["size"] * ($pagination["page"] - 1),
-          "sort" => [["price.value" => ["order" => $sorting["direction"]]]]
           ]
       ];
-
+      if (!empty($sorting["sort_by"])) {
+        switch($sorting["sort_by"]) {
+          case "price":
+            $request["body"]["sort"] = [["price.value" => ["order" => $sorting["direction"]]]];
+            break;
+          default:
+            $request["body"]["sort"] = "";
+            break;
+        } 
+      }
 
       $client = ClientBuilder::create()->build();
       $response = $client->search($request);
       $hits = $response["hits"];
 
+      //PAGINATION
       if (count($hits["hits"]) == 0 && $hits["total"] > 0) {
         $pagination["page"] = 1;
         $request["body"]["from"] = $pagination["size"] * ($pagination["page"] - 1);
@@ -317,7 +327,11 @@ class ProductManager {
             "size" => $pagination["size"],
             "page" => count($hits["hits"]) > 0 ? $pagination["page"] : 1,
             "total" => $hits["total"]["value"]
-            ]
+          ],
+          "sorting" => [
+            "sort_by" => $sorting["sort_by"],
+            "direction" => $sorting["direction"]
+          ]
       ];
       return $result;
     }

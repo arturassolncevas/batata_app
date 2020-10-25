@@ -10,36 +10,48 @@ import { injectIntl } from 'react-intl'
 import qs from 'qs';
 const { Option } = Select
 
+
+let parseQueryString = (str) => {
+  return qs.parse(str.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
+}
+
 class ProductsPage extends Component {
   constructor(props) {
     super(props)
-    this.state = { isFetching: false, categories: [], products: { data: [], pagination: { total: 10, page: 1, size: 20 } }, sort: { direction: "asc" } }
+    this.state = {
+      isFetching: false,
+      categories: [],
+      products: { data: [], pagination: { total: 10, page: 1, size: 20 }, sort: { sort_by: "price", direction: "asc" } }}
   }
 
   componentDidMount() {
-    this.setQueryData
-    this.fetchInitialData()
+    this.setDataFromQuery(() => { this.fetchInitialData() })
+  }
+
+  setDataFromQuery(callback = () => {}) {
+   let { page = 1, sort_by = "price", direction = "asc" } =  parseQueryString(this.props.history.location.search)
+   this.state.products.pagination.page = page
+   this.state.products.sort.sort_by = sort_by
+   this.state.products.sort.directio = direction
+   this.setState(this.state, callback)
   }
 
   async fetchInitialData() {
-    await this.filterProductRequest(qs.parse(this.props.history.location.search.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, }))
+    await this.filterProductRequest(parseQueryString(this.props.history.location.search))
     let resp_categories = await requestClient.get('/api/categories')
     this.setState({ ...this.state, isFetching: false, categories: resp_categories.data })
   }
 
   async filterProductRequest(data) {
-    requestClient.post('/api/products/filter', { data: { personal: true, ...this.state.sort, page: this.state.products.pagination.page, ...data } })
+    requestClient.post('/api/products/filter', { data: { personal: true, ...data, ...this.state.products.sort, page: this.state.products.pagination.page } })
       .then(async (response) => {
         switch (response.status) {
           case 201:
           case 200:
           default:
-            console.log("here")
-            console.log(this.state.products) 
-            console.log(response.data)
-            this.setState({ ...this.state, products: response.data }, () => { console.log(this.state) })
-            let queryData = qs.parse(this.props.history.location.search.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
-            queryData = { ...queryData, page: response.data.pagination.page, ...this.state.sort }
+            this.setState({ ...this.state, products: response.data })
+            let queryData = parseQueryString(this.props.history.location.search)
+            queryData = { ...queryData, page: response.data.pagination.page, ...this.state.products.sort }
             this.props.history.push(`/products?${qs.stringify(queryData)}`)
             break
         }
@@ -53,27 +65,28 @@ class ProductsPage extends Component {
       })
   }
 
-  async handlePaginationPageChange(page, pageSize) {
+  async handlePaginationPageChange(page) {
     this.state.products.pagination.page = page
-    this.setState(this.state, () => { 
-      let queryData =  qs.parse(this.props.history.location.search.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
-      this.filterProductRequest({ ...queryData, page})
-     })
+    this.setState(this.state, () => { this.filterByQueryStringData() })
+  }
+
+  filterByQueryStringData() {
+    let queryData = qs.parse(this.props.history.location.search.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
+    this.filterProductRequest(queryData)
   }
 
   handleOnSortDirectionClick() {
-    if (this.state.sort.direction === "asc") {
-      this.state.sort.direction = "desc"
+    if (this.state.products.sort.direction === "asc") {
+      this.state.products.sort.direction = "desc"
     } else {
-      this.state.sort.direction = "asc"
+      this.state.products.sort.direction = "asc"
     } 
     this.setState(this.state, () => { this.handlePaginationPageChange(1) })
   }
 
   handleOnSortChange(val) {
-    this.state.sort.sort_by = val
+    this.state.products.sort.sort_by = val
     this.setState(this.state, () => { this.handlePaginationPageChange(1) })
-    
   }
 
   render() {
@@ -107,7 +120,7 @@ class ProductsPage extends Component {
                 style={{ width: 200 }}
                 defaultActiveFirstOption={undefined}
                 placeholder={this.props.intl.formatMessage({ id: 'sort.placeholder' })}
-                value={this.state.sort.sort_by}
+                value={this.state.products.sort.sort_by}
                 onChange={(val) => { this.handleOnSortChange(val) }}
                 >
                 <Option value={undefined}>{this.props.intl.formatMessage({ id: 'sort.placeholder' })}</Option>
@@ -115,7 +128,7 @@ class ProductsPage extends Component {
               </Select>
               <Button 
                 type="default"
-                icon={ this.state.sort.direction == "asc" ? <SortAscendingOutlined /> : <SortDescendingOutlined />}
+                icon={ this.state.products.sort.direction == "asc" ? <SortAscendingOutlined /> : <SortDescendingOutlined />}
                 onClick={() => { this.handleOnSortDirectionClick() }}
                 />
             </div>

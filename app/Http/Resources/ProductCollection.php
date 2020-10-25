@@ -14,16 +14,18 @@ class ProductCollection extends ResourceCollection
 
     private $pagination;
 
-    public function __construct($resource, $pagination = null) {
+    public function __construct($resource, $pagination = null, $sorting = null) {
         parent::__construct($resource);
         $this->pagination = $pagination;
+        $this->sorting = $sorting;
     }
 
     public function toArray($request)
     {
       return [
         'data' => $this->collection->toArray(),
-        'pagination' => $this->pagination
+        'pagination' => $this->pagination,
+        'sort' => $this->sorting
       ];
     }
 }
