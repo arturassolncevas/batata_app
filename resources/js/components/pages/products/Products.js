@@ -103,15 +103,31 @@ class ProductsPage extends Component {
       okType: "danger",
       centered: true,
       cancelText: this.props.intl.formatMessage({ id: 'general.cancel' }),
-      onOk() {
-        return new Promise((resolve, reject) => {
-          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-        }).catch(() => console.log('Oops errors!'));
-      },
-      onCancel() {
-        console.log('Cancel');
+      onOk: () => {
+        return this.deleteProductRequest(product.id)
       },
     });
+  }
+
+  async deleteProductRequest(id) {
+    requestClient.delete(`/api/products/${id}`)
+      .then(async (response) => {
+        switch (response.status) {
+          case 201:
+          case 200:
+          default:
+            this.state.products.data.splice(this.state.products.data.findIndex(item => item.id === id), 1)
+            this.setState(this.state)
+            break
+        }
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+            console.log(error)
+            break
+        }
+      })
   }
 
   render() {

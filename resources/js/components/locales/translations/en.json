@@ -101,6 +101,7 @@
     "placeholder": "Sort after ..."
   },
   "crud": {
+    "edit": "Edit",
     "delete": "Delete",
     "questions": {
       "want_to_delete_wqm": "Do you want to delete"

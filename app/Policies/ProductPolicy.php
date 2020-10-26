@@ -55,7 +55,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product)
     {
-        //
+      return $this->create($user) && $product->company->id == $user->company->id;
     }
 
     /**

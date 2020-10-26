@@ -79,10 +79,13 @@ class ProductsController extends Controller
       return new ProductResource($product);
     }
 
-    public function delete() {
+    public function delete(ProductRequest $request) {
       $id = request()->route('id');
       $product = Product::findOrFail($id);
       $this->authorize('delete', $product);
+      $product_manager = new ProductManager($request, Auth::user());
+      $product = $product_manager->delete($product); 
+      return response()->json($product);
     }
 }
 
@@ -141,6 +144,16 @@ class ProductManager {
       $this->product->update($this->params);
       $this->create_associations();
       $this->index();
+    });
+    return $this->product;
+  }
+
+  function delete($product) {
+    DB::transaction(function () use(&$product) {
+      $this->product = $product;
+      $deleted = $this->product->delete();
+      $client = ClientBuilder::create()->build();
+      $return = $client->delete(["index" => Product::$index_name, "id" => $this->product->id, "refresh" => "wait_for"]);
     });
     return $this->product;
   }
@@ -253,8 +266,7 @@ class ProductManager {
       $data["price_from"] = isset($data["price_from"]) && strlen($data["price_from"]) > 0 ? (float)$data["price_from"] : null;
       $data["price_to"] = isset($data["price_to"]) && strlen($data["price_to"]) > 0 ? (float)$data["price_to"] : null;
       if ($data["price_from"])
-        $price_range["range"]["price.value"]["gte"] = $data["price_from"]  -  
-        ;
+        $price_range["range"]["price.value"]["gte"] = $data["price_from"];
       if ($data["price_to"])
         $price_range["range"]["price.value"]["lte"] = $data["price_to"];
       if ($data["price_from"] || $data["price_to"])

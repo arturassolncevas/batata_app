@@ -101,6 +101,7 @@
     "placeholder": "Sorter efter..."
   },
   "crud": {
+    "edit": "Rediger",
     "delete": "Slet",
     "questions": {
       "want_to_delete_wqm": "Vil du slette product"

@@ -43,9 +43,13 @@ class ProductFilter extends Component {
   }
 
   async handleCategoryChange(value, options) {
-
     let category = options.pop()
-    this.fetchAttributes(category.id)
+    if (category)
+      this.fetchAttributes(category.id)
+    else {
+      this.state.attributes = []
+      this.setState(this.state)
+    }
   }
 
   async fetchAttributes(category_id) {
@@ -128,7 +132,7 @@ class ProductFilter extends Component {
         <Row style={{ display: !this.state.advancedSearchOpened && "none" }}>
           <Col>
             <Form.Item
-              label={this.props.intl.formatMessage({ id: 'shared.productFilter.price.name' })}
+              label={`${this.props.intl.formatMessage({ id: 'shared.productFilter.price.name' })}: ${currencyHelper.options.symbol}`}
               style={{ marginBottom: '0px', marginTop: '10px' }}
             >
             <Input.Group compact>

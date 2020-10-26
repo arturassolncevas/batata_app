@@ -51,12 +51,12 @@ const sellerProductRow = (props) => (
     <Col>
       <Row style={{ "flexDirection": "row", height: "100%", justifyContent: "center", alignItems: "center" }}>
         <Col>
-          <Tooltip title="Edit">
+          <Tooltip title={props.intl.formatMessage({ id: 'crud.edit'})}>
             <Button type={"primary"} style={{ margin: "4px" }} shape="circle" icon={<EditFilled />} onClick={() => { props.history.push(`products/${props.item.id}/edit`) }}/>
           </Tooltip>
         </Col>
         <Col>
-          <Tooltip title="Delete">
+          <Tooltip title={props.intl.formatMessage({ id: 'crud.delete'})}>
             <Button type={"primary"} style={{ margin: "4px" }} danger shape="circle" icon={<DeleteFilled />} onClick={() => { props.onDeleteClickCallback(props.item) }} />
           </Tooltip>
         </Col>

@@ -5,11 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
     use Concerns\UsesUuid;
     use HasTranslations;
+    //TODO background job to remove unused products
+    use SoftDeletes;
 
     public static $index_name = "products";
     public static $pagination_size = 2;
