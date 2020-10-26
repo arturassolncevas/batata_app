@@ -62,6 +62,9 @@
     "search": "Search",
     "category": "Category",
     "next": "Next",
+    "back": "Back",
+    "cancel": "Cancel",
+    "save": "Save",
     "title": "Title",
     "description": "Description",
     "pack": "Pack",
@@ -96,5 +99,11 @@
   "sort": {
     "price": "Price",
     "placeholder": "Sort after ..."
+  },
+  "crud": {
+    "delete": "Delete",
+    "questions": {
+      "want_to_delete_wqm": "Do you want to delete"
+    }
   }
 }

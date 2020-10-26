@@ -419,8 +419,13 @@ class EditProduct extends Component {
                   />
                 </Form.Item>
                 <Row justify="end">
+                  <Button type="default" style={{ marginRight: "10px" }}
+                    onClick={() => { this.props.history.goBack() }}
+                  >
+                    {this.props.intl.formatMessage({ id: 'general.cancel' })}
+                  </Button>
                   <Button type="primary" htmlType="submit">
-                    {this.props.intl.formatMessage({ id: 'general.next' })}
+                    {this.props.intl.formatMessage({ id: 'general.save' })}
                   </Button>
                 </Row>
               </Form>

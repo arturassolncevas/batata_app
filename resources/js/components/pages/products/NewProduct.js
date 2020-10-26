@@ -131,6 +131,7 @@ class NewProdutPage extends Component {
           style={{ display: this.state.wizardStep == 1 ? "" : "none"}}
           handleCategoryChange={(value) => { this.handleCategoryChange(value) }}
           handleWizardNext={(value) => { this.handlWizardeNext(value) }}
+          history={this.props.history}
         />
 
         <WizarPage2
@@ -144,6 +145,7 @@ class NewProdutPage extends Component {
           style={{ display: this.state.wizardStep == 2 ? "" : "none"}}
           handleWizardNext={(value) => { this.handlWizardeNext(value) }}
           setFormRef={(val) => { this.setState({ ...this.state, wp2FormRef: val }) }}
+          history={this.props.history}
         />
 
         <WizarPage3
@@ -153,6 +155,7 @@ class NewProdutPage extends Component {
           style={{ display: this.state.wizardStep == 3 ? "" : "none"}}
           setFormRef={(val) => { this.setState({ ...this.state, wp3FormRef: val }) }}
           createProductRequest={(val) => { this.createProductRequest(val) }}
+          history={this.props.history}
         />
       </div>
     )

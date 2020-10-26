@@ -91,10 +91,10 @@ class WizardPage3 extends Component {
   async handleFormSubmit(values) {
     values.description = values.description ? values.description.toHTML() : ""
     let success = await this.validateInputDataRequest(values)
-    if (success) { 
+    if (success) {
       let wp3Values = {
         ...values,
-        files: this.state.fileList.map( e => ({ base64: e.url }))
+        files: this.state.fileList.map(e => ({ base64: e.url }))
       }
       this.props.createProductRequest(wp3Values)
     }
@@ -210,11 +210,15 @@ class WizardPage3 extends Component {
               </Form.Item>
 
               <Row justify="end">
+                <Button type="default" style={{ marginRight: "10px" }}
+                  onClick={() => { this.props.history.goBack() }}
+                >
+                  {this.props.intl.formatMessage({ id: 'general.back' })}
+                </Button>
                 <Button type="primary" htmlType="submit">
-                  {this.props.intl.formatMessage({ id: 'general.next' })}
+                  {this.props.intl.formatMessage({ id: 'general.save' })}
                 </Button>
               </Row>
-
             </Form>
           </Card>
         </Col>

@@ -127,9 +127,10 @@ class ProductFilter extends Component {
 
         <Row style={{ display: !this.state.advancedSearchOpened && "none" }}>
           <Col>
-          <Form.Item
-            label={this.props.intl.formatMessage({ id: 'shared.productFilter.price.name' })}
-          >
+            <Form.Item
+              label={this.props.intl.formatMessage({ id: 'shared.productFilter.price.name' })}
+              style={{ marginBottom: '0px', marginTop: '10px' }}
+            >
             <Input.Group compact>
               <Form.Item
                 name="price_from"

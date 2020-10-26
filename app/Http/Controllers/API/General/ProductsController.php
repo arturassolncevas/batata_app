@@ -31,13 +31,12 @@ class ProductsController extends Controller
         "sort_by" => isset($search_params["sort_by"]) ? $search_params["sort_by"] : "",
         "direction" => isset($search_params["direction"]) ? $search_params["direction"] : "asc"
       ];
+      $search_params["company_id"] = isset($search_params["personal"]) && $search_params["personal"] ? Auth::user()->company->id : null;
       $filtered = ProductManager::filter($search_params, $pagination, $sorting);
       $products = Product::whereIn("id", $filtered["ids"] )->get();
       $sorted = $products->sortBy(function($e) use ($filtered) { return array_search($e->id, $filtered["ids"]); });
       return response()->json(new ProductCollection($sorted, $filtered["pagination"], $filtered["sorting"]));
     }
-
-
 
     public function find() {
       $id = request()->route('id');
@@ -78,6 +77,12 @@ class ProductsController extends Controller
       $product = $product_manager->update($product);
       $product->load("files");
       return new ProductResource($product);
+    }
+
+    public function delete() {
+      $id = request()->route('id');
+      $product = Product::findOrFail($id);
+      $this->authorize('delete', $product);
     }
 }
 
@@ -244,20 +249,24 @@ class ProductManager {
       $must = [];
 
       //PRICE
-      if (isset($data["price_from"]) && strlen($data["price_from"]) > 0 || isset($data["price_to"]) && strlen($data["price_to"]) > 0) {
-          $query = [ "range" => [ "price.value" => [] ] ];
-          $from = (float)$data["price_from"];
-          $to = (float)$data["price_to"];
-          if ($from)
-            $query["range"]["price.value"]["gte"] = $from;
-          if ($to)
-            $query["range"]["price.value"]["lte"] = $to;
-          array_push($must, $query);
-      }
+      $price_range = [ "range" => [ "price.value" => [] ] ];
+      $data["price_from"] = isset($data["price_from"]) && strlen($data["price_from"]) > 0 ? (float)$data["price_from"] : null;
+      $data["price_to"] = isset($data["price_to"]) && strlen($data["price_to"]) > 0 ? (float)$data["price_to"] : null;
+      if ($data["price_from"])
+        $price_range["range"]["price.value"]["gte"] = $data["price_from"]  -  
+        ;
+      if ($data["price_to"])
+        $price_range["range"]["price.value"]["lte"] = $data["price_to"];
+      if ($data["price_from"] || $data["price_to"])
+        array_push($must, $price_range);
+
       //CATEGORY
       if (isset($data["category_id"]) && is_array($data["category_id"]) && count($data["category_id"]) > 0) {
           array_push($must, [ "term" => [ "category_chain_ids" => end($data["category_id"])] ]);
       }
+      //COMPANY
+      if (isset($data["company_id"]) && strlen($data["company_id"]) > 0)
+          array_push($must, [ "term" => [ "company_id" => $data["company_id"]]]);
       //ATTRIBUTES
       if (isset($data["product_attributes"]) && is_array($data["product_attributes"]) && count($data["product_attributes"]) > 0) {
           foreach ($data["product_attributes"] as $element) {

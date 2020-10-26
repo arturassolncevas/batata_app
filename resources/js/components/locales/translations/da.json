@@ -62,6 +62,9 @@
     "search": "Søg",
     "category": "Category",
     "next": "Næste",
+    "back": "Tilbage",
+    "cancel": "Afbrud",
+    "save": "Gem",
     "title": "Title",
     "description": "Description",
     "pack": "Pakke",
@@ -96,5 +99,11 @@
   "sort": {
     "price": "Pris",
     "placeholder": "Sorter efter..."
+  },
+  "crud": {
+    "delete": "Slet",
+    "questions": {
+      "want_to_delete_wqm": "Vil du slette product"
+    }
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { PageHeader, Divider, Button, Row, Col, Pagination, Select } from 'antd';
-import { DropboxOutlined, PlusOutlined, SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
+import { PageHeader, Divider, Button, Row, Col, Pagination, Select, Modal } from 'antd';
+import { ExclamationCircleOutlined, DropboxOutlined, PlusOutlined, SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom'
 import SellerProductRow from './components/SellerProductRow'
 import ProductFilter from '../../shared/products/ProductFilter';
@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom'
 import { injectIntl } from 'react-intl'
 import qs from 'qs';
 const { Option } = Select
+const { confirm } = Modal;
 
 
 let parseQueryString = (str) => {
@@ -89,6 +90,30 @@ class ProductsPage extends Component {
     this.setState(this.state, () => { this.handlePaginationPageChange(1) })
   }
 
+  showDeleteModal(item) {
+    this.state.deleteModalVisible = true
+    this.setState(this.state)
+  }
+
+  showDeleteConfirm(product) {
+    confirm({
+      title: `${this.props.intl.formatMessage({ id: 'crud.questions.want_to_delete_wqm' })}: ${product.category.name} ?`,
+      icon: <ExclamationCircleOutlined />,
+      okText: this.props.intl.formatMessage({ id: 'crud.delete' }),
+      okType: "danger",
+      centered: true,
+      cancelText: this.props.intl.formatMessage({ id: 'general.cancel' }),
+      onOk() {
+        return new Promise((resolve, reject) => {
+          setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+        }).catch(() => console.log('Oops errors!'));
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
   render() {
     return (
       <div>
@@ -138,6 +163,7 @@ class ProductsPage extends Component {
                 key={i}
                 item={e}
                 history={this.props.history}
+                onDeleteClickCallback={(product) => { this.showDeleteConfirm(product) }}
               />
             ))}
 

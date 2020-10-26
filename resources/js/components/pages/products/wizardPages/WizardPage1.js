@@ -121,6 +121,11 @@ class WizardPage1 extends Component {
               />
               <div className="error-text">{this.state.selectedCategoryWarning}</div>
               <Row justify="end">
+                  <Button type="default" style={{ marginRight: "10px" }}
+                    onClick={() => { this.props.history.push("/products") }}
+                  >
+                    {this.props.intl.formatMessage({ id: 'general.cancel' })}
+                  </Button>
                 <Button type="primary" htmlType="submit" onClick={() => {this.handleWizardNext()}}>
                   {this.props.intl.formatMessage({ id: 'general.next' })}
                 </Button>

@@ -65,7 +65,9 @@ class WizardPage2 extends Component {
   setFormattedStockQuantity() {
     let formFields = this.formRef.current.getFieldsValue(["measurement_unit_id", "packed", "quantity_in_stock"])
     let unit = this.props.measurementUnits.find((e) => e.id === formFields.measurement_unit_id) || {}
+    console.log("setFormattedS")
     let formatted = `${formFields.quantity_in_stock || 0}${formFields.packed ? " ("+this.props.intl.formatMessage({ id: "general.packs" })+")" : (unit.alias || "")}`
+    console.log(formatted)
     this.setState({ ...this.state, formattedStockQuantity: formatted })
   }
 
@@ -253,7 +255,6 @@ class WizardPage2 extends Component {
                     <Form.Item
                       name="quantity_in_stock"
                       label={`${this.props.intl.formatMessage({ id: `models.product.quantityInStock` })} ${this.state.formattedStockQuantity}`}
-
                       validateStatus={this.props.error.errors.quantity_in_stock && "error"}
                       help={this.props.error.errors.quantity_in_stock && this.props.error.errors.quantity_in_stock.join(', ')}
                     >
@@ -268,6 +269,11 @@ class WizardPage2 extends Component {
                   </Col>
                 </Row>
               <Row justify="end">
+                  <Button type="default" style={{ marginRight: "10px" }}
+                    onClick={() => { this.props.history.goBack() }}
+                  >
+                    {this.props.intl.formatMessage({ id: 'general.back' })}
+                  </Button>
                 <Button type="primary" htmlType="submit">
                   {this.props.intl.formatMessage({ id: 'general.next' })}
                 </Button>

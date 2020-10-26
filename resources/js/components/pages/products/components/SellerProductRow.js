@@ -57,7 +57,7 @@ const sellerProductRow = (props) => (
         </Col>
         <Col>
           <Tooltip title="Delete">
-            <Button type={"primary"} style={{ margin: "4px" }} danger shape="circle" icon={<DeleteFilled />} />
+            <Button type={"primary"} style={{ margin: "4px" }} danger shape="circle" icon={<DeleteFilled />} onClick={() => { props.onDeleteClickCallback(props.item) }} />
           </Tooltip>
         </Col>
       </Row>
