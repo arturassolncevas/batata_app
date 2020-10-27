@@ -15,7 +15,7 @@ class Product extends Model
     use SoftDeletes;
 
     public static $index_name = "products";
-    public static $pagination_size = 2;
+    public static $pagination_size = 10;
 
     protected $fillable = [
       "price",

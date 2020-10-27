@@ -35,7 +35,6 @@ class Product extends JsonResource
           'title' => $this->title,
           'user_id' => $this->title,
           'files' =>  ProductFileResource::collection($this->files()->orderBy('group_priority')->get()),
-          'grouped_files' => $this->group_files(ProductFileResource::collection($this->files))
         ];
     }
 

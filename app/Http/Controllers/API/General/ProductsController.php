@@ -16,6 +16,8 @@ use Elasticsearch\ClientBuilder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Collection;
+use Melihovv\ShoppingCart\Facades\ShoppingCart as Cart;
+use Debugbar;
 use DB;
 
 class ProductsController extends Controller
@@ -33,9 +35,12 @@ class ProductsController extends Controller
       ];
       $search_params["company_id"] = isset($search_params["personal"]) && $search_params["personal"] ? Auth::user()->company->id : null;
       $filtered = ProductManager::filter($search_params, $pagination, $sorting);
-      $products = Product::whereIn("id", $filtered["ids"] )->get();
+      $products = Product::whereIn("id", $filtered["ids"])->with(["files", "measurement_unit", "category", "company", "user"])->get();
       $sorted = $products->sortBy(function($e) use ($filtered) { return array_search($e->id, $filtered["ids"]); });
-      return response()->json(new ProductCollection($sorted, $filtered["pagination"], $filtered["sorting"]));
+      //Debugbar::startMeasure('render','Collection');
+      $resp = response()->json(new ProductCollection($sorted, $filtered["pagination"], $filtered["sorting"]));
+      //Debugbar::stopMeasure('render');
+      return $resp;
     }
 
     public function find() {
@@ -240,7 +245,7 @@ class ProductManager {
     foreach ($this->product->attribute_options as $element) {
       $attribute_option = [
         "attribute_id" => $element->attribute->id,
-        "option_id" => $element->option->id,
+        "option_id" => $element->option ? $element->option->id : null,
         "number_value" => null,
         "text_value" => null
       ];
