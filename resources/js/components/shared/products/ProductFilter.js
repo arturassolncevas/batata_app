@@ -26,9 +26,7 @@ class ProductFilter extends Component {
   }
 
   setQueryValues() {
-    window.qs = qs
     let queryObject = qs.parse(this.props.history.location.search.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, } )
-    console.log(queryObject)
 
     this.formRef.current.setFieldsValue(queryObject)
     if (queryObject.category_id) {
@@ -63,16 +61,12 @@ class ProductFilter extends Component {
       ...formValues,
     }
 
-    console.log(data)
-    
     data.product_attributes = (data.product_attributes || [])
       .map((e, i) => ({
         attribute_id: this.state.attributes[i].id,
         option_id: e.option_id || null }))
 
-    console.log(qs.stringify(data))
-
-    this.props.history.push(`/products?${qs.stringify(data)}`)
+    this.props.history.push(`${this.props.history.location.pathname}?${qs.stringify(data)}`)
     await this.props.callback(data)
   }
 

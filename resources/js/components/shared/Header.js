@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Layout, Menu, Dropdown, Row, Col, Button, Badge, Avatar } from 'antd';
-import { MenuFoldOutlined, MenufoldOutlined } from '@ant-design/icons'
+import { MenuFoldOutlined, MenufoldOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 import logoImage from '../../../images/batata-logo.svg'
 const { Header } = Layout;
 
@@ -42,7 +42,18 @@ export default (props) => {
           <img style={{ height: "100%", padding: "10px" }} src={logoImage} />
         </div>
       </Col>
-      <Col style={{ display: "flex", justifyContent: "flex-end" }}>
+      <Col style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+        <Badge count={5} offset={[-18, 20]} style={{backgroundColor: "#f67d09"}} size="defaukt">
+          <Avatar style={{
+            color: "#f8af17",
+            background: "#031429",
+            fontSize: "25px",
+            height: "64px",
+            width: "64px"
+          }}>
+            <ShoppingCartOutlined />
+          </Avatar>
+        </Badge>
         <div style={{ color: "white" }}><strong>{userDetails.name}</strong> {` (${userDetails.email})`}</div>
         <div style={{
         }}>
@@ -58,7 +69,7 @@ export default (props) => {
               }}
 
               className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-              <Badge count={1}>
+              <Badge count={1} style={{backgroundColor: "#1890ff"}}>
                 <Avatar shape="square" src="https://avatars3.githubusercontent.com/u/10627086?s=40&v=4" />
               </Badge>
             </a>

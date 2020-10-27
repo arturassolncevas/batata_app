@@ -52,6 +52,7 @@
   },
   "general": {
     "active": "Aktiv",
+    "add_to_cart": "Tilføje til kurv",
     "inactive": "Inaktiv",
     "name": "Name",
     "email": "Email",

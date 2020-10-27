@@ -44,6 +44,8 @@ class ProductsPage extends Component {
   }
 
   async filterProductRequest(data) {
+    if (this.props.history.location.pathname !== "/products")
+      return
     requestClient.post('/api/products/filter', { data: { personal: true, ...data, ...this.state.products.sort, page: this.state.products.pagination.page } })
       .then(async (response) => {
         switch (response.status) {
@@ -53,13 +55,14 @@ class ProductsPage extends Component {
             this.setState({ ...this.state, products: response.data })
             let queryData = parseQueryString(this.props.history.location.search)
             queryData = { ...queryData, page: response.data.pagination.page, ...this.state.products.sort }
-            this.props.history.push(`/products?${qs.stringify(queryData)}`)
+            this.props.history.push(`${this.props.history.location.pathname}?${qs.stringify(queryData)}`)
             break
         }
       })
       .catch((error) => {
         switch ((error.response || {}).status) {
           default:
+            console.log(error)
             this.setErrors(error.response.data)
             break
         }

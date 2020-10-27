@@ -52,6 +52,7 @@
   },
   "general": {
     "active": "Active",
+    "add_to_cart": "Add to cart",
     "inactive": "Inactive",
     "name": "Name",
     "email": "Email",

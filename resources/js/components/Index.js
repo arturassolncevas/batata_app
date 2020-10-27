@@ -6,10 +6,10 @@ import HomePage from './pages/home/Home'
 const ProductsPage = React.lazy(() => import('./pages/products/Products'));
 const NewProductPage = React.lazy(() => import('./pages/products/NewProduct'));
 const EditProductPage = React.lazy(() => import('./pages/products/EditProduct'));
+const MarketPlacePage = React.lazy(() => import('./pages/marketplace/Marketplace'));
 
 import DashBoardPage from './pages/dashboard/Dashboard'
 import OrdersPage from './pages/orders/Orders'
-import MarketPlacePage from './pages/marketplace/Marketplace'
 import LoginPage from './pages/login/Login'
 import SignupPage from './pages/signup/Signup'
 import { Result, Button } from 'antd';
