@@ -17,6 +17,7 @@ import '../../styles/less/app.less'
 import { injectIntl } from 'react-intl'
 import MainLayout from './layouts/MainLayout.js'
 import { signIn } from './redux/actions/authActions'
+import { refreshCart } from './redux/actions/cartActions';
 import { connect } from 'react-redux'
 
 class Index extends Component {
@@ -26,7 +27,8 @@ class Index extends Component {
   }
 
   async componentDidMount() {
-    await this.props.signIn()
+    let signed = await this.props.signIn()
+    await this.props.refreshCart()
     this.state.initialLoadStatus = "finished"
     this.setState({ ...this.state })
   }
@@ -81,7 +83,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  signIn: () => dispatch(signIn())
+  signIn: () => dispatch(signIn()),
+  refreshCart: () => dispatch(refreshCart())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Index))

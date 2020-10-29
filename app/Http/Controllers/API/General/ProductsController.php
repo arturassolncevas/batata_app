@@ -92,6 +92,20 @@ class ProductsController extends Controller
       $product = $product_manager->delete($product); 
       return response()->json($product);
     }
+
+    public function add_to_cart() {
+      $id = request()->route('id');
+      $product = Product::findOrFail($id);
+      $cart = Cart::restore(Auth::user()->id);
+      Cart::add($product->id, $product->category->name, $product->price, request("quantity"));
+      Cart::store(Auth::user()->id);
+      return response()->json(Cart::content());
+    }
+
+    public function get_cart_content() {
+      $cart = Cart::restore(Auth::user()->id);
+      return response()->json(Cart::content());
+    }
 }
 
 class ProductManager {

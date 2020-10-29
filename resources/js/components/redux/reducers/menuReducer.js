@@ -9,7 +9,6 @@ const reducer = function (state = initialState, action) {
   switch (action.type) {
     case ACTIONS.MENU_TRIGGER:
       newState= { opened: !state.opened } 
-      console.log(newState)
       break;
     default:
       newState = state

@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import { PageHeader, Divider, Button, Row, Col, Pagination, Select, Modal } from 'antd';
+import { PageHeader, Divider, Button, Row, Col, Pagination, Select, Modal, InputNumber } from 'antd';
 import { ShopOutlined, ExclamationCircleOutlined, DropboxOutlined, PlusOutlined, SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom'
 import SellerProductRow from '../products/components/MarketProductRow'
 import ProductFilter from '../../shared/products/ProductFilter';
 import { modifyCategories } from '../products/helpers/helper'
 import { withRouter } from 'react-router-dom'
+import { setCart } from '../../redux/actions/cartActions'
+import { connect } from 'react-redux'
+
 import { injectIntl } from 'react-intl'
 import qs from 'qs';
 const { Option } = Select
@@ -15,12 +18,23 @@ let parseQueryString = (str) => {
   return qs.parse(str.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
 }
 
+let formatPrice = (item, intl) => {
+  let productFormatter = new ProductFormatter()
+  productFormatter.setOptions({ measurementUnitAlias: item.measurement_unit.alias, packed: item.packed, intl })
+  return productFormatter.formattedPrice({ price: currencyHelper.value(item.price).format(), quantity: item.quantity })
+}
+
+let setFrontImageThumbnailUrl = (item) => {
+  return (item.files.find(e => e.type === "thumbnail") || {}).url
+}
+
 class MarketPlacePage extends Component {
   constructor(props) {
     super(props)
     this.state = {
       categories: [],
-      products: { data: [], pagination: { total: 10, page: 1, size: 20 }, sort: { sort_by: "price", direction: "asc" } }
+      products: { data: [], pagination: { total: 10, page: 1, size: 20 }, sort: { sort_by: "price", direction: "asc" } },
+      addToCartProduct: { product: { category: {} }, quantity: 1 }
     }
   }
 
@@ -110,6 +124,50 @@ class MarketPlacePage extends Component {
     });
   }
 
+  async handleAddToCartClick(id) {
+    this.state.addToCartVisible = true
+    let resp = await requestClient.get(`/api/products/${id}`)
+    this.state.addToCartProduct = { product: resp.data, quantity: 1}
+    this.setState(this.state)
+  }
+
+  changeCartProductQuantity(val) {
+    this.state.addToCartProduct.quantity = val
+    this.setState(this.state)
+  }
+
+  cancelAddToCart() {
+    this.state.addToCartVisible = false
+    this.state.addToCartProduct = { product: { category: {} }, quantity: 1 }
+    this.setState(this.state)
+  }
+
+  async addToCartOkClick() {
+    requestClient.post(`/api/products/${this.state.addToCartProduct.product.id}/add_to_cart`, { quantity: this.state.addToCartProduct.quantity } )
+      .then(async (response) => {
+        switch (response.status) {
+          case 201:
+          case 200:
+            await this.props.setCart(response.data)
+            this.cancelAddToCart() 
+          default:
+
+            //this.setState({ ...this.state, products: response.data })
+            //let queryData = parseQueryString(this.props.history.location.search)
+            //queryData = { ...queryData, page: response.data.pagination.page, ...this.state.products.sort }
+            //this.props.history.push(`${this.props.history.location.pathname}?${qs.stringify(queryData)}`)
+            //break
+        }
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+            console.log(error)
+            break
+        }
+      })
+  }
+
   render() {
     return (
       <div>
@@ -156,6 +214,7 @@ class MarketPlacePage extends Component {
                 item={e}
                 history={this.props.history}
                 onDeleteClickCallback={(product) => { this.showDeleteConfirm(product) }}
+                addToCartCallback={(id) => { this.handleAddToCartClick(id) }}
               />
             ))}
 
@@ -168,9 +227,43 @@ class MarketPlacePage extends Component {
             />
           </Col>
         </Row>
+        {this.state.addToCartVisible &&
+        (<Modal
+          title="Tilfoje til kurv"
+          centered
+          visible={true}
+          onOk={() => { this.addToCartOkClick()}}
+          onCancel={() => { this.cancelAddToCart() }}
+          cancelText={this.props.intl.formatMessage({ id: 'general.back' })}
+          okText={this.props.intl.formatMessage({ id: 'general.save' })}
+        >
+          <Row style={{alignItems: "center", justifyContent: "space-between"}}>
+              <Col style={{ height: "120px", width: "120px" }}>
+                <img style={{ height: "100%" }} src={setFrontImageThumbnailUrl(this.state.addToCartProduct.product)} />
+              </Col>
+            <div>
+              {`${this.state.addToCartProduct.product.category.name} ${formatPrice(this.state.addToCartProduct.product, this.props.intl)}`}
+            </div>
+            <div> x </div>
+            <InputNumber defaultValue={1} min={1} precision={0} onChange={(val) => { this.changeCartProductQuantity(val) }} formatter={value => numberHelper.format(value)} parser={ value =>numberHelper.parse(value, { maxDecimalPoints: 0 })}  />
+          </Row>
+        <Divider className="site-devider after-header"></Divider>
+          <Row style={{justifyContent: "flex-end"}}>
+            <div>Total Price: { currencyHelper.value(this.state.addToCartProduct.quantity * this.state.addToCartProduct.product.price).format() } </div>
+          </Row>
+        </Modal>)}
       </div>
     )
   }
 }
 
-export default withRouter(injectIntl(MarketPlacePage))
+const mapStateToProps = state => {
+  const { cartReducer } = state
+  return { cartReducer }
+}
+
+const mapDispatchToProps = dispatch => ({
+  setCart: (data) => dispatch(setCart(data))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(injectIntl(MarketPlacePage)))

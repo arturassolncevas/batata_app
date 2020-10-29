@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { Layout, Menu, Dropdown, Row, Col, Button, Badge, Avatar } from 'antd';
 import { MenuFoldOutlined, MenufoldOutlined, ShoppingCartOutlined } from '@ant-design/icons'
 import logoImage from '../../../images/batata-logo.svg'
+import { connect } from 'react-redux'
 const { Header } = Layout;
 
 const menu = (handleLogout) => {
@@ -26,7 +27,7 @@ const menu = (handleLogout) => {
   )
 }
 
-export default (props) => {
+const HeaderComponent = (props) => {
   const { handleMenuClick, handleLogOut } = props
   let userDetails = JSON.parse(localStorage.getItem("details") || "{}")
   return (<Header className="header" style={{ padding: '0px' }} >
@@ -43,7 +44,7 @@ export default (props) => {
         </div>
       </Col>
       <Col style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-        <Badge count={5} offset={[-18, 20]} style={{backgroundColor: "#f67d09"}} size="defaukt">
+        <Badge count={Object.keys(props.cartReducer.cart).length} offset={[-18, 20]} style={{backgroundColor: "#f67d09"}} size="defaukt">
           <Avatar style={{
             color: "#f8af17",
             background: "#031429",
@@ -79,3 +80,14 @@ export default (props) => {
     </Row>
   </Header>)
 }
+
+const mapStateToProps = state => {
+  const { cartReducer } = state
+  return { cartReducer }
+}
+
+const mapDispatchToProps = dispatch => ({
+  setCart: (data) => dispatch(setCart(data))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderComponent)

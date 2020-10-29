@@ -14,7 +14,6 @@ const authReducer = function (state = initialState, action) {
   switch (action.type) {
     case ACTIONS.AUTH_SIGNIN:
       newState= { isLogged: true, user: { ...action.payload } } 
-      console.log(newState)
       break;
     case ACTIONS.AUTH_LOGOUT:
       newState= { isLogged: false, user: { ...initialState.user } } 

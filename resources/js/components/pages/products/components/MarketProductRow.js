@@ -51,7 +51,7 @@ const sellerProductRow = (props) => (
       <Row style={{ "flexDirection": "row", height: "100%", justifyContent: "center", alignItems: "center" }}>
         <Col>
           <Tooltip title={props.intl.formatMessage({ id: 'general.add_to_cart'})}>
-            <Button type={"text"} size="large" style={{ margin: "4px" }} shape="circle" icon={<IconFont type="icon-shoppingcart" />} onClick={() => { }}/>
+            <Button type={"text"} size="large" style={{ margin: "4px" }} shape="circle" icon={<IconFont type="icon-shoppingcart" />} onClick={() => { props.addToCartCallback(props.item.id) }}/>
           </Tooltip>
         </Col>
       </Row>

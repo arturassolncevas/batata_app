@@ -27,7 +27,7 @@ export const signIn = () => {
             console.log("Unauthorized")
             break;
           default:
-            console.log("error in action")
+            console.log("error in auth action")
         }
       })
   }

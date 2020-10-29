@@ -5,6 +5,7 @@ import { Form, Input, Button, Checkbox, Row, Col, Card } from 'antd';
 import { initialState } from './initialState'
 import { injectIntl } from 'react-intl'
 import { signIn } from '../../redux/actions/authActions'
+import { refreshCart } from '../../redux/actions/cartActions';
 import { connect } from 'react-redux'
 
 
@@ -30,7 +31,8 @@ class Login extends Component {
           case 200:
             let { success: { token = "" } } = response.data
             localStorage.setItem("token", token)
-            await this.props.signIn()
+            let signed = await this.props.signIn()
+            await this.props.refreshCart()
             this.props.history.push("/")
           default:
             break
@@ -112,7 +114,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  signIn: () => dispatch(signIn())
+  signIn: () => dispatch(signIn()),
+  refreshCart: () => dispatch(refreshCart())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Login))
