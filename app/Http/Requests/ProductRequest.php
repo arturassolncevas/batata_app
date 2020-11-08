@@ -72,4 +72,5 @@ class ProductRequest extends FormRequest
         }
         return $result;
     }
+
 }

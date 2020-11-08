@@ -28,6 +28,7 @@ class MainLayout extends Component {
         <Header
           handleMenuClick={(e) => { this.handleMenuClick(e) }}
           handleLogOut={(e) => { this.handleLogOut(e) }}
+          history={this.props.history}
         />
         <Layout style={{ position: "relative" }}>
           <Menu />

@@ -44,15 +44,16 @@ const HeaderComponent = (props) => {
         </div>
       </Col>
       <Col style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-        <Badge count={Object.keys(props.cartReducer.cart).length} offset={[-18, 20]} style={{backgroundColor: "#f67d09"}} size="defaukt">
+        <Badge onClick={() => { props.history.push("/cart") }} count={(props.cartReducer.cart || []).length} offset={[-18, 20]} style={{backgroundColor: "#f67d09", cursor: "pointer"}} size="defaukt">
           <Avatar style={{
             color: "#f8af17",
             background: "#031429",
             fontSize: "25px",
             height: "64px",
+            cursor: "ponter",
             width: "64px"
           }}>
-            <ShoppingCartOutlined />
+            <ShoppingCartOutlined style={{cursor: "pointer"}}/>
           </Avatar>
         </Badge>
         <div style={{ color: "white" }}><strong>{userDetails.name}</strong> {` (${userDetails.email})`}</div>

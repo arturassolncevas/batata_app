@@ -34,7 +34,8 @@ class MarketPlacePage extends Component {
     this.state = {
       categories: [],
       products: { data: [], pagination: { total: 10, page: 1, size: 20 }, sort: { sort_by: "price", direction: "asc" } },
-      addToCartProduct: { product: { category: {} }, quantity: 1 }
+      addToCartProduct: { product: { category: {} }, quantity: 1 },
+      errors: {},
     }
   }
 
@@ -126,8 +127,9 @@ class MarketPlacePage extends Component {
 
   async handleAddToCartClick(id) {
     this.state.addToCartVisible = true
-    let resp = await requestClient.get(`/api/products/${id}`)
-    this.state.addToCartProduct = { product: resp.data, quantity: 1}
+    let resp = await requestClient.get(`/api/carts/product/${id}`)
+    let { product, quantity = 1 } = resp.data
+    this.state.addToCartProduct = { product, quantity }
     this.setState(this.state)
   }
 
@@ -143,7 +145,13 @@ class MarketPlacePage extends Component {
   }
 
   async addToCartOkClick() {
-    requestClient.post(`/api/products/${this.state.addToCartProduct.product.id}/add_to_cart`, { quantity: this.state.addToCartProduct.quantity } )
+    let data = {
+      quantity: this.state.addToCartProduct.quantity,
+      product: {
+        id: this.state.addToCartProduct.product.id
+      },
+    }
+    requestClient.post(`/api/carts/add/${data.product_id}`, { cart_item: data } )
       .then(async (response) => {
         switch (response.status) {
           case 201:
@@ -151,18 +159,13 @@ class MarketPlacePage extends Component {
             await this.props.setCart(response.data)
             this.cancelAddToCart() 
           default:
-
-            //this.setState({ ...this.state, products: response.data })
-            //let queryData = parseQueryString(this.props.history.location.search)
-            //queryData = { ...queryData, page: response.data.pagination.page, ...this.state.products.sort }
-            //this.props.history.push(`${this.props.history.location.pathname}?${qs.stringify(queryData)}`)
-            //break
         }
       })
       .catch((error) => {
         switch ((error.response || {}).status) {
           default:
-            console.log(error)
+            this.state.errors = { ...this.state.errors, ...error.response.data.errors }
+            this.setState(this.state)
             break
         }
       })
@@ -245,8 +248,9 @@ class MarketPlacePage extends Component {
               {`${this.state.addToCartProduct.product.category.name} ${formatPrice(this.state.addToCartProduct.product, this.props.intl)}`}
             </div>
             <div> x </div>
-            <InputNumber defaultValue={1} min={1} precision={0} onChange={(val) => { this.changeCartProductQuantity(val) }} formatter={value => numberHelper.format(value)} parser={ value =>numberHelper.parse(value, { maxDecimalPoints: 0 })}  />
+            <InputNumber defaultValue={this.state.addToCartProduct.quantity} min={1} precision={0} onChange={(val) => { this.changeCartProductQuantity(val) }} formatter={value => numberHelper.format(value)} parser={ value =>numberHelper.parse(value, { maxDecimalPoints: 0 })}  />
           </Row>
+        <Row>{(this.state.errors.cart_item || []).join(" ")}</Row>
         <Divider className="site-devider after-header"></Divider>
           <Row style={{justifyContent: "flex-end"}}>
             <div>Total Price: { currencyHelper.value(this.state.addToCartProduct.quantity * this.state.addToCartProduct.product.price).format() } </div>

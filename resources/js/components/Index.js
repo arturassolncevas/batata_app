@@ -7,6 +7,7 @@ const ProductsPage = React.lazy(() => import('./pages/products/Products'));
 const NewProductPage = React.lazy(() => import('./pages/products/NewProduct'));
 const EditProductPage = React.lazy(() => import('./pages/products/EditProduct'));
 const MarketPlacePage = React.lazy(() => import('./pages/marketplace/Marketplace'));
+const CartPage = React.lazy(() => import('./pages/cart/Cart'));
 
 import DashBoardPage from './pages/dashboard/Dashboard'
 import OrdersPage from './pages/orders/Orders'
@@ -66,6 +67,8 @@ class Index extends Component {
               <PrivateRoute exact path="/products/:id/edit" component={EditProductPage} />
 
               <PrivateRoute path="/marketplace" component={MarketPlacePage} />
+              <PrivateRoute path="/cart" component={CartPage} />
+
               <Route><Redirect to={{ pathname: "/not-found" }} /></Route>
             </Switch>
           </MainLayout>

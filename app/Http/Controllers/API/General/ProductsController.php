@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductAttributeOption;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\CartRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FileUtils;
 use App\Http\Resources\Product as ProductResource;
@@ -17,6 +18,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Collection;
 use Melihovv\ShoppingCart\Facades\ShoppingCart as Cart;
+use App\Http\Resources\Cart as CartCollection;
+use App\Http\Resources\CartItem as CartItemResource;
 use Debugbar;
 use DB;
 
@@ -93,19 +96,6 @@ class ProductsController extends Controller
       return response()->json($product);
     }
 
-    public function add_to_cart() {
-      $id = request()->route('id');
-      $product = Product::findOrFail($id);
-      $cart = Cart::restore(Auth::user()->id);
-      Cart::add($product->id, $product->category->name, $product->price, request("quantity"));
-      Cart::store(Auth::user()->id);
-      return response()->json(Cart::content());
-    }
-
-    public function get_cart_content() {
-      $cart = Cart::restore(Auth::user()->id);
-      return response()->json(Cart::content());
-    }
 }
 
 class ProductManager {

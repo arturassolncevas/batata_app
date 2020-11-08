@@ -12,11 +12,12 @@ export const setCart = (data) => {
 
 export const refreshCart = () => {
   return async (dispatch) => {
-    return requestClient.get('/api/products/get_cart_content')
+    return requestClient.get('/api/carts/content')
       .then(async (response) => {
         switch (response.status) {
           case 200:
             dispatch(setCart(response.data))
+            return response.data
           default:
             break
         }

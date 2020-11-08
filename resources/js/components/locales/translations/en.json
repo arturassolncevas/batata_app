@@ -1,6 +1,10 @@
 {
   "name": "Name",
   "pages": {
+    "cart": {
+      "header": "Cart",
+      "checkout": "Checkout"
+    },
     "login": {
       "forgot_password": "Forgot password?",
       "remember_me": "Remember me",

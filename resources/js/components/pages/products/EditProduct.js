@@ -3,6 +3,7 @@ import { Row, Col, Card, Form, Input, InputNumber, Select, Switch, Button, PageH
 import { withRouter } from 'react-router-dom'
 import { initialState } from './initialStates/editProductInitialState'
 import { DropboxOutlined, QqSquareFilled, PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import resizeImage from 'resize-image'
 
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/index.css'

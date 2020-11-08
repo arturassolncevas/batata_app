@@ -97,6 +97,7 @@ return [
     'phone_area' => 'The area code is required.',
     'present' => 'The :attribute field must be present.',
     'recaptcha'=> 'Please ensure that you are a human!',
+    'cart_item_quantity' => 'ordre kan kun være mellem :min stk og :max stk',
     'regex' => 'The :attribute format is invalid.',
     'required' => 'påkrævet',
     'required_if' => 'The :attribute field is required when :other is :value.',

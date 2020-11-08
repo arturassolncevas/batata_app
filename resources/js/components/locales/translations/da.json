@@ -1,6 +1,10 @@
 {
   "name": "Navn",
   "pages": {
+    "cart": {
+      "header": "Kurv",
+      "checkout": "Til betaling"
+    },
     "login": {
       "forgot_password": "Glemt adgangskode?",
       "remember_me": "Husk mig",
