@@ -28,6 +28,10 @@ Make sure your system has following locales: ('da_DK.utf8'). Create collation in
 ```sh
 CREATE COLLATION da_dk (LOCALE = 'da_DK.utf8')
 ```
+Restart database
+```sh
+/etc/init.d/postgresql restart
+```
 Migrate database
 ```sh
 $ php artisan migrate
