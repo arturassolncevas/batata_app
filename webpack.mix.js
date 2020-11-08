@@ -16,9 +16,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 mix.react('resources/js/app.js', 'public/js')
    .less('resources/styles/less/app.less', 'public/css',
       {
-         modifyVars: {
-            'primary-color': '#0BD37E',
-         },
+         modifyVars: { },
          javascriptEnabled: true,
       }
    );
