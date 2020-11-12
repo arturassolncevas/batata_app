@@ -10,7 +10,9 @@ const MarketPlacePage = React.lazy(() => import('./pages/marketplace/Marketplace
 const CartPage = React.lazy(() => import('./pages/cart/Cart'));
 
 import DashBoardPage from './pages/dashboard/Dashboard'
+import PaymentsPage from './pages/payments/Payments'
 import OrdersPage from './pages/orders/Orders'
+import PlacedOrdersPage from './pages/placed_orders/PlacedOrders'
 import LoginPage from './pages/login/Login'
 import SignupPage from './pages/signup/Signup'
 import { Result, Button } from 'antd';
@@ -61,7 +63,9 @@ class Index extends Component {
               <PrivateRoute exact path="/" component={DashBoardPage} />
               <PrivateRoute path="/dashboard" component={DashBoardPage} />
               <PrivateRoute path="/orders" component={OrdersPage} />
+              <PrivateRoute path="/placed_orders" component={PlacedOrdersPage} />
 
+              <PrivateRoute path="/payments/status" component={PaymentsPage} />
               <PrivateRoute exact path="/products" component={ProductsPage} allowed_roles={[]} />
               <PrivateRoute exact path="/products/new" component={NewProductPage} />
               <PrivateRoute exact path="/products/:id/edit" component={EditProductPage} />

@@ -71,26 +71,28 @@ class CartPage extends Component {
   }
 
   handleOnSaveClick() {
-    requestClient.post(`/api/carts/update`, { cart: this.state.cart } )
+    return requestClient.post(`/api/carts/update`, { cart: this.state.cart } )
       .then(async (response) => {
-        switch (response.status) {
-          case 201:
-          case 200:
-          default:
-            this.state.cart = response.data
-            this.setErrors([])
-            this.setState(this.state)
-            this.props.setCart(this.state.cart)
-            break
-        }
+        this.state.cart = response.data
+        this.setErrors([])
+        this.setState(this.state)
+        this.props.setCart(this.state.cart)
+        return { success: true }
       })
       .catch((error) => {
         switch ((error.response || {}).status) {
           default:
             this.setErrors(error.response.data.errors.cart)
-            break
+            return { success: false }
         }
       })
+  }
+
+  async handleOnPayClick() {
+    this.handleOnSaveClick().then((e) => {
+      if (e.success === true)
+        this.props.history.push("/payments/status")
+    })
   }
 
   productQuantityChange(cartItem, quantity) {
@@ -145,7 +147,7 @@ class CartPage extends Component {
             <Row style={{justifyContent: "flex-end", marginTop: "15px"}}>
               <Button onClick={() => { this.props.history.push('/') }} >{this.props.intl.formatMessage({ id: 'general.back' })}</Button>
               <Button type={"primary"} onClick={() => { this.handleOnSaveClick() }} style={{ margin: "0 8px" }}>{this.props.intl.formatMessage({ id: 'general.save' })}</Button>
-              <Button type={"primary"} onClick={() => { this.handleOnSaveClick() }} >{this.props.intl.formatMessage({ id: 'pages.cart.checkout' })}</Button>
+              <Button type={"primary"} onClick={() => { this.handleOnPayClick() }} >{this.props.intl.formatMessage({ id: 'pages.cart.checkout' })}</Button>
             </Row>
           </Col>
         </Row>

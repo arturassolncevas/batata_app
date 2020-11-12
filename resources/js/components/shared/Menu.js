@@ -8,9 +8,10 @@ const { Sider } = Layout;
 
 const menuKeys = {
   "1": { location: "/dashboard", regex: [new RegExp('^/$'), new RegExp('^/dashboard')] },
-  "2": { location: "/orders", regex: [new RegExp('^/orders')] },
-  "3": { location: "/products", regex: [new RegExp('^/products')] },
-  "4": { location: "/marketplace", regex: [new RegExp('^/marketplace')] }
+  "2": { location: "/placed_orders", regex: [new RegExp('^/placed_orders')] },
+  "3": { location: "/orders", regex: [new RegExp('^/orders')] },
+  "4": { location: "/products", regex: [new RegExp('^/products')] },
+  "5": { location: "/marketplace", regex: [new RegExp('^/marketplace')] },
 }
 
 const selectMenuKeys = (locationString) => {
@@ -50,22 +51,28 @@ const MenuComponent = (props) => {
             {props.intl.formatMessage({ id: 'menu.dashboard' })}
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="2">
-          <NavLink to={menuKeys["2"].location}>
-            <CarryOutOutlined />
-            {props.intl.formatMessage({ id: 'menu.orders' })}
-          </NavLink>
-        </Menu.Item>
-        <Menu.Item key="3">
-          <NavLink to={menuKeys["3"].location}>
+        <Menu.Item key="4">
+          <NavLink to={menuKeys["4"].location}>
             <DropboxOutlined />
             {props.intl.formatMessage({ id: 'menu.products' })}
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="4">
-          <NavLink to={menuKeys["4"].location}>
+        <Menu.Item key="5">
+          <NavLink to={menuKeys["5"].location}>
             <ShopOutlined />
             {props.intl.formatMessage({ id: 'menu.marketplace' })}
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <NavLink to={menuKeys["2"].location}>
+            <DotChartOutlined />
+            {props.intl.formatMessage({ id: 'menu.placed_orders' })}
+          </NavLink>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <NavLink to={menuKeys["3"].location}>
+            <CarryOutOutlined />
+            {props.intl.formatMessage({ id: 'menu.orders' })}
           </NavLink>
         </Menu.Item>
       </Menu>

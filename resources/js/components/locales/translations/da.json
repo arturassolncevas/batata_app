@@ -5,6 +5,16 @@
       "header": "Kurv",
       "checkout": "Til betaling"
     },
+    "payment": {
+      "header": "Betaling",
+      "status_text": {
+        "approved": "Test betaling er gennemført!"
+      },
+      "back_to_orders": "Tilbage til afgivet ordrer"
+    },
+    "placed_orders": {
+      "header": "Afgivet ordrer"
+    },
     "login": {
       "forgot_password": "Glemt adgangskode?",
       "remember_me": "Husk mig",
@@ -84,7 +94,8 @@
     "dashboard": "Dashboard",
     "marketplace": "Marketplace",
     "products": "Produkter",
-    "orders": "Ordre"
+    "orders": "Innkommende ordrer",
+    "placed_orders": "Afgivet ordrer"
   },
   "countries": {
     "Denmark": "Denmark",
