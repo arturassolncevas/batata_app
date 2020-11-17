@@ -60,6 +60,8 @@ use Illuminate\Support\Facades\Route;
   Route::delete('products/{id}', 'API\General\ProductsController@delete');
   Route::delete('product_files/delete_image/{id}', 'API\General\ProductFilesController@delete_image');
 
+  //ORDERS
+  Route::post('orders', 'API\General\OrdersController@create');
 
   //GENERAL
   Route::get('categories', 'API\General\CategoriesController@index');

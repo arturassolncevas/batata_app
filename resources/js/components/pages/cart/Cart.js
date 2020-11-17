@@ -88,11 +88,25 @@ class CartPage extends Component {
       })
   }
 
+  createOrderRequest() {
+    return requestClient.post(`/api/orders`, { cart: this.state.cart } )
+      .then(async (response) => {
+        return response.data
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+        }
+      })
+  }
+
   async handleOnPayClick() {
-    this.handleOnSaveClick().then((e) => {
-      if (e.success === true)
-        this.props.history.push("/payments/status")
-    })
+    let resp = await this.handleOnSaveClick()
+    if (!resp.success)
+      return false
+    resp = await this.createOrderRequest() 
+    this.props.refreshCart()
+    this.props.history.push("/payments/status")
   }
 
   productQuantityChange(cartItem, quantity) {

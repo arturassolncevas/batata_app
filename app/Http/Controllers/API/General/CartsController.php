@@ -53,8 +53,8 @@ class CartsController extends Controller
 
     public function product() {
       $id = request()->route('id');
-      $cart = Cart::restore(Auth::user()->id)->content();
-      $content = $cart->toArray();
+      $cart = Cart::restore(Auth::user()->id);
+      $content = Cart::content()->toArray();
       $quantity = 0;
       foreach ($content as $key => $value) {
         if ($value["id"] == $id) {
