@@ -58,6 +58,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Currency');
     }
 
+    public function placed_orders()
+    {
+        return $this->hasMany('App\Models\Order', 'customer_id');
+    }
+
     public function collation() {
       return Config::get('app.COLLATION_'.$this->language->alias);
     }

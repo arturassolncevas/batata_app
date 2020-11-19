@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 use Validator;
+use Barryvdh\Debugbar\Facade as Debugbar;
+use App;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Passport::ignoreMigrations();
+        if (App::environment('local')) {
+          Debugbar::disable();
+        }
     }
 
     /**

@@ -12,10 +12,21 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Melihovv\ShoppingCart\Facades\ShoppingCart as Cart;
 use Carbon\Carbon;
+use App\Http\Resources\Order as OrderResource;
 use DB;
 
 class OrdersController extends Controller
 {
+    public function incomming_orders() {
+      $user = Auth::user();
+      return response()->json(OrderResource::collection($user->incoming_orders)); 
+    }
+
+    public function placed_orders() {
+      $user = Auth::user();
+      return response()->json(OrderResource::collection($user->placed_orders)); 
+    }
+
     public function create()
     { 
       //$this->authorize('create', Product::class);
@@ -35,9 +46,13 @@ class OrdersController extends Controller
           "customer" => $user
         ];
 
+      $line_items = [];
+      $total = 0;
       $cart = Cart::restore($user->id);
       $content = Cart::content()->toArray();
-      $line_items = [];
+
+      if (count($content) == 0)
+        return response()->json([''], 200);
 
       foreach ($content as $key => $value) {
         $product = Product::findOrFail($value["id"]);
@@ -51,18 +66,19 @@ class OrdersController extends Controller
             "price" => $product->price,
             "measurement_unit" => $product->measurement_unit,
             "product" => $product,
-            "sku" => 0
           ];
 
         $line_item_manager = new LineItemsManager($line_item_params, $user);
         $line_item_manager->create(["save" => false]);
         array_push($line_items, $line_item_manager->line_item);
-        $params["line_items"] = $line_items;
-        Cart::destroy($user->id);
+        $total += $product->price * $value["quantity"];
       }
 
+      $params["line_items"] = $line_items;
+      $params["total"] = $total;
       $order_manager = new OrderManager($params, $user);
       $order = $order_manager->create();
+      Cart::destroy($user->id);
     }
 }
 

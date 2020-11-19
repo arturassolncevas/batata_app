@@ -31,6 +31,10 @@ class LineItem extends Model
     ];
 
     protected $casts = [
+      "price" => "float",
+      "quantity" => "float",
+      "product_quantity" => "float",
+      "total" => "float"
     ];
 
     public function order()

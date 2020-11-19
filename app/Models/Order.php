@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     use Concerns\UsesUuid;
-    //use SoftDeletes;
+    use SoftDeletes;
 
     public static $pagination_size = 10;
 
@@ -33,6 +33,7 @@ class Order extends Model
     ];
 
     protected $casts = [
+      "total" => "float"
     ];
 
     public function customer()

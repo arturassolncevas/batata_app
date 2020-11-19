@@ -44,6 +44,7 @@ class CreateOrders extends Migration
             $table->foreign('billing_address_id')->references('id')->on('addresses');
             $table->foreign('delivery_address_id')->references('id')->on('addresses');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

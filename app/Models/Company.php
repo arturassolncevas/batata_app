@@ -36,4 +36,9 @@ class Company extends Model
     {
         return $this->hasMany('App\Models\User');
     }
+
+    public function incoming_orders()
+    {
+        return $this->hasMany('App\Models\Order', 'company_id');
+    }
 }

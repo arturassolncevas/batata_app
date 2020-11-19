@@ -31,40 +31,42 @@ use Illuminate\Support\Facades\Route;
   Route::get('countries', 'API\General\CountriesController@index');
 
   Route::group(['middleware' => ['auth:api', 'locales' ]], function() {
-  //AUTH
-  Route::get('user/details', 'API\Users\UsersController@details');
-  Route::get('logout', 'API\Authentication\LoginController@logout');
+    //AUTH
+    Route::get('user/details', 'API\Users\UsersController@details');
+    Route::get('logout', 'API\Authentication\LoginController@logout');
 
 
-  //CART
-  Route::get('carts/content', 'API\General\CartsController@content');
-  Route::get('carts/product/{id}', 'API\General\CartsController@product');
+    //CART
+    Route::get('carts/content', 'API\General\CartsController@content');
+    Route::get('carts/product/{id}', 'API\General\CartsController@product');
 
-  Route::post('carts/add/{id}', 'API\General\CartsController@add_product');
-  Route::post('carts/update', 'API\General\CartsController@update');
+    Route::post('carts/add/{id}', 'API\General\CartsController@add_product');
+    Route::post('carts/update', 'API\General\CartsController@update');
 
-  Route::delete('carts/destroy_item/{id}', 'API\General\CartsController@destroy_item');
+    Route::delete('carts/destroy_item/{id}', 'API\General\CartsController@destroy_item');
 
-  //PRODUCTS
-  Route::get('products/{id}', 'API\General\ProductsController@find');
-  Route::get('products', 'API\General\ProductsController@index');
+    //PRODUCTS
+    Route::get('products/{id}', 'API\General\ProductsController@find');
+    Route::get('products', 'API\General\ProductsController@index');
 
-  Route::post('products/filter', 'API\General\ProductsController@filter');
-  Route::post('products/step_2', 'API\General\ProductsController@step_2');
-  Route::post('products/step_3', 'API\General\ProductsController@step_3');
-  Route::post('products', 'API\General\ProductsController@create');
-  Route::post('product_files/upload_image', 'API\General\ProductFilesController@upload_image');
+    Route::post('products/filter', 'API\General\ProductsController@filter');
+    Route::post('products/step_2', 'API\General\ProductsController@step_2');
+    Route::post('products/step_3', 'API\General\ProductsController@step_3');
+    Route::post('products', 'API\General\ProductsController@create');
+    Route::post('product_files/upload_image', 'API\General\ProductFilesController@upload_image');
 
-  Route::patch('products/{id}', 'API\General\ProductsController@update');
+    Route::patch('products/{id}', 'API\General\ProductsController@update');
 
-  Route::delete('products/{id}', 'API\General\ProductsController@delete');
-  Route::delete('product_files/delete_image/{id}', 'API\General\ProductFilesController@delete_image');
+    Route::delete('products/{id}', 'API\General\ProductsController@delete');
+    Route::delete('product_files/delete_image/{id}', 'API\General\ProductFilesController@delete_image');
 
-  //ORDERS
-  Route::post('orders', 'API\General\OrdersController@create');
+    //ORDERS
+    Route::get('orders/placed_orders', 'API\General\OrdersController@placed_orders');
 
-  //GENERAL
-  Route::get('categories', 'API\General\CategoriesController@index');
-  Route::get('attributes', 'API\General\AttributesController@index');
-  Route::get('measurements', 'API\General\MeasurementsController@index');
+    Route::post('orders', 'API\General\OrdersController@create');
+
+    //GENERAL
+    Route::get('categories', 'API\General\CategoriesController@index');
+    Route::get('attributes', 'API\General\AttributesController@index');
+    Route::get('measurements', 'API\General\MeasurementsController@index');
 });
