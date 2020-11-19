@@ -24,9 +24,9 @@ Create elasticsearch index
 ```sh
 $ php artisan elasticsearch:create_indexes
 ```
-Make sure your system has following locales: ('da_DK.utf8'). Create collation in database
+Make sure your system has following locales: ('da_DK.utf8'). Create collation in database (OPTIONAL)
 ```sh
-CREATE COLLATION da_dk (LOCALE = 'da_DK.utf8')
+CREATE COLLATION da_dk (LOCALE = 'da_DK') (OPTIONAL)
 ```
 Restart database
 ```sh
@@ -44,9 +44,9 @@ Run passport install
 ```sh
 $ php artisan passport:install
 ```
-Run yarn install
+Install yarn
 ```sh
-$ yarn watch
+$ sudo apt-get install yarn
 ```
 Run yarn watch (development)
 ```sh
