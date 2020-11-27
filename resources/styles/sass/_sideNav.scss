@@ -1,0 +1,34 @@
+#side-nav {
+    background-color: #fff;
+    overflow-y: auto;
+    overflow-x: hidden;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 250px !important;
+    max-width: 250px !important;
+    position: absolute;
+    z-index: 100;
+
+    ul {
+        height: calc(100% - 3rem);
+        margin-top: 3rem;
+
+        li {
+            padding-left: 5rem !important;
+
+            &.ant-menu-item-selected {
+                background-color: $primary;
+                border-radius: 0 8px 8px 0;
+            }
+
+            &::after {
+                display: none;
+            }
+
+            a.active {
+                color: #fffafa;
+            }
+        }
+    }
+}

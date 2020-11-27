@@ -1,0 +1,92 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-size: 10px;
+}
+
+.ant-layout {
+  background-color: #fafbfc;
+}
+
+.main-wrapper {
+  position: relative;
+}
+
+.main-wrapper > section {
+  margin-left: 250px;
+  overflow-y: auto;
+}
+
+.main-wrapper > section main.site-layout-background {
+  background-color: #fafbfc;
+  margin: 2rem;
+  padding: 2rem;
+}
+
+header.header {
+  padding: 1rem 5rem;
+  height: fit-content;
+  background: #fff;
+  color: #001427;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+}
+
+header.header .content-wrapper {
+  align-items: center;
+  line-height: normal;
+  width: 100%;
+}
+
+header.header .content-wrapper .header-content {
+  width: 13%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header.header .content-wrapper .header-content p {
+  margin: 0;
+}
+
+#side-nav {
+  background-color: #fff;
+  overflow-y: auto;
+  overflow-x: hidden;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 250px !important;
+  max-width: 250px !important;
+  position: absolute;
+  z-index: 100;
+}
+
+#side-nav ul {
+  height: calc(100% - 3rem);
+  margin-top: 3rem;
+}
+
+#side-nav ul li {
+  padding-left: 5rem !important;
+}
+
+#side-nav ul li.ant-menu-item-selected {
+  background-color: #001427;
+  border-radius: 0 8px 8px 0;
+}
+
+#side-nav ul li::after {
+  display: none;
+}
+
+#side-nav ul li a.active {
+  color: #fffafa;
+}

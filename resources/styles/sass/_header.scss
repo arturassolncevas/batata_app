@@ -1,0 +1,26 @@
+header.header {
+    padding: 1rem 5rem;
+    height: fit-content;
+    background: #fff;
+    color: $primary;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+
+    .content-wrapper {
+        align-items: center;
+        line-height: normal;
+        width: 100%;
+
+        .header-content {
+            width: 13%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+}
