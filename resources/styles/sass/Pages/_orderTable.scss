@@ -1,0 +1,53 @@
+#order-table {
+    table {
+        background-color: #fafbfc;
+        box-shadow: 0 0px 2.1px rgba(0, 0, 0, 0.035),
+            0 0px 17px rgba(0, 0, 0, 0.07);
+
+        thead.ant-table-thead {
+            tr {
+                th {
+                    .product-title {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+
+                        .product-amount {
+                            margin-right: 4rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        tbody.ant-table-tbody {
+            tr {
+                vertical-align: top;
+
+                &:nth-of-type(odd) {
+                    background-color: #fff;
+                }
+                td {
+                    background-color: inherit;
+
+                    span.status {
+                        margin: 4px;
+                        border-radius: 10px;
+                        color: $primary;
+                    }
+
+                    .product-cell,
+                    .collapsible-header {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+
+                        .product-amount {
+                            margin-right: 4rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

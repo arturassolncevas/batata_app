@@ -20,7 +20,31 @@ body {
         main.site-layout-background {
             background-color: #fafbfc;
             margin: 2rem;
-            padding: 2rem;
+            padding-top: 2rem;
+
+            .page-header {
+                margin: -2rem 0 3rem;
+                text-transform: capitalize;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .ant-collapse-item {
+                > .ant-collapse-header {
+                    padding: 0;
+                }
+            }
+
+            .ant-collapse-content {
+                &-box {
+                    padding: 0 !important;
+
+                    .product-cell {
+                        padding-top: 1rem;
+                    }
+                }
+            }
         }
     }
 }

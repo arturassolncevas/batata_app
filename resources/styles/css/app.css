@@ -26,7 +26,27 @@ body {
 .main-wrapper > section main.site-layout-background {
   background-color: #fafbfc;
   margin: 2rem;
-  padding: 2rem;
+  padding-top: 2rem;
+}
+
+.main-wrapper > section main.site-layout-background .page-header {
+  margin: -2rem 0 3rem;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main-wrapper > section main.site-layout-background .ant-collapse-item > .ant-collapse-header {
+  padding: 0;
+}
+
+.main-wrapper > section main.site-layout-background .ant-collapse-content-box {
+  padding: 0 !important;
+}
+
+.main-wrapper > section main.site-layout-background .ant-collapse-content-box .product-cell {
+  padding-top: 1rem;
 }
 
 header.header {
@@ -89,4 +109,49 @@ header.header .content-wrapper .header-content p {
 
 #side-nav ul li a.active {
   color: #fffafa;
+}
+
+#order-table table {
+  background-color: #fafbfc;
+  box-shadow: 0 0px 2.1px rgba(0, 0, 0, 0.035), 0 0px 17px rgba(0, 0, 0, 0.07);
+}
+
+#order-table table thead.ant-table-thead tr th .product-title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#order-table table thead.ant-table-thead tr th .product-title .product-amount {
+  margin-right: 4rem;
+}
+
+#order-table table tbody.ant-table-tbody tr {
+  vertical-align: top;
+}
+
+#order-table table tbody.ant-table-tbody tr:nth-of-type(odd) {
+  background-color: #fff;
+}
+
+#order-table table tbody.ant-table-tbody tr td {
+  background-color: inherit;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.status {
+  margin: 4px;
+  border-radius: 10px;
+  color: #001427;
+}
+
+#order-table table tbody.ant-table-tbody tr td .product-cell,
+#order-table table tbody.ant-table-tbody tr td .collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#order-table table tbody.ant-table-tbody tr td .product-cell .product-amount,
+#order-table table tbody.ant-table-tbody tr td .collapsible-header .product-amount {
+  margin-right: 4rem;
 }
