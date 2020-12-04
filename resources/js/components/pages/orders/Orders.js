@@ -12,6 +12,7 @@ import {
     Collapse
 } from "antd";
 import Man1 from "../../../../images/Man1.jpg";
+import Man2 from "../../../../images/Man2.jpg";
 import Woman1 from "../../../../images/woman1.jpg";
 import Woman2 from "../../../../images/woman2.jpg";
 
@@ -20,6 +21,13 @@ export default function OrdersPage() {
         <Menu>
             <Menu.Item className="dark">View Order</Menu.Item>
             <Menu.Item>Cancel Order</Menu.Item>
+        </Menu>
+    );
+
+    const sorter = (
+        <Menu>
+            <Menu.Item>Price</Menu.Item>
+            <Menu.Item>Delivery Date</Menu.Item>
         </Menu>
     );
 
@@ -40,7 +48,9 @@ export default function OrdersPage() {
                 buyer && (
                     <>
                         <span className="buyer-name">{buyer.name}</span> <br />
-                        <span className="buyer-id">{`ID: ${buyer.id}`}</span>
+                        <span className="buyer-id">
+                            ID: <span>{`${buyer.id}`}</span>
+                        </span>
                     </>
                 )
         },
@@ -52,7 +62,7 @@ export default function OrdersPage() {
                 </div>
             ),
             dataIndex: "product",
-            width: "30%",
+            width: "35%",
             key: "product",
             render: products => {
                 if (Array.isArray(products) === true) {
@@ -62,26 +72,34 @@ export default function OrdersPage() {
                     let header = (
                         <div className="collapsible-header">
                             <div className="product-info">
-                                <span>{title} </span>
+                                <span className="product-name">{title} </span>
                                 <br />
-                                <span>{desc}</span>
+                                <span className="product-desc">{desc}</span>
                             </div>
-                            <span className="product-amount">{price}</span>
+                            <span className="product-amount">
+                                DKK
+                                <span>{price.split("DKK ")[1]}</span>
+                            </span>
                         </div>
                     );
+                    let totalAmount = 0;
                     let hidden = products
                         .map((product, idx) => {
                             let { title, quantity, measure, price } = product;
-
+                            totalAmount += parseFloat(price.split("DKK ")[1]);
                             return (
                                 <div key={idx} className="product-cell">
                                     <div className="product-info">
-                                        <span>{title}</span> <br />
-                                        <span>{`${quantity} of ${measure}`}</span>
+                                        <span className="product-name">
+                                            {title}
+                                        </span>{" "}
+                                        <br />
+                                        <span className="product-desc">{`${quantity} of ${measure}`}</span>
                                     </div>
 
                                     <span className="product-amount">
-                                        {price}
+                                        DKK
+                                        <span>{price.split("DKK ")[1]}</span>
                                     </span>
                                 </div>
                             );
@@ -96,6 +114,16 @@ export default function OrdersPage() {
                         >
                             <Panel header={header} key="1">
                                 {hidden}
+                                <Divider />
+                                <p className="total-amount">
+                                    Total :
+                                    <span>
+                                        DKK
+                                        <span>{`${parseFloat(
+                                            totalAmount.toFixed(2)
+                                        )}`}</span>
+                                    </span>
+                                </p>
                             </Panel>
                         </Collapse>
                     );
@@ -105,48 +133,21 @@ export default function OrdersPage() {
                     return (
                         <div className="product-cell">
                             <div className="product-info">
-                                <span>{title} </span>
+                                <span className="product-name">{title} </span>
                                 <br />
-                                <span>{others}</span>
+                                <span className="product-desc">{others}</span>
                             </div>
 
-                            <span className="product-amount">{price}</span>
+                            <span className="product-amount">
+                                DKK
+                                <span>{price.split("DKK ")[1]}</span>
+                            </span>
                         </div>
                     );
                 }
             }
         },
-        // {
-        //     title: "Amount",
-        //     dataIndex: "amount",
-        //     key: "amount",
-        //     render: amounts => {
-        //         if (Array.isArray(amounts) === true) {
-        //             let header = amounts[0];
-        //             let hidden = amounts
-        //                 .map((amount, idx) => (
-        //                     <div key={idx}>
-        //                         <span>{amount}</span> <br />
-        //                     </div>
-        //                 ))
-        //                 .splice(1);
 
-        //             return (
-        //                 <Collapse
-        //                     id="amount-collapsible"
-        //                     expandIconPosition="right"
-        //                     ghost
-        //                 >
-        //                     <Panel header={header} key="1">
-        //                         {hidden}
-        //                     </Panel>
-        //                 </Collapse>
-        //             );
-        //         } else {
-        //             return <span>{amounts}</span>;
-        //         }
-        //     }
-        // },
         {
             title: "Delivery Date",
             dataIndex: "delivery",
@@ -167,16 +168,16 @@ export default function OrdersPage() {
             render: status => {
                 let color = "";
                 switch (status) {
-                    case "Pending":
+                    case "pending":
                         color = "#f4d167";
                         break;
-                    case "Payment received":
+                    case "payment received":
                         color = "#82cbf4";
                         break;
-                    case "Delivered":
+                    case "delivered":
                         color = "#84e296";
                         break;
-                    case "Cancelled":
+                    case "cancelled":
                         color = "#f08989";
                         break;
                 }
@@ -192,8 +193,13 @@ export default function OrdersPage() {
             dataIndex: "",
             key: "x",
             render: () => (
-                <Dropdown overlay={menu}>
-                    <span className="ant-dropdown-link">...</span>
+                <Dropdown overlay={menu} overlayClassName="action-dropdown">
+                    <span
+                        className="ant-dropdown-link"
+                        style={{ fontSize: "2rem", fontWeight: "700" }}
+                    >
+                        ...
+                    </span>
                 </Dropdown>
             )
         }
@@ -211,13 +217,13 @@ export default function OrdersPage() {
                     quantity: 25,
                     title: "Tomatoes",
                     measure: "1kg",
-                    price: "DKK 15.00"
+                    price: "DKK 15.60"
                 },
                 {
                     quantity: 40,
                     title: "red apples",
                     measure: "1kg",
-                    price: "DKK 35.00"
+                    price: "DKK 35.89"
                 },
                 {
                     quantity: 25,
@@ -226,12 +232,11 @@ export default function OrdersPage() {
                     price: "DKK 10.00"
                 }
             ],
-            amount: ["DKK 15.00", "DKK 35.00", "DKK 10.00"],
             delivery: {
                 date: "20/10/2020",
                 type: "pick up"
             },
-            status: "Delivered",
+            status: "delivered",
             image: <Avatar src={Man1} shape="circle" />
         },
         {
@@ -245,13 +250,13 @@ export default function OrdersPage() {
                     quantity: 40,
                     title: "red apples",
                     measure: "1kg",
-                    price: "DKK 35.00"
+                    price: "DKK 35.50"
                 },
                 {
                     quantity: 25,
                     title: "Rhubarb",
                     measure: "15pcs (pack)",
-                    price: "DKK 10.00"
+                    price: "DKK 10.99"
                 },
                 {
                     quantity: 25,
@@ -266,12 +271,11 @@ export default function OrdersPage() {
                     price: "DKK 10.00"
                 }
             ],
-            amount: ["DKK 15.00", "DKK 35.00", "DKK 10.00"],
             delivery: {
                 date: "Due in 3 days",
                 type: "pick up"
             },
-            status: "Payment received",
+            status: "payment received",
             image: <Avatar src={Woman1} shape="circle" />
         },
         {
@@ -291,15 +295,72 @@ export default function OrdersPage() {
                 date: "20/10/2020",
                 type: "pick up"
             },
-            status: "Pending",
+            status: "pending",
             image: <Avatar src={Woman2} shape="circle" />
+        },
+        {
+            key: 4,
+            buyer: {
+                name: "Leslie Alexander",
+                id: "42322"
+            },
+            product: [
+                {
+                    quantity: 40,
+                    title: "mutton",
+                    measure: "1kg",
+                    price: "DKK 102.50"
+                },
+                {
+                    quantity: 25,
+                    title: "pork",
+                    measure: "1kg",
+                    price: "DKK 99.99"
+                },
+                {
+                    quantity: 25,
+                    title: "beef",
+                    measure: "1kg",
+                    price: "DKK 59.99"
+                }
+            ],
+            delivery: {
+                date: "Due tomorrow",
+                type: "pick up"
+            },
+            status: "cancelled",
+            image: <Avatar src={Man2} shape="circle" />
         }
     ];
 
     return (
         <div id="order-table">
-            <PageHeader className="site-page-header" title="Orders" />
-            <Row style={{}}>
+            <div className="site-page-header">
+                <p className="table-header">Orders</p>
+                <Dropdown
+                    overlay={sorter}
+                    trigger={["click"]}
+                    placement="topLeft"
+                    overlayClassName="sorter-dropdown"
+                >
+                    <span className="ant-dropdown-link">
+                        <svg
+                            width="10"
+                            height="11"
+                            viewBox="0 0 10 11"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M3.25 1.45H10M3.25 4.15H7.3M3.25 6.85H10M3.25 9.55H7.3M1 1H1.9V1.9H1V1ZM1 3.7H1.9V4.6H1V3.7ZM1 6.4H1.9V7.3H1V6.4ZM1 9.1H1.9V10H1V9.1Z"
+                                stroke="#666666"
+                            />
+                        </svg>
+                        Sort by
+                    </span>
+                </Dropdown>
+            </div>
+            <Row>
                 <Col md={24}>
                     <Table columns={columns} dataSource={data} />
                 </Col>

@@ -26,8 +26,14 @@
                 display: none;
             }
 
-            a.active {
-                color: #fffafa;
+            a {
+                &:hover {
+                    color: #000;
+                }
+
+                &.active {
+                    color: #fffafa;
+                }
             }
         }
     }

@@ -3,9 +3,11 @@
     padding: 0;
     box-sizing: border-box;
 }
+html {
+    font-size: 10px;
+}
 body {
     font-family: "Poppins", sans-serif;
-    font-size: 10px;
 }
 .ant-layout {
     background-color: #fafbfc;
@@ -19,11 +21,11 @@ body {
 
         main.site-layout-background {
             background-color: #fafbfc;
-            margin: 2rem;
+            margin: 2rem 6rem 2rem 2rem;
             padding-top: 2rem;
 
             .page-header {
-                margin: -2rem 0 3rem;
+                margin: -2rem 0 5rem;
                 text-transform: capitalize;
                 display: flex;
                 align-items: center;
@@ -44,6 +46,25 @@ body {
                         padding-top: 1rem;
                     }
                 }
+            }
+        }
+    }
+}
+.sorter-dropdown,
+.action-dropdown {
+    border-radius: 4px;
+
+    ul {
+        li {
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.5em;
+            font-weight: 400;
+
+            &:first-of-type {
+                background-color: $primary;
+                color: #fafbfc;
+                border-radius: 4px 4px 0 0;
             }
         }
     }

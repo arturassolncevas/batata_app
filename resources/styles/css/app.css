@@ -5,9 +5,12 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 10px;
+}
+
 body {
   font-family: "Poppins", sans-serif;
-  font-size: 10px;
 }
 
 .ant-layout {
@@ -25,12 +28,12 @@ body {
 
 .main-wrapper > section main.site-layout-background {
   background-color: #fafbfc;
-  margin: 2rem;
+  margin: 2rem 6rem 2rem 2rem;
   padding-top: 2rem;
 }
 
 .main-wrapper > section main.site-layout-background .page-header {
-  margin: -2rem 0 3rem;
+  margin: -2rem 0 5rem;
   text-transform: capitalize;
   display: flex;
   align-items: center;
@@ -47,6 +50,42 @@ body {
 
 .main-wrapper > section main.site-layout-background .ant-collapse-content-box .product-cell {
   padding-top: 1rem;
+}
+
+.sorter-dropdown,
+.action-dropdown {
+  border-radius: 4px;
+}
+
+.sorter-dropdown ul li,
+.action-dropdown ul li {
+  text-align: center;
+  font-size: 1.2rem;
+  line-height: 1.5em;
+  font-weight: 400;
+}
+
+.sorter-dropdown ul li:first-of-type,
+.action-dropdown ul li:first-of-type {
+  background-color: #001427;
+  color: #fafbfc;
+  border-radius: 4px 4px 0 0;
+}
+
+.page-title {
+  font-weight: 500;
+  color: #001427;
+  font-size: 1.2rem;
+  line-height: 1.5em;
+  margin: 0;
+}
+
+.table-header {
+  color: #001427;
+  font-size: 2.8rem;
+  line-height: 1.5em;
+  font-weight: 400;
+  margin: 0;
 }
 
 header.header {
@@ -107,13 +146,50 @@ header.header .content-wrapper .header-content p {
   display: none;
 }
 
+#side-nav ul li a:hover {
+  color: #000;
+}
+
 #side-nav ul li a.active {
   color: #fffafa;
+}
+
+#order-table {
+  text-transform: capitalize;
+}
+
+#order-table .site-page-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  align-items: flex-end;
+}
+
+#order-table .site-page-header span {
+  color: #666;
+  font-size: 1.4rem;
+  line-height: 1.5em;
+  font-weight: 400;
+}
+
+#order-table .site-page-header span svg {
+  margin-right: 0.5rem;
 }
 
 #order-table table {
   background-color: #fafbfc;
   box-shadow: 0 0px 2.1px rgba(0, 0, 0, 0.035), 0 0px 17px rgba(0, 0, 0, 0.07);
+}
+
+#order-table table thead.ant-table-thead {
+  text-transform: uppercase;
+}
+
+#order-table table thead.ant-table-thead tr th {
+  color: #4f4f4f;
+  font-size: 1.4rem;
+  line-height: 1.5em;
+  font-weight: 400;
 }
 
 #order-table table thead.ant-table-thead tr th .product-title {
@@ -123,7 +199,18 @@ header.header .content-wrapper .header-content p {
 }
 
 #order-table table thead.ant-table-thead tr th .product-title .product-amount {
-  margin-right: 4rem;
+  margin-right: 5rem;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.buyer-name, #order-table table tbody.ant-table-tbody tr td span.product-name, #order-table table tbody.ant-table-tbody tr td span.delivery-date, #order-table table tbody.ant-table-tbody tr td .product-cell .product-amount,
+#order-table table tbody.ant-table-tbody tr td .collapsible-header .product-amount, #order-table table tbody.ant-table-tbody tr td .ant-collapse-content-box p.total-amount span {
+  font-size: 1.6rem;
+  line-height: 1.5em;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.buyer-id, #order-table table tbody.ant-table-tbody tr td span.product-desc, #order-table table tbody.ant-table-tbody tr td span.delivery-type, #order-table table tbody.ant-table-tbody tr td span.status, #order-table table tbody.ant-table-tbody tr td .ant-collapse-content-box p.total-amount {
+  font-size: 1.4rem;
+  line-height: 1.5em;
 }
 
 #order-table table tbody.ant-table-tbody tr {
@@ -138,9 +225,43 @@ header.header .content-wrapper .header-content p {
   background-color: inherit;
 }
 
+#order-table table tbody.ant-table-tbody tr td span.buyer-name {
+  color: #001427;
+  font-weight: 400;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.buyer-id {
+  color: #4f4f4f;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.buyer-id span {
+  color: #001427;
+  font-weight: 500;
+}
+
 #order-table table tbody.ant-table-tbody tr td span.status {
   margin: 4px;
   border-radius: 10px;
+  color: #001427;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.product-name {
+  color: #001427;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.product-desc {
+  color: #4f4f4f;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.delivery-date {
+  color: #001427;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.delivery-type {
+  color: #4f4f4f;
+}
+
+#order-table table tbody.ant-table-tbody tr td span.status {
   color: #001427;
 }
 
@@ -153,5 +274,74 @@ header.header .content-wrapper .header-content p {
 
 #order-table table tbody.ant-table-tbody tr td .product-cell .product-amount,
 #order-table table tbody.ant-table-tbody tr td .collapsible-header .product-amount {
-  margin-right: 4rem;
+  margin-right: 5rem;
+  color: #4f4f4f;
+}
+
+#order-table table tbody.ant-table-tbody tr td .product-cell .product-amount span,
+#order-table table tbody.ant-table-tbody tr td .collapsible-header .product-amount span {
+  color: #001427;
+  font-weight: 500;
+  margin-left: 1rem;
+}
+
+#order-table table tbody.ant-table-tbody tr td .ant-collapse-content-box p.total-amount {
+  font-weight: 500;
+  color: #001427;
+  margin: 0 5rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#order-table table tbody.ant-table-tbody tr td .ant-collapse-content-box p.total-amount span {
+  color: #4f4f4f;
+}
+
+#order-table table tbody.ant-table-tbody tr td .ant-collapse-content-box p.total-amount span span {
+  color: #001427;
+  font-weight: 500;
+  margin-left: 1rem;
+}
+
+#order-table table tbody.ant-table-tbody tr td .ant-collapse-content-box .ant-divider-horizontal {
+  margin-bottom: 0.5rem;
+}
+
+main .page-header .ant-input-search {
+  width: 250px !important;
+  border: 0.2px solid #bdbdbd;
+  border-radius: 40px;
+}
+
+main .page-header .ant-input-search .ant-input-wrapper {
+  border-radius: 40px;
+}
+
+main .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper {
+  border-radius: 40px 0 0 40px;
+  border: 0;
+}
+
+main .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper input::placeholder {
+  color: #4f4f4f;
+  font-size: 1.2rem;
+  line-height: 1.5em;
+}
+
+main .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper:hover, main .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper:focus {
+  border-right-width: unset;
+  box-shadow: none;
+}
+
+main .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon {
+  border-radius: 40px;
+}
+
+main .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon:focus {
+  outline: 0;
+}
+
+main .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon button.ant-input-search-button {
+  border-radius: 0 40px 40px 0;
+  border: none;
 }

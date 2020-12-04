@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { withRouter, useLocation } from "react-router-dom";
 import { Layout, Input } from "antd";
 import { logOut } from "../redux/actions/authActions";
@@ -27,6 +27,10 @@ const MainLayout = props => {
     let { pathname } = location;
     pathname = pathname.split("/")[1];
 
+    let placeholders = {
+        orders: "Enter Order ID"
+    };
+
     return (
         <Layout style={{ height: "100vh" }}>
             <Header
@@ -43,7 +47,7 @@ const MainLayout = props => {
                         <div className="page-header">
                             <h3 className="page-title">{`User Dashboard - ${pathname}`}</h3>
                             <Search
-                                placeholder="input search text"
+                                placeholder={placeholders[pathname]}
                                 allowClear
                                 onSearch={onSearch}
                                 style={{ width: 200, margin: "0 10px" }}
