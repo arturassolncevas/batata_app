@@ -13,3 +13,22 @@
     font-weight: 400;
     margin: 0;
 }
+
+.text-small {
+    font-size: 1rem;
+    line-height: 1.5em;
+}
+
+.text-normal {
+    font-size: 1.4rem;
+    line-height: 1.5rem;
+}
+
+.text-light {
+    color: $light;
+}
+
+.text-dark {
+    color: $dark;
+    font-weight: 500;
+}

@@ -82,8 +82,12 @@ const HeaderComponent = props => {
                         </Badge>
                     </div>
                     <div>
-                        <p>{userDetails.email}</p>
-                        <p>{userDetails.name}</p>
+                        <p className="user-email text-small text-light">
+                            {userDetails.email}
+                        </p>
+                        <p className="user-name text-normal text-dark">
+                            {userDetails.name}
+                        </p>
                     </div>
                     <div>
                         <Dropdown

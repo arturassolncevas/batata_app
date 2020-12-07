@@ -145,6 +145,7 @@
                                 span {
                                     @extend %shared-dark-font-style;
                                     color: $light;
+                                    margin-left: 1rem;
 
                                     span {
                                         color: $dark;

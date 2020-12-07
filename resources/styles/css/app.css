@@ -88,8 +88,27 @@ body {
   margin: 0;
 }
 
+.text-small {
+  font-size: 1rem;
+  line-height: 1.5em;
+}
+
+.text-normal {
+  font-size: 1.4rem;
+  line-height: 1.5rem;
+}
+
+.text-light {
+  color: #4f4f4f;
+}
+
+.text-dark {
+  color: #001427;
+  font-weight: 500;
+}
+
 header.header {
-  padding: 1rem 5rem;
+  padding: 1.5rem 5rem;
   height: fit-content;
   background: #fff;
   color: #001427;
@@ -295,6 +314,7 @@ header.header .content-wrapper .header-content p {
 
 #order-table table tbody.ant-table-tbody tr td .ant-collapse-content-box p.total-amount span {
   color: #4f4f4f;
+  margin-left: 1rem;
 }
 
 #order-table table tbody.ant-table-tbody tr td .ant-collapse-content-box p.total-amount span span {

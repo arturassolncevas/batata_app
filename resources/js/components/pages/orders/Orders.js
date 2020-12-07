@@ -362,7 +362,11 @@ export default function OrdersPage() {
             </div>
             <Row>
                 <Col md={24}>
-                    <Table columns={columns} dataSource={data} />
+                    <Table
+                        columns={columns}
+                        dataSource={data}
+                        pagination={false}
+                    />
                 </Col>
             </Row>
         </div>

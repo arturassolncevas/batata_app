@@ -48,10 +48,10 @@ const MenuComponent = props => {
                         {props.intl.formatMessage({ id: "menu.dashboard" })}
                     </NavLink>
                 </Menu.Item>
-                <Menu.Item key="4">
-                    <NavLink to={menuKeys["4"].location}>
-                        <DropboxOutlined />
-                        {props.intl.formatMessage({ id: "menu.products" })}
+                <Menu.Item key="3">
+                    <NavLink to={menuKeys["3"].location}>
+                        <CarryOutOutlined />
+                        {props.intl.formatMessage({ id: "menu.orders" })}
                     </NavLink>
                 </Menu.Item>
                 <Menu.Item key="5">
@@ -60,16 +60,16 @@ const MenuComponent = props => {
                         {props.intl.formatMessage({ id: "menu.marketplace" })}
                     </NavLink>
                 </Menu.Item>
+                <Menu.Item key="4">
+                    <NavLink to={menuKeys["4"].location}>
+                        <DropboxOutlined />
+                        {props.intl.formatMessage({ id: "menu.products" })}
+                    </NavLink>
+                </Menu.Item>
                 <Menu.Item key="2">
                     <NavLink to={menuKeys["2"].location}>
                         <DotChartOutlined />
                         {props.intl.formatMessage({ id: "menu.placed_orders" })}
-                    </NavLink>
-                </Menu.Item>
-                <Menu.Item key="3">
-                    <NavLink to={menuKeys["3"].location}>
-                        <CarryOutOutlined />
-                        {props.intl.formatMessage({ id: "menu.orders" })}
                     </NavLink>
                 </Menu.Item>
             </Menu>
