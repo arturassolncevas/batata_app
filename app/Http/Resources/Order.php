@@ -31,7 +31,8 @@ class Order extends JsonResource
           'delivery_address' => $this->delivery_address,
           'customer' => new UserResource($this->customer),
           'currency' => new CurrencyResource($this->currency),
-          'line_items' => LineItemResource::collection($this->line_items)
+          'line_items' => LineItemResource::collection($this->line_items),
+          'created_at' => $this->created_at
         ];
     }
 }

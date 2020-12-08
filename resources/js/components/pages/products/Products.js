@@ -33,7 +33,7 @@ class ProductsPage extends Component {
    let { page = 1, sort_by = "price", direction = "asc" } =  parseQueryString(this.props.history.location.search)
    this.state.products.pagination.page = page
    this.state.products.sort.sort_by = sort_by
-   this.state.products.sort.directio = direction
+   this.state.products.sort.direction = direction
    this.setState(this.state, callback)
   }
 

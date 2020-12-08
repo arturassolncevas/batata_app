@@ -22,7 +22,7 @@ class OrdersController extends Controller
       return response()->json(OrderResource::collection($user->incoming_orders)); 
     }
 
-    public function placed_orders() {
+    public function filter_placed_orders() {
       $user = Auth::user();
       return response()->json(OrderResource::collection($user->placed_orders)); 
     }
