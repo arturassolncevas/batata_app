@@ -11,7 +11,7 @@ class Order extends Model
     use Concerns\UsesUuid;
     use SoftDeletes;
 
-    public static $pagination_size = 1;
+    public static $pagination_size = 20;
 
     protected $fillable = [
         "status",
@@ -33,7 +33,8 @@ class Order extends Model
     ];
 
     protected $casts = [
-      "total" => "float"
+      "total" => "float",
+      "created_at" => "datetime"
     ];
 
     public function customer()

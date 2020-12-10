@@ -113,6 +113,7 @@
     }
   },
   "sort": {
+    "date": "Date",
     "price": "Price",
     "placeholder": "Sort after ..."
   },

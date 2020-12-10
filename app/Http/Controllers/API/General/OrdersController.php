@@ -11,15 +11,34 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Gate;
 use Melihovv\ShoppingCart\Facades\ShoppingCart as Cart;
+use App\Http\Resources\OrderCollection;
 use Carbon\Carbon;
 use App\Http\Resources\Order as OrderResource;
 use DB;
 
 class OrdersController extends Controller
 {
-    public function incomming_orders() {
+    private $sort_columns = ["date", "total"];
+    public function filter(Request $request) {
       $user = Auth::user();
-      return response()->json(OrderResource::collection($user->incoming_orders)); 
+      $search_params = $request->all()["data"];  
+      $order_searcher = new OrderSearcher($search_params, $user->company->orders());
+
+      $sort_by = isset($search_params["sort_by"]) && in_array($search_params["sort_by"], $this->sort_columns) ? $search_params["sort_by"] : "date";
+      $direction = isset($search_params["direction"]) ? $search_params["direction"] : "asc";
+      $page = isset($search_params["page"]) ? (int)$search_params["page"] : 1;
+      $size = Order::$pagination_size;
+      $sorted = $order_searcher->filter()->apply_order($sort_by, $direction)->query->paginate($size, ['*'], 'page', $page);
+
+      if (count($sorted->items()) == 0 && $page > 1) {
+        $search_params["page"] = 1;
+        $request->merge([ "data" => $search_params ]);
+        return $this->filter($request);
+      }
+
+      return response()->json(new OrderCollection($sorted->items(),
+        ["page" => $sorted->currentPage(), "size" => $sorted->perPage(), "total" => $sorted->total()],
+        ["direction" => $direction, "sort_by" => $sort_by]));
     }
 
     public function filter_placed_orders() {
@@ -141,6 +160,29 @@ class LineItemsManager {
         $this->line_item->{$key}()->associate($value);
       }
     }
+  }
+}
+
+class Ordersearcher {
+  
+  function __construct($search_params, $builder = null) {
+    $this->search_params = $search_params; 
+    $this->query = $builder ? $builder : Order::all();
+  }
+
+  function filter() {
+    return $this;
+  }
+
+  function apply_order($sort_by, $direction) {
+    switch ($sort_by) {
+      case "date":
+        $sort_by = "created_at";
+      default:
+      $this->query->orderBy($sort_by, $direction);
+      break;
+    }
+    return $this;
   }
 }
 

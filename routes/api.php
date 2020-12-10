@@ -62,7 +62,7 @@ use Illuminate\Support\Facades\Route;
 
     //ORDERS
     Route::post('placed_orders/filter', 'API\General\PlacedOrdersController@filter');
-
+    Route::post('orders/filter', 'API\General\OrdersController@filter');
     Route::post('orders', 'API\General\OrdersController@create');
 
     //GENERAL

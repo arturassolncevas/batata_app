@@ -26,7 +26,7 @@ let parseQueryString = (str) => {
 class PlacedOrdersPage extends Component {
   constructor(props) {
     super(props)
-    this.state = { placed_orders: { data: [], pagination: { total: 10, page: 1, size: 20 }, sort: { sort_by: "total", direction: "asc" } } }
+    this.state = { placed_orders: { data: [], pagination: { total: 10, page: 1, size: 20 }, sort: { sort_by: "date", direction: "desc" } } }
   }
 
   componentDidMount() {
@@ -56,7 +56,7 @@ class PlacedOrdersPage extends Component {
   }
 
   setDataFromQuery(callback = () => {}) {
-   let { page = 1, sort_by = "total", direction = "asc" } =  parseQueryString(this.props.history.location.search)
+   let { page = 1, sort_by = "date", direction = "desc" } =  parseQueryString(this.props.history.location.search)
    this.state.placed_orders.pagination.page = page
    this.state.placed_orders.sort.sort_by = sort_by
    this.state.placed_orders.sort.direction = direction
@@ -101,7 +101,6 @@ class PlacedOrdersPage extends Component {
           <Col xl={24} style={{ textAlign: "center", padding: "40px" }}>
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <div>
-                Status &nbsp;
                 <Select
                   style={{ width: 200, textAlign: "left" }}
                   defaultActiveFirstOption={undefined}
@@ -110,18 +109,7 @@ class PlacedOrdersPage extends Component {
                   onChange={(val) => { this.handleOnSortChange(val) }}
                 >
                   <Option value={undefined}>{this.props.intl.formatMessage({ id: 'sort.placeholder' })}</Option>
-                  <Option value="total">{this.props.intl.formatMessage({ id: 'sort.price' })}</Option>
-                </Select>
-              </div>
-              <div>
-                <Select
-                  style={{ width: 200, textAlign: "left" }}
-                  defaultActiveFirstOption={undefined}
-                  placeholder={this.props.intl.formatMessage({ id: 'sort.placeholder' })}
-                  value={this.state.placed_orders.sort.sort_by}
-                  onChange={(val) => { this.handleOnSortChange(val) }}
-                >
-                  <Option value={undefined}>{this.props.intl.formatMessage({ id: 'sort.placeholder' })}</Option>
+                  <Option value="date">{this.props.intl.formatMessage({ id: 'sort.date' })}</Option>
                   <Option value="total">{this.props.intl.formatMessage({ id: 'sort.price' })}</Option>
                 </Select>
                 <Button
