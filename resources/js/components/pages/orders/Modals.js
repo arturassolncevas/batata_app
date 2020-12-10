@@ -88,11 +88,11 @@ export const MoreInfo = ({
         );
     };
 
-    const handleOk = () => {
+    const handleCancel = () => {
         setIsModalVisible(false);
     };
 
-    const handleCancel = () => {
+    const handleOk = () => {
         setIsModalVisible(false);
         openCancelModal(true);
     };
@@ -101,7 +101,6 @@ export const MoreInfo = ({
         <Modal
             centered
             visible={isModalVisible}
-            onOk={handleOk}
             onCancel={handleCancel}
             footer={null}
         >
@@ -130,7 +129,7 @@ export const MoreInfo = ({
                         <Button
                             className="cancel"
                             key="back"
-                            onClick={handleCancel}
+                            onClick={handleOk}
                         >
                             Cancel Order
                         </Button>
@@ -153,6 +152,7 @@ export const CancelModal = ({
         setTimeout(() => {
             setLoading(false);
             setIsModalVisible(false);
+            onClose();
         }, 3000);
     };
 
@@ -172,11 +172,11 @@ export const CancelModal = ({
             visible={isModalVisible}
             closable={false}
             footer={null}
+            onCancel={handleCancel}
             width={290}
             centered
             afterClose={() => {
                 console.log("cancel modal closed");
-                onClose();
             }}
         >
             <div id="cancel-modal">

@@ -30,6 +30,49 @@ body {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+
+                .ant-input-search {
+                    width: 250px !important;
+                    border: 0.2px solid #bdbdbd;
+                    border-radius: 40px;
+
+                    .ant-input-wrapper {
+                        border-radius: 40px;
+
+                        .ant-input-affix-wrapper {
+                            border-radius: 40px 0 0 40px;
+                            border: 0;
+
+                            input {
+                                &::placeholder {
+                                    color: $light;
+                                    font-size: 1.2rem;
+                                    line-height: 1.5em;
+                                }
+                            }
+
+                            &:hover,
+                            &:focus,
+                            &active {
+                                border-right-width: unset;
+                                box-shadow: none;
+                            }
+                        }
+
+                        .ant-input-group-addon {
+                            border-radius: 40px;
+
+                            &:focus {
+                                outline: 0;
+                            }
+
+                            button.ant-input-search-button {
+                                border-radius: 0 40px 40px 0;
+                                border: none;
+                            }
+                        }
+                    }
+                }
             }
 
             .ant-collapse-item {

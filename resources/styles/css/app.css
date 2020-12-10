@@ -40,6 +40,45 @@ body {
   justify-content: space-between;
 }
 
+.main-wrapper > section main.site-layout-background .page-header .ant-input-search {
+  width: 250px !important;
+  border: 0.2px solid #bdbdbd;
+  border-radius: 40px;
+}
+
+.main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper {
+  border-radius: 40px;
+}
+
+.main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper {
+  border-radius: 40px 0 0 40px;
+  border: 0;
+}
+
+.main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper input::placeholder {
+  color: #4f4f4f;
+  font-size: 1.2rem;
+  line-height: 1.5em;
+}
+
+.main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper:hover, .main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper:focus, .main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapperactive {
+  border-right-width: unset;
+  box-shadow: none;
+}
+
+.main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon {
+  border-radius: 40px;
+}
+
+.main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon:focus {
+  outline: 0;
+}
+
+.main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon button.ant-input-search-button {
+  border-radius: 0 40px 40px 0;
+  border: none;
+}
+
 .main-wrapper > section main.site-layout-background .ant-collapse-item > .ant-collapse-header {
   padding: 0;
 }
@@ -266,6 +305,7 @@ header.header .content-wrapper .header-content p {
   width: 100%;
   height: fit-content;
   display: none;
+  box-shadow: 0 0px 2.1px rgba(0, 0, 0, 0.035), 0 0px 17px rgba(0, 0, 0, 0.07);
 }
 
 #mobile-nav ul {
@@ -273,7 +313,7 @@ header.header .content-wrapper .header-content p {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 1rem;
+  padding: 1rem 1rem 0;
 }
 
 #mobile-nav ul li {
@@ -373,43 +413,8 @@ header.header .content-wrapper .header-content p {
   width: 100%;
 }
 
-main .page-header .ant-input-search {
-  width: 250px !important;
-  border: 0.2px solid #bdbdbd;
-  border-radius: 40px;
-}
-
-main .page-header .ant-input-search .ant-input-wrapper {
-  border-radius: 40px;
-}
-
-main .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper {
-  border-radius: 40px 0 0 40px;
-  border: 0;
-}
-
-main .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper input::placeholder {
-  color: #4f4f4f;
-  font-size: 1.2rem;
-  line-height: 1.5em;
-}
-
-main .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper:hover, main .page-header .ant-input-search .ant-input-wrapper .ant-input-affix-wrapper:focus {
-  border-right-width: unset;
-  box-shadow: none;
-}
-
-main .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon {
-  border-radius: 40px;
-}
-
-main .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon:focus {
-  outline: 0;
-}
-
-main .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon button.ant-input-search-button {
-  border-radius: 0 40px 40px 0;
-  border: none;
+#overview-table {
+  display: none;
 }
 
 #overview-table table {
@@ -572,7 +577,19 @@ main .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon bu
   }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1030px) {
+  .extended-table {
+    display: none;
+  }
+  #overview-table {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  header.header .content-wrapper .header-content {
+    width: 30%;
+  }
   #side-nav {
     display: none;
   }
@@ -587,8 +604,65 @@ main .page-header .ant-input-search .ant-input-wrapper .ant-input-group-addon bu
   }
 }
 
-@media screen and (max-width: 900px) {
-  .extended-table {
+@media screen and (max-width: 500px) {
+  header.header .content-wrapper .header-content {
+    justify-content: flex-end;
+  }
+  header.header .content-wrapper .header-content > div:not(.profile-picture) {
     display: none;
+  }
+  .main-wrapper > section main.site-layout-background .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .main-wrapper > section main.site-layout-background .page-header .ant-input-search {
+    margin: 1.5rem 0 0 !important;
+    width: 93% !important;
+    border: none;
+    box-shadow: 0 0px 2.1px rgba(0, 0, 0, 0.035), 0 0px 17px rgba(0, 0, 0, 0.07);
+  }
+  .main-wrapper > section main.site-layout-background .page-header .ant-input-search .ant-input-wrapper {
+    display: flex;
+    justify-content: flex-end;
+  }
+  #overview-table table thead tr th:last-of-type {
+    text-align: right;
+  }
+  #overview-table table tbody tr td.product-info-cell {
+    justify-content: flex-end;
+  }
+  #more-info {
+    padding: 3rem 0;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  header.header {
+    padding: 1.5rem 2rem;
+  }
+  .main-wrapper > section main.site-layout-background {
+    margin: 2rem;
+  }
+  #order-table .site-page-header span {
+    font-size: 1.3rem;
+  }
+  #order-table table thead tr th {
+    font-size: 1.2rem;
+  }
+  #overview-table table tbody tr td.product-info-cell .status-badge ~ span {
+    text-align: right;
+  }
+  #mobile-nav ul li {
+    font-size: 1.2rem;
+    padding: 0 0.5rem !important;
+  }
+  .table-header {
+    font-size: 2.4rem;
+  }
+  span.buyer-name, span.product-name, span.delivery-date, span.product-amount, p.total-amount span {
+    font-size: 1.3rem;
+  }
+  span.buyer-id, span.product-desc, span.delivery-type, span.status, p.total-amount {
+    font-size: 1.2rem;
   }
 }

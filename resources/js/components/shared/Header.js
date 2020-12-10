@@ -73,7 +73,7 @@ const HeaderComponent = props => {
                             />
                         </Avatar>
                     </Badge> */}
-                    <div>
+                    <div className="profile-picture">
                         <Badge
                             count={3}
                             style={{ backgroundColor: "#001427", width: "20%" }}
