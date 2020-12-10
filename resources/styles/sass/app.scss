@@ -5,4 +5,9 @@
 @import "./util";
 @import "./header";
 @import "./sideNav";
-@import "./Pages/orderTable";
+@import "./mobileMenu";
+@import "./Pages/Orders/orderTable";
+@import "./Pages/Orders/overviewTable";
+@import "./Pages/Orders/modals";
+@import "./Pages/product";
+@import "./resonsive";

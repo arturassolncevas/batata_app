@@ -1,0 +1,40 @@
+@media screen and (max-width: 1100px) {
+    #side-nav {
+        width: 200px !important;
+        max-width: 200px !important;
+    }
+
+    .main-wrapper {
+        position: relative;
+
+        > section {
+            margin-left: 200px;
+        }
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    #side-nav {
+        display: none;
+    }
+
+    #mobile-nav {
+        display: block;
+    }
+
+    .main-wrapper {
+        > section {
+            margin: 0px;
+
+            main.site-layout-background {
+                margin: 4rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .extended-table {
+        display: none;
+    }
+}

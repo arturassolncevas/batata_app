@@ -1,203 +1,323 @@
-import React, { Component } from 'react'
-import { PageHeader, Divider, Button, Row, Col, Pagination, Select, Modal } from 'antd';
-import { ExclamationCircleOutlined, DropboxOutlined, PlusOutlined, SortDescendingOutlined, SortAscendingOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom'
-import SellerProductRow from './components/SellerProductRow'
-import ProductFilter from '../../shared/products/ProductFilter';
-import { modifyCategories } from './helpers/helper'
-import { withRouter } from 'react-router-dom'
-import { injectIntl } from 'react-intl'
-import qs from 'qs';
-const { Option } = Select
+import React, { Component } from "react";
+import {
+    PageHeader,
+    Divider,
+    Button,
+    Row,
+    Col,
+    Pagination,
+    Select,
+    Modal
+} from "antd";
+import {
+    ExclamationCircleOutlined,
+    DropboxOutlined,
+    PlusOutlined,
+    SortDescendingOutlined,
+    SortAscendingOutlined
+} from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import SellerProductRow from "./components/SellerProductRow";
+import ProductFilter from "../../shared/products/ProductFilter";
+import { modifyCategories } from "./helpers/helper";
+import { withRouter } from "react-router-dom";
+import { injectIntl } from "react-intl";
+import qs from "qs";
+const { Option } = Select;
 const { confirm } = Modal;
 
-
-let parseQueryString = (str) => {
-  return qs.parse(str.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
-}
+let parseQueryString = str => {
+    return qs.parse(str.replace(/(%3F|\?)/g, ""), {
+        charset: "iso-8859-1",
+        interpretNumericEntities: true
+    });
+};
 
 class ProductsPage extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isFetching: false,
-      categories: [],
-      products: { data: [], pagination: { total: 10, page: 1, size: 20 }, sort: { sort_by: "price", direction: "asc" } }}
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            isFetching: false,
+            categories: [],
+            products: {
+                data: [],
+                pagination: { total: 10, page: 1, size: 20 },
+                sort: { sort_by: "price", direction: "asc" }
+            }
+        };
+    }
 
-  componentDidMount() {
-    this.setDataFromQuery(() => { this.fetchInitialData() })
-  }
+    componentDidMount() {
+        this.setDataFromQuery(() => {
+            this.fetchInitialData();
+        });
+    }
 
-  setDataFromQuery(callback = () => {}) {
-   let { page = 1, sort_by = "price", direction = "asc" } =  parseQueryString(this.props.history.location.search)
-   this.state.products.pagination.page = page
-   this.state.products.sort.sort_by = sort_by
-   this.state.products.sort.directio = direction
-   this.setState(this.state, callback)
-  }
+    setDataFromQuery(callback = () => {}) {
+        let {
+            page = 1,
+            sort_by = "price",
+            direction = "asc"
+        } = parseQueryString(this.props.history.location.search);
+        this.state.products.pagination.page = page;
+        this.state.products.sort.sort_by = sort_by;
+        this.state.products.sort.directio = direction;
+        this.setState(this.state, callback);
+    }
 
-  async fetchInitialData() {
-    await this.filterProductRequest(parseQueryString(this.props.history.location.search))
-    let resp_categories = await requestClient.get('/api/categories')
-    this.setState({ ...this.state, isFetching: false, categories: resp_categories.data })
-  }
+    async fetchInitialData() {
+        await this.filterProductRequest(
+            parseQueryString(this.props.history.location.search)
+        );
+        let resp_categories = await requestClient.get("/api/categories");
+        this.setState({
+            ...this.state,
+            isFetching: false,
+            categories: resp_categories.data
+        });
+    }
 
-  async filterProductRequest(data) {
-    if (this.props.history.location.pathname !== "/products")
-      return
-    requestClient.post('/api/products/filter', { data: { personal: true, ...data, ...this.state.products.sort, page: this.state.products.pagination.page } })
-      .then(async (response) => {
-        switch (response.status) {
-          case 201:
-          case 200:
-          default:
-            this.setState({ ...this.state, products: response.data })
-            let queryData = parseQueryString(this.props.history.location.search)
-            queryData = { ...queryData, page: response.data.pagination.page, ...this.state.products.sort }
-            this.props.history.push(`${this.props.history.location.pathname}?${qs.stringify(queryData)}`)
-            break
+    async filterProductRequest(data) {
+        if (this.props.history.location.pathname !== "/products") return;
+        requestClient
+            .post("/api/products/filter", {
+                data: {
+                    personal: true,
+                    ...data,
+                    ...this.state.products.sort,
+                    page: this.state.products.pagination.page
+                }
+            })
+            .then(async response => {
+                switch (response.status) {
+                    case 201:
+                    case 200:
+                    default:
+                        this.setState({
+                            ...this.state,
+                            products: response.data
+                        });
+                        let queryData = parseQueryString(
+                            this.props.history.location.search
+                        );
+                        queryData = {
+                            ...queryData,
+                            page: response.data.pagination.page,
+                            ...this.state.products.sort
+                        };
+                        this.props.history.push(
+                            `${
+                                this.props.history.location.pathname
+                            }?${qs.stringify(queryData)}`
+                        );
+                        break;
+                }
+            })
+            .catch(error => {
+                switch ((error.response || {}).status) {
+                    default:
+                        console.log(error);
+                        this.setErrors(error.response.data);
+                        break;
+                }
+            });
+    }
+
+    async handlePaginationPageChange(page) {
+        this.state.products.pagination.page = page;
+        this.setState(this.state, () => {
+            this.filterByQueryStringData();
+        });
+    }
+
+    filterByQueryStringData() {
+        let queryData = qs.parse(
+            this.props.history.location.search.replace(/(%3F|\?)/g, ""),
+            { charset: "iso-8859-1", interpretNumericEntities: true }
+        );
+        this.filterProductRequest(queryData);
+    }
+
+    handleOnSortDirectionClick() {
+        if (this.state.products.sort.direction === "asc") {
+            this.state.products.sort.direction = "desc";
+        } else {
+            this.state.products.sort.direction = "asc";
         }
-      })
-      .catch((error) => {
-        switch ((error.response || {}).status) {
-          default:
-            console.log(error)
-            this.setErrors(error.response.data)
-            break
-        }
-      })
-  }
+        this.setState(this.state, () => {
+            this.handlePaginationPageChange(1);
+        });
+    }
 
-  async handlePaginationPageChange(page) {
-    this.state.products.pagination.page = page
-    this.setState(this.state, () => { this.filterByQueryStringData() })
-  }
+    handleOnSortChange(val) {
+        this.state.products.sort.sort_by = val;
+        this.setState(this.state, () => {
+            this.handlePaginationPageChange(1);
+        });
+    }
 
-  filterByQueryStringData() {
-    let queryData = qs.parse(this.props.history.location.search.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
-    this.filterProductRequest(queryData)
-  }
+    showDeleteModal(item) {
+        this.state.deleteModalVisible = true;
+        this.setState(this.state);
+    }
 
-  handleOnSortDirectionClick() {
-    if (this.state.products.sort.direction === "asc") {
-      this.state.products.sort.direction = "desc"
-    } else {
-      this.state.products.sort.direction = "asc"
-    } 
-    this.setState(this.state, () => { this.handlePaginationPageChange(1) })
-  }
+    showDeleteConfirm(product) {
+        confirm({
+            title: `${this.props.intl.formatMessage({
+                id: "crud.questions.want_to_delete_wqm"
+            })}: ${product.category.name} ?`,
+            icon: <ExclamationCircleOutlined />,
+            okText: this.props.intl.formatMessage({ id: "crud.delete" }),
+            okType: "danger",
+            centered: true,
+            cancelText: this.props.intl.formatMessage({ id: "general.cancel" }),
+            onOk: () => {
+                return this.deleteProductRequest(product.id);
+            }
+        });
+    }
 
-  handleOnSortChange(val) {
-    this.state.products.sort.sort_by = val
-    this.setState(this.state, () => { this.handlePaginationPageChange(1) })
-  }
+    async deleteProductRequest(id) {
+        requestClient
+            .delete(`/api/products/${id}`)
+            .then(async response => {
+                switch (response.status) {
+                    case 201:
+                    case 200:
+                    default:
+                        this.state.products.data.splice(
+                            this.state.products.data.findIndex(
+                                item => item.id === id
+                            ),
+                            1
+                        );
+                        this.setState(this.state);
+                        break;
+                }
+            })
+            .catch(error => {
+                switch ((error.response || {}).status) {
+                    default:
+                        console.log(error);
+                        break;
+                }
+            });
+    }
 
-  showDeleteModal(item) {
-    this.state.deleteModalVisible = true
-    this.setState(this.state)
-  }
-
-  showDeleteConfirm(product) {
-    confirm({
-      title: `${this.props.intl.formatMessage({ id: 'crud.questions.want_to_delete_wqm' })}: ${product.category.name} ?`,
-      icon: <ExclamationCircleOutlined />,
-      okText: this.props.intl.formatMessage({ id: 'crud.delete' }),
-      okType: "danger",
-      centered: true,
-      cancelText: this.props.intl.formatMessage({ id: 'general.cancel' }),
-      onOk: () => {
-        return this.deleteProductRequest(product.id)
-      },
-    });
-  }
-
-  async deleteProductRequest(id) {
-    requestClient.delete(`/api/products/${id}`)
-      .then(async (response) => {
-        switch (response.status) {
-          case 201:
-          case 200:
-          default:
-            this.state.products.data.splice(this.state.products.data.findIndex(item => item.id === id), 1)
-            this.setState(this.state)
-            break
-        }
-      })
-      .catch((error) => {
-        switch ((error.response || {}).status) {
-          default:
-            console.log(error)
-            break
-        }
-      })
-  }
-
-  render() {
-    return (
-      <div>
-        <PageHeader
-          className="site-page-header"
-          title={this.props.intl.formatMessage({ id: 'pages.products.index.header' })}
-          avatar={{ icon: (<DropboxOutlined className="header-icon" />) }}
-          extra={[(
-            <Link key="1" to="/products/new">
-              <Button className="site-button soft" type="primary" shape="circle" icon={<PlusOutlined />} size={"large"} />
-            </Link>)]}
-        />
-        <Divider className="site-devider after-header"></Divider>
-        <Row justify="center">
-          <Col xl={20}>
-            <ProductFilter
-              categories={modifyCategories(this.state.categories, null, true, true)}
-              history={this.props.history}
-              callback={(data) => { this.filterProductRequest(data) }}
-            />
-          </Col>
-        </Row>
-        <Divider className="site-devider after-header"></Divider>
-
-        <Row justify="center">
-          <Col xl={20}>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <Select 
-                style={{ width: 200 }}
-                defaultActiveFirstOption={undefined}
-                placeholder={this.props.intl.formatMessage({ id: 'sort.placeholder' })}
-                value={this.state.products.sort.sort_by}
-                onChange={(val) => { this.handleOnSortChange(val) }}
-                >
-                <Option value={undefined}>{this.props.intl.formatMessage({ id: 'sort.placeholder' })}</Option>
-                <Option value="price">{this.props.intl.formatMessage({ id: 'sort.price' })}</Option>
-              </Select>
-              <Button 
-                type="default"
-                icon={ this.state.products.sort.direction == "asc" ? <SortAscendingOutlined /> : <SortDescendingOutlined />}
-                onClick={() => { this.handleOnSortDirectionClick() }}
+    render() {
+        return (
+            <div>
+                <PageHeader
+                    className="site-page-header"
+                    title={this.props.intl.formatMessage({
+                        id: "pages.products.index.header"
+                    })}
+                    avatar={{
+                        icon: <DropboxOutlined className="header-icon" />
+                    }}
+                    extra={[
+                        <Link key="1" to="/products/new">
+                            <Button
+                                className="site-button soft"
+                                type="primary"
+                                shape="circle"
+                                icon={<PlusOutlined />}
+                                size={"large"}
+                            />
+                        </Link>
+                    ]}
                 />
-            </div>
-            {this.state.products.data.map((e, i) => (
-              <SellerProductRow
-                categories={this.state.categories}
-                key={i}
-                item={e}
-                history={this.props.history}
-                onDeleteClickCallback={(product) => { this.showDeleteConfirm(product) }}
-              />
-            ))}
+                <Divider className="site-devider after-header"></Divider>
+                <Row justify="center">
+                    <Col xl={20}>
+                        <ProductFilter
+                            categories={modifyCategories(
+                                this.state.categories,
+                                null,
+                                true,
+                                true
+                            )}
+                            history={this.props.history}
+                            callback={data => {
+                                this.filterProductRequest(data);
+                            }}
+                        />
+                    </Col>
+                </Row>
+                <Divider className="site-devider after-header"></Divider>
 
-            <Pagination
-              style={{ textAlign: "right" }}
-              current={this.state.products.pagination.page}
-              pageSize={this.state.products.pagination.size}
-              total={this.state.products.pagination.total}
-              onChange={(page, pageSize) => { this.handlePaginationPageChange(page, pageSize) }}
-            />
-          </Col>
-        </Row>
-      </div>
-    )
-  }
+                <Row justify="center">
+                    <Col xl={20}>
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "flex-end"
+                            }}
+                        >
+                            <Select
+                                style={{ width: 200 }}
+                                defaultActiveFirstOption={undefined}
+                                placeholder={this.props.intl.formatMessage({
+                                    id: "sort.placeholder"
+                                })}
+                                value={this.state.products.sort.sort_by}
+                                onChange={val => {
+                                    this.handleOnSortChange(val);
+                                }}
+                            >
+                                <Option value={undefined}>
+                                    {this.props.intl.formatMessage({
+                                        id: "sort.placeholder"
+                                    })}
+                                </Option>
+                                <Option value="price">
+                                    {this.props.intl.formatMessage({
+                                        id: "sort.price"
+                                    })}
+                                </Option>
+                            </Select>
+                            <Button
+                                type="default"
+                                icon={
+                                    this.state.products.sort.direction ==
+                                    "asc" ? (
+                                        <SortAscendingOutlined />
+                                    ) : (
+                                        <SortDescendingOutlined />
+                                    )
+                                }
+                                onClick={() => {
+                                    this.handleOnSortDirectionClick();
+                                }}
+                            />
+                        </div>
+
+                        {this.state.products.data.map((e, i) => (
+                            <SellerProductRow
+                                categories={this.state.categories}
+                                key={i}
+                                item={e}
+                                history={this.props.history}
+                                onDeleteClickCallback={product => {
+                                    this.showDeleteConfirm(product);
+                                }}
+                            />
+                        ))}
+
+                        <Pagination
+                            style={{ textAlign: "right" }}
+                            current={this.state.products.pagination.page}
+                            pageSize={this.state.products.pagination.size}
+                            total={this.state.products.pagination.total}
+                            onChange={(page, pageSize) => {
+                                this.handlePaginationPageChange(page, pageSize);
+                            }}
+                        />
+                    </Col>
+                </Row>
+            </div>
+        );
+    }
 }
 
-export default withRouter(injectIntl(ProductsPage))
+export default withRouter(injectIntl(ProductsPage));

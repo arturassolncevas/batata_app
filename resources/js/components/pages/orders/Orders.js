@@ -11,6 +11,7 @@ import {
     Dropdown,
     Collapse
 } from "antd";
+import OverviewTable from "./OverviewTable";
 import Man1 from "../../../../images/Man1.jpg";
 import Man2 from "../../../../images/Man2.jpg";
 import Woman1 from "../../../../images/woman1.jpg";
@@ -155,7 +156,7 @@ export default function OrdersPage() {
             render: delivery =>
                 delivery && (
                     <>
-                        <span className="delivery-date">{delivery.date} </span>{" "}
+                        <span className="delivery-date">{delivery.date} </span>
                         <br />
                         <span className="delivery-type">{delivery.type} </span>
                     </>
@@ -207,7 +208,7 @@ export default function OrdersPage() {
 
     const data = [
         {
-            key: 1,
+            key: 0,
             buyer: {
                 name: "John Brown sr.",
                 id: "42552"
@@ -240,7 +241,7 @@ export default function OrdersPage() {
             image: <Avatar src={Man1} shape="circle" />
         },
         {
-            key: 2,
+            key: 1,
             buyer: {
                 name: "John Brown sr.",
                 id: "42552"
@@ -279,7 +280,7 @@ export default function OrdersPage() {
             image: <Avatar src={Woman1} shape="circle" />
         },
         {
-            key: 3,
+            key: 2,
             buyer: {
                 name: "Dianne Russell",
                 id: "33445"
@@ -299,7 +300,7 @@ export default function OrdersPage() {
             image: <Avatar src={Woman2} shape="circle" />
         },
         {
-            key: 4,
+            key: 3,
             buyer: {
                 name: "Leslie Alexander",
                 id: "42322"
@@ -361,12 +362,15 @@ export default function OrdersPage() {
                 </Dropdown>
             </div>
             <Row>
-                <Col md={24}>
+                <Col span={24}>
                     <Table
+                        className="extended-table"
                         columns={columns}
                         dataSource={data}
                         pagination={false}
                     />
+
+                    <OverviewTable data={data} />
                 </Col>
             </Row>
         </div>

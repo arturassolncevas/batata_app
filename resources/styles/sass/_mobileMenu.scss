@@ -1,0 +1,46 @@
+#mobile-nav {
+    position: fixed;
+    z-index: 99999;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: fit-content;
+    display: none;
+
+    ul {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+
+        li {
+            text-align: center;
+
+            &.ant-menu-item-selected {
+                color: $primary;
+                background-color: inherit;
+            }
+
+            &::after {
+                display: none;
+            }
+
+            a {
+                color: #bdbdbd;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                &:hover {
+                    color: #000;
+                }
+
+                &.active {
+                    color: $primary;
+                }
+            }
+        }
+    }
+}

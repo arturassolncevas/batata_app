@@ -1,13 +1,13 @@
 .page-title {
     font-weight: 500;
-    color: $dark;
+    color: $primary;
     font-size: 1.2rem;
     line-height: 1.5em;
     margin: 0;
 }
 
 .table-header {
-    color: $dark;
+    color: $primary;
     font-size: 2.8rem;
     line-height: 1.5em;
     font-weight: 400;
@@ -29,6 +29,100 @@
 }
 
 .text-dark {
-    color: $dark;
+    color: $primary;
     font-weight: 500;
+}
+
+%shared-dark-font-style {
+    font-size: 1.6rem;
+    line-height: 1.5em;
+}
+
+%shared-light-font-style {
+    font-size: 1.4rem;
+    line-height: 1.5em;
+}
+
+span.buyer-name {
+    @extend %shared-dark-font-style;
+    color: $primary;
+    font-weight: 500;
+}
+
+span.buyer-id {
+    @extend %shared-light-font-style;
+    color: $light;
+
+    span {
+        color: $primary;
+        font-weight: 500;
+    }
+}
+
+span.status {
+    margin: 4px;
+    border-radius: 10px;
+    color: $primary;
+}
+
+span.product-name {
+    @extend %shared-dark-font-style;
+    color: $primary;
+}
+
+span.product-desc {
+    @extend %shared-light-font-style;
+    color: $light;
+}
+
+span.delivery-date {
+    @extend %shared-dark-font-style;
+    color: $primary;
+}
+
+span.delivery-type {
+    @extend %shared-light-font-style;
+    color: $light;
+}
+
+span.status {
+    @extend %shared-light-font-style;
+    color: $primary;
+}
+
+span.product-amount {
+    @extend %shared-dark-font-style;
+    margin-right: 5rem;
+    margin-left: 3rem;
+    color: $light;
+
+    span {
+        color: $primary;
+        font-weight: 500;
+        margin-left: 1rem;
+    }
+}
+p.total-amount {
+    @extend %shared-light-font-style;
+    font-weight: 500;
+    color: $primary;
+    margin: 0 5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    span {
+        @extend %shared-dark-font-style;
+        color: $light;
+        margin-left: 1rem;
+
+        span {
+            color: $primary;
+            font-weight: 500;
+        }
+    }
+}
+
+.ant-divider-horizontal {
+    margin-bottom: 0.5rem;
 }

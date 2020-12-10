@@ -1,0 +1,47 @@
+#overview-table {
+    table {
+        width: 100%;
+
+        thead {
+            tr {
+                th {
+                    padding: 1.5rem 3rem;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td {
+                    padding: 1rem 3rem;
+
+                    span.product-amount {
+                        margin: 0 !important;
+                    }
+
+                    span.delivery-date {
+                        font-size: 1.3rem;
+                    }
+
+                    &.product-info-cell {
+                        display: flex;
+                        align-items: center;
+                        // justify-content: center;
+
+                        .status-badge {
+                            .ant-badge-dot {
+                                position: unset;
+                                width: 10px;
+                                height: 10px;
+                            }
+
+                            & ~ span {
+                                margin-left: 2rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

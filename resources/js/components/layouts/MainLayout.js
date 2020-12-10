@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import Header from "../shared/Header";
 import Menu from "../shared/Menu";
+import MobileMenu from "../shared/MobileMenu";
 
 const MainLayout = props => {
     const handleLogOut = async e => {
@@ -57,6 +58,7 @@ const MainLayout = props => {
                     </Content>
                 </Layout>
             </Layout>
+            <MobileMenu />
         </Layout>
     );
 };
