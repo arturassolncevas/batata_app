@@ -42,13 +42,16 @@ let formatPrice = (item, intl) => {
 const sellerProductRow = props => (
     <Row
         className="product-card"
-        style={{
-            margin: "15px 0px",
-            padding: "10px",
-            border: "1px solid #eaeaea"
-        }}
+        // style={{
+        //     margin: "15px 0px",
+        //     padding: "10px",
+        //     border: "1px solid #eaeaea"
+        // }}
     >
-        <Col style={{ height: "120px", width: "120px" }}>
+        <Col
+            className="image-wrapper"
+            // style={{ height: "120px", width: "120px" }}
+        >
             <img
                 style={{ height: "100%" }}
                 src={setFrontImageThumbnailUrl(props.item)}

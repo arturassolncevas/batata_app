@@ -322,20 +322,23 @@ class MarketPlacePage extends Component {
                                 }}
                             />
                         </div>
-                        {this.state.products.data.map((e, i) => (
-                            <SellerProductRow
-                                categories={this.state.categories}
-                                key={i}
-                                item={e}
-                                history={this.props.history}
-                                onDeleteClickCallback={product => {
-                                    this.showDeleteConfirm(product);
-                                }}
-                                addToCartCallback={id => {
-                                    this.handleAddToCartClick(id);
-                                }}
-                            />
-                        ))}
+
+                        <div className="product-card-wrapper">
+                            {this.state.products.data.map((e, i) => (
+                                <SellerProductRow
+                                    categories={this.state.categories}
+                                    key={i}
+                                    item={e}
+                                    history={this.props.history}
+                                    onDeleteClickCallback={product => {
+                                        this.showDeleteConfirm(product);
+                                    }}
+                                    addToCartCallback={id => {
+                                        this.handleAddToCartClick(id);
+                                    }}
+                                />
+                            ))}
+                        </div>
 
                         <Pagination
                             style={{ textAlign: "right" }}

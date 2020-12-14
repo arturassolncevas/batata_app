@@ -29,7 +29,8 @@ const MainLayout = props => {
     pathname = pathname.split("/")[1];
 
     let placeholders = {
-        orders: "Enter Order ID"
+        orders: "Enter Order ID",
+        marketplace: "Search Marketplace"
     };
 
     return (
