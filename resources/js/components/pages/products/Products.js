@@ -34,6 +34,7 @@ let parseQueryString = str => {
 };
 
 class ProductsPage extends Component {
+<<<<<<< HEAD
     constructor(props) {
         super(props);
         this.state = {
@@ -143,6 +144,120 @@ class ProductsPage extends Component {
             this.state.products.sort.direction = "desc";
         } else {
             this.state.products.sort.direction = "asc";
+=======
+  constructor(props) {
+    super(props)
+    this.state = {
+      isFetching: false,
+      categories: [],
+      products: { data: [], pagination: { total: 10, page: 1, size: 20 }, sort: { sort_by: "price", direction: "asc" } }}
+  }
+
+  componentDidMount() {
+    this.setDataFromQuery(() => { this.fetchInitialData() })
+  }
+
+  setDataFromQuery(callback = () => {}) {
+   let { page = 1, sort_by = "price", direction = "asc" } =  parseQueryString(this.props.history.location.search)
+   this.state.products.pagination.page = page
+   this.state.products.sort.sort_by = sort_by
+   this.state.products.sort.direction = direction
+   this.setState(this.state, callback)
+  }
+
+  async fetchInitialData() {
+    await this.filterProductRequest(parseQueryString(this.props.history.location.search))
+    let resp_categories = await requestClient.get('/api/categories')
+    this.setState({ ...this.state, isFetching: false, categories: resp_categories.data })
+  }
+
+  async filterProductRequest(data) {
+    if (this.props.history.location.pathname !== "/products")
+      return
+    requestClient.post('/api/products/filter', { data: { personal: true, ...data, ...this.state.products.sort, page: this.state.products.pagination.page } })
+      .then(async (response) => {
+        switch (response.status) {
+          case 201:
+          case 200:
+          default:
+            this.setState({ ...this.state, products: response.data })
+            let queryData = parseQueryString(this.props.history.location.search)
+            queryData = { ...queryData, page: response.data.pagination.page, ...this.state.products.sort }
+            this.props.history.push(`${this.props.history.location.pathname}?${qs.stringify(queryData)}`)
+            break
+        }
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+            console.log(error)
+            this.setErrors(error.response.data)
+            break
+        }
+      })
+  }
+
+  async handlePaginationPageChange(page) {
+    this.state.products.pagination.page = page
+    this.setState(this.state, () => { this.filterByQueryStringData() })
+  }
+
+  filterByQueryStringData() {
+    let queryData = qs.parse(this.props.history.location.search.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
+    this.filterProductRequest(queryData)
+  }
+
+  handleOnSortDirectionClick() {
+    if (this.state.products.sort.direction === "asc") {
+      this.state.products.sort.direction = "desc"
+    } else {
+      this.state.products.sort.direction = "asc"
+    } 
+    this.setState(this.state, () => { this.handlePaginationPageChange(1) })
+  }
+
+  handleOnSortChange(val) {
+    this.state.products.sort.sort_by = val
+    this.setState(this.state, () => { this.handlePaginationPageChange(1) })
+  }
+
+  showDeleteModal(item) {
+    this.state.deleteModalVisible = true
+    this.setState(this.state)
+  }
+
+  showDeleteConfirm(product) {
+    confirm({
+      title: `${this.props.intl.formatMessage({ id: 'crud.questions.want_to_delete_wqm' })}: ${product.category.name} ?`,
+      icon: <ExclamationCircleOutlined />,
+      okText: this.props.intl.formatMessage({ id: 'crud.delete' }),
+      okType: "danger",
+      centered: true,
+      cancelText: this.props.intl.formatMessage({ id: 'general.cancel' }),
+      onOk: () => {
+        return this.deleteProductRequest(product.id)
+      },
+    });
+  }
+
+  async deleteProductRequest(id) {
+    requestClient.delete(`/api/products/${id}`)
+      .then(async (response) => {
+        switch (response.status) {
+          case 201:
+          case 200:
+          default:
+            this.state.products.data.splice(this.state.products.data.findIndex(item => item.id === id), 1)
+            this.setState(this.state)
+            break
+        }
+      })
+      .catch((error) => {
+        switch ((error.response || {}).status) {
+          default:
+            console.log(error)
+            break
+>>>>>>> ff1fa70965d90070e7f5300d55f13ef1f4c29a69
         }
         this.setState(this.state, () => {
             this.handlePaginationPageChange(1);

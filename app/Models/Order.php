@@ -11,7 +11,7 @@ class Order extends Model
     use Concerns\UsesUuid;
     use SoftDeletes;
 
-    public static $pagination_size = 10;
+    public static $pagination_size = 1;
 
     protected $fillable = [
         "status",
