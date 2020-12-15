@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.less';
+@import "~antd/dist/antd.less";
 
 @l1: 64px;
 @primary-color: #52c41a;
@@ -6,11 +6,11 @@
 @secondary-color: #f8af17;
 
 .l1-height {
-  height: @l1;
+    height: @l1;
 }
 
 .l1-width {
-  width: @l1;
+    width: @l1;
 }
 
 .logo {
@@ -22,124 +22,121 @@
 }
 
 .primary-color {
-  color: @primary-color;
+    color: @primary-color;
 }
 
 .ant-avatar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: @primary-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: @primary-color;
 }
 
 .centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .content {
-  padding: 24px 24px 24px;
-  &.opened {
-  }
-  &.closed {
-    margin-left: 0px;
-  }
+    padding: 24px 24px 24px;
+    &.opened {
+        margin-left: 250px;
+    }
+    &.closed {
+        margin-left: 0px;
+    }
 }
 
 .site-page-header {
-  padding: 0px;
-  .ant-page-header-heading-title {
-    font-weight: normal;
-  }
-  .ant-avatar {
-    color: @secondary-color !important;
-    background: @secondary-background-color !important;
-    width: 40px;
-    height: 40px;
-    .anticon {
-      font-size: 23px;
+    padding: 0px;
+    .ant-page-header-heading-title {
+        font-weight: normal;
     }
-  }
+    .ant-avatar {
+        color: @secondary-color !important;
+        background: @secondary-background-color !important;
+        width: 40px;
+        height: 40px;
+        .anticon {
+            font-size: 23px;
+        }
+    }
 }
 
 .site-devider {
-  &.after-header {
-    margin: 10px 0px;
-  }
+    &.after-header {
+        margin: 10px 0px;
+    }
 }
 
 .site-button {
-  background-color: #d4f3b5;
-  border-color: #d4f3b5;
-  &.soft {
-    .anticon {
-      color: #52c419;
+    background-color: #d4f3b5;
+    border-color: #d4f3b5;
+    &.soft {
+        .anticon {
+            color: #52c419;
+        }
     }
-  }
 }
 .ant-steps-item-icon > .ant-steps-icon {
-  line-height: inherit;
-}
-
-@media only screen and (min-width: 1200px) {
-  .content.opened {
-    margin-left: 200px; 
-  }
+    line-height: inherit;
 }
 
 .ant-steps-item-process {
-  .ant-steps-item-icon {
-    background-color: @secondary-color !important;
-    color: @secondary-color !important;
-    border-color: @secondary-color;
-    .ant-steps-icon {
-      color: white !important;
+    .ant-steps-item-icon {
+        background-color: @secondary-color !important;
+        color: @secondary-color !important;
+        border-color: @secondary-color;
+        .ant-steps-icon {
+            color: white !important;
+        }
     }
-  }
 }
 
 .ant-steps-item-finish {
-  .ant-steps-item-icon {
-    background-color: @secondary-background-color !important;
-    color: @secondary-color !important;
-    border-color: @secondary-background-color;
-    .ant-steps-icon {
-      color: @secondary-color !important;
+    .ant-steps-item-icon {
+        background-color: @secondary-background-color !important;
+        color: @secondary-color !important;
+        border-color: @secondary-background-color;
+        .ant-steps-icon {
+            color: @secondary-color !important;
+        }
     }
-  }
 }
-.ant-steps-item-finish > .ant-steps-item-container > .ant-steps-item-content > .ant-steps-item-title::after {
-  background-color: @secondary-color;
+.ant-steps-item-finish
+    > .ant-steps-item-container
+    > .ant-steps-item-content
+    > .ant-steps-item-title::after {
+    background-color: @secondary-color;
 }
 
 .error-text {
-  color: #f85917
+    color: #f85917;
 }
 
 .bf-container {
-  border: 1px solid #cccccc;
+    border: 1px solid #cccccc;
 }
 
 .bf-content {
-  height: 200px;
+    height: 200px;
 }
 
 .ant-form-item-has-error {
-  .bf-container {
-    border: 1px solid red;
-  }
+    .bf-container {
+        border: 1px solid red;
+    }
 }
 
 .main-wysiwyg-wrapper {
-  a {
-    color: #000000;
-  }
-
+    a {
+        color: #000000;
+    }
 }
 
 .main-wysiwyg-editor {
-  min-height: 200px;
-  border: 1px solid #d9d9d9;
-  padding: 0px 10px
+    min-height: 200px;
+    border: 1px solid #d9d9d9;
+    padding: 0px 10px;
 }

@@ -1,0 +1,70 @@
+#order-table {
+    text-transform: capitalize;
+
+    .site-page-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        align-items: flex-end;
+
+        span {
+            color: #666;
+            font-size: 1.4rem;
+            line-height: 1.5em;
+            font-weight: 400;
+
+            svg {
+                margin-right: 0.5rem;
+            }
+        }
+    }
+
+    table {
+        background-color: #fafbfc;
+        box-shadow: 0 0px 2.1px rgba(0, 0, 0, 0.035),
+            0 0px 17px rgba(0, 0, 0, 0.07);
+
+        thead {
+            text-transform: uppercase;
+            tr {
+                th {
+                    color: $light;
+                    font-size: 1.4rem;
+                    line-height: 1.5em;
+                    font-weight: 400;
+
+                    .product-title {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+
+                        .product-amount {
+                            margin-right: 5rem;
+                        }
+                    }
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                vertical-align: top;
+                cursor: pointer;
+
+                &:nth-of-type(odd) {
+                    background-color: #fff;
+                }
+                td {
+                    background-color: inherit;
+
+                    .product-cell,
+                    .collapsible-header {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

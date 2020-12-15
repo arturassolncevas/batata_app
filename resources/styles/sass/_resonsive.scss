@@ -1,0 +1,195 @@
+@media screen and (max-width: 1100px) {
+    header.header {
+        .content-wrapper {
+            .header-content {
+                width: 20%;
+            }
+        }
+    }
+
+    #side-nav {
+        width: 200px !important;
+        max-width: 200px !important;
+    }
+
+    .main-wrapper {
+        position: relative;
+
+        > section {
+            margin-left: 200px;
+        }
+    }
+}
+
+@media screen and (max-width: 1030px) {
+    .extended-table {
+        display: none;
+    }
+
+    #overview-table {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    header.header {
+        .content-wrapper {
+            .header-content {
+                width: 30%;
+            }
+        }
+    }
+
+    #side-nav {
+        display: none;
+    }
+
+    #mobile-nav {
+        display: block;
+    }
+
+    .main-wrapper {
+        > section {
+            margin: 0px;
+
+            main.site-layout-background {
+                margin: 4rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    header.header {
+        .content-wrapper {
+            .header-content {
+                justify-content: flex-end;
+
+                & > div:not(.profile-picture) {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    .main-wrapper {
+        > section {
+            main.site-layout-background {
+                .page-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+
+                    .ant-input-search {
+                        margin: 1.5rem 0 0 !important;
+                        width: 93% !important;
+                        border: none;
+                        box-shadow: 0 0px 2.1px rgba(0, 0, 0, 0.035),
+                            0 0px 17px rgba(0, 0, 0, 0.07);
+
+                        .ant-input-wrapper {
+                            display: flex;
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #overview-table {
+        table {
+            thead {
+                tr {
+                    th {
+                        &:last-of-type {
+                            text-align: right;
+                        }
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    td {
+                        &.product-info-cell {
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #more-info {
+        padding: 3rem 0;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    header.header {
+        padding: 1.5rem 2rem;
+    }
+    .main-wrapper {
+        > section {
+            main.site-layout-background {
+                margin: 2rem;
+            }
+        }
+    }
+    #order-table {
+        .site-page-header {
+            span {
+                font-size: 1.3rem;
+            }
+        }
+
+        table {
+            thead {
+                tr {
+                    th {
+                        font-size: 1.2rem;
+                    }
+                }
+            }
+        }
+    }
+
+    #overview-table {
+        table {
+            tbody {
+                tr {
+                    td {
+                        &.product-info-cell {
+                            .status-badge {
+                                ~ span {
+                                    text-align: right;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #mobile-nav {
+        ul {
+            li {
+                font-size: 1.2rem;
+                padding: 0 0.5rem !important;
+            }
+        }
+    }
+
+    .table-header {
+        font-size: 2.4rem;
+    }
+
+    %shared-dark-font-style {
+        font-size: 1.3rem;
+    }
+
+    %shared-light-font-style {
+        font-size: 1.2rem;
+    }
+}

@@ -9,7 +9,6 @@ import {
     ShopOutlined,
     DropboxOutlined
 } from "@ant-design/icons";
-const { Sider } = Layout;
 
 const menuKeys = {
     "1": {
@@ -35,9 +34,9 @@ const selectMenuKeys = locationString => {
     return result;
 };
 
-const MenuComponent = props => {
+const MobileMenu = props => {
     return (
-        <Sider id="side-nav">
+        <nav id="mobile-nav">
             <Menu
                 mode="inline"
                 selectedKeys={selectMenuKeys(props.history.location.pathname)}
@@ -73,7 +72,7 @@ const MenuComponent = props => {
                     </NavLink>
                 </Menu.Item>
             </Menu>
-        </Sider>
+        </nav>
     );
 };
 
@@ -87,4 +86,4 @@ const mapDispatchToProps = dispatch => ({});
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(injectIntl(withRouter(MenuComponent)));
+)(injectIntl(withRouter(MobileMenu)));
