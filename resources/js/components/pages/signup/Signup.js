@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Checkbox, Row, Col, Card, Select } from 'antd';
+import { Form, Input, Button, Checkbox, Row, Col, Card, Select, PageHeader, Link, Divider } from 'antd';
+import { ExclamationCircleOutlined, DropboxOutlined, PlusOutlined, SortDescendingOutlined, SortAscendingOutlined, UserOutlined, HomeOutlined } from '@ant-design/icons';
 import { initialState } from './initialState'
 import { injectIntl } from 'react-intl'
 import ReactCountryFlag from 'react-country-flag'
@@ -44,6 +45,13 @@ class Signup extends Component {
     this.setState({ ...this.state })
   }
 
+  async handleSearchLocalCodeClick() {
+    let { company: { local_code: localCode } } = this.formRef.current.getFieldsValue(["company"])
+    let resp = await requestClient.get(`/api/signup/local-code?value=${localCode}`)
+    console.log(resp.data)
+    this.formRef.current.setFieldsValue(resp.data)
+  }
+
   handleFormSubmit(values) {
     let captcha_value = this.recaptchaRef.current.getValue()
     requestClient.post('/api/signup/requestor', {
@@ -80,8 +88,9 @@ class Signup extends Component {
   render() {
     return (
       <Row type="flex" justify="center" align="middle" style={{ minHeight: '100vh' }}>
-        <Col lg={6} >
+        <Col lg={8} >
           <Card title={this.props.intl.formatMessage({ id: 'pages.signup.header' })}>
+            <div></div>
             {this.state.successfully_submitted && <div>{this.props.intl.formatMessage({ id: 'pages.signup.successfully_submitted' })}</div>}
             {!this.state.successfully_submitted && <Form
               ref={this.formRef}
@@ -90,55 +99,93 @@ class Signup extends Component {
               initialValues={this.state.initialForm}
               onFinish={(e) => { this.handleFormSubmit(e) }}
             >
+              <PageHeader
+                className="site-page-header"
+                title={this.props.intl.formatMessage({ id: 'models.user.profile' })}
+                avatar={{ icon: (<UserOutlined className="header-icon" />) }}
+              />
+              <Divider className="site-devider after-header"></Divider>
+              <Row>
+                <Col lg={12}>
+                  <Form.Item
+                    label={this.props.intl.formatMessage({ id: 'general.email' })}
+                    name="email"
+                    required
+                    validateStatus={this.state.error.errors.email && "error"}
+                    help={this.state.error.errors.email && this.state.error.errors.email.join(', ')}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={20}>
+                <Col lg={12}>
+                  <Form.Item
+                    label={this.props.intl.formatMessage({ id: 'general.firstName' })}
+                    name="first_name"
+                    required
+                    validateStatus={this.state.error.errors.name && "error"}
+                    help={this.state.error.errors.name && this.state.error.errors.name.join(', ')}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+
+                <Col lg={12}>
+                  <Form.Item
+                    label={this.props.intl.formatMessage({ id: 'general.lastName' })}
+                    name="last_name"
+                    required
+                    validateStatus={this.state.error.errors.email && "error"}
+                    help={this.state.error.errors.email && this.state.error.errors.email.join(', ')}
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+
+              <PageHeader
+                className="site-page-header"
+                title={this.props.intl.formatMessage({ id: 'models.company.company' })}
+                avatar={{ icon: (<HomeOutlined className="header-icon" />) }}
+              />
+              <Divider className="site-devider after-header"></Divider>
               <Form.Item
-                label={this.props.intl.formatMessage({ id: 'general.name' })}
-                name="name"
+                label={this.props.intl.formatMessage({ id: 'pages.signup.company.local_code' })}
                 required
-                validateStatus={this.state.error.errors.name && "error"}
-                help={this.state.error.errors.name && this.state.error.errors.name.join(', ')}
+              >
+                <Input.Group compact>
+                  <Form.Item
+                    noStyle
+                    name={["company", "local_code"]}
+                  >
+                    <Input
+                      style={{ width: "80%" }}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    noStyle
+                  >
+                    <Button
+                      style={{ width: "20%" }}
+                      type="primary"
+                      onClick={() => { this.handleSearchLocalCodeClick() }}
+                    >
+                      {this.props.intl.formatMessage({ id: 'general.getData' })}
+                    </Button>
+                  </Form.Item>
+
+                </Input.Group>
+              </Form.Item>
+              <Form.Item
+                label={this.props.intl.formatMessage({ id: 'models.company.name' })}
+                name={["company", "name"]}
+                required
               >
                 <Input />
               </Form.Item>
-
               <Form.Item
-                label={this.props.intl.formatMessage({ id: 'pages.signup.company_name' })}
-                name="company_name"
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                label={this.props.intl.formatMessage({ id: 'general.email' })}
-                name="email"
-                required
-                validateStatus={this.state.error.errors.email && "error"}
-                help={this.state.error.errors.email && this.state.error.errors.email.join(', ')}
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                label={this.props.intl.formatMessage({ id: 'general.country' })}
-                name="country_id"
-                required
-                validateStatus={this.state.error.errors.country_id && "error"}
-                help={this.state.error.errors.country_id}
-              >
-                <Select
-                  onChange={(value) => { this.handleCountryChange(value) }}>
-                  {this.state.countries.map((country) => {
-                    return (
-                      <Select.Option key={country.id} value={country.id}>
-                        <div><ReactCountryFlag countryCode={country.code.toUpperCase()} />
-                          {this.props.intl.formatMessage({ id: `countries.${country.name}` })}
-                        </div>
-                      </Select.Option>)
-                  })}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                label={this.props.intl.formatMessage({ id: 'general.phone' })}
+                label={this.props.intl.formatMessage({ id: 'models.address.phone' })}
                 required
                 validateStatus={this.state.error.errors.phone && "error"}
                 help={this.state.error.errors.phone && this.state.error.errors.phone.join(', ')}
@@ -146,11 +193,10 @@ class Signup extends Component {
                 <Input.Group compact>
                   <Form.Item
                     noStyle
-                    name="phone_area_country_id"
+                    name={["company", "address", "country", "id"]}
                   >
                     <Select
                       style={{ width: '30%' }}
-                      name="phone_area_country_id"
                     >
                       {this.state.countries.map((country) => {
                         return (
@@ -165,12 +211,53 @@ class Signup extends Component {
                   <Form.Item
                     label={this.props.intl.formatMessage({ id: 'general.phone' })}
                     noStyle
-                    name="phone"
+                    name={["company", "address", "phone"]}
                   >
                     <Input style={{ width: "70%" }} />
                   </Form.Item>
                 </Input.Group>
               </Form.Item>
+
+              <Row gutter={20}>
+                <Col lg={12}>
+                  <Form.Item
+                    label={this.props.intl.formatMessage({ id: 'models.address.email' })}
+                    name={["company", "address", "email"]}
+                    required
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col lg={12}>
+                  <Form.Item
+                    label={this.props.intl.formatMessage({ id: 'models.address.address' })}
+                    name={["company", "address", "address_1"]}
+                    required
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Row gutter={20}>
+                <Col lg={12}>
+                  <Form.Item
+                    label={this.props.intl.formatMessage({ id: 'models.address.zipcode' })}
+                    name={["company", "address", "zipcode"]}
+                    required
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+                <Col lg={12}>
+                  <Form.Item
+                    label={this.props.intl.formatMessage({ id: 'models.address.city' })}
+                    name={["company", "address", "city"]}
+                    required
+                  >
+                    <Input />
+                  </Form.Item>
+                </Col>
+              </Row>
               <Form.Item
                 name="accept_terms_and_conditions"
                 required
@@ -194,7 +281,7 @@ class Signup extends Component {
               <Form.Item >
                 <Row justify="end">
                   <Button type="primary" htmlType="submit">
-                    {this.props.intl.formatMessage({ id: 'general.submit' })}
+                    {this.props.intl.formatMessage({ id: 'crud.create' })}
                   </Button>
                 </Row>
               </Form.Item>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Layout, Menu, Dropdown, Row, Col, Button, Badge, Avatar } from 'antd';
 import { MenuFoldOutlined, MenufoldOutlined, ShoppingCartOutlined } from '@ant-design/icons'
+import { NavLink } from 'react-router-dom'
 import logoImage from '../../../images/batata-logo.svg'
 import { connect } from 'react-redux'
 const { Header } = Layout;
@@ -10,7 +11,9 @@ const menu = (handleLogout) => {
   return (
     <Menu>
       <Menu.Item key="0">
-        <a href="#">User settings</a>
+        <NavLink to={"/profile/settings"}>
+          Profile settings
+        </NavLink>
       </Menu.Item>
       <Menu.Item key="1">
         <a href="#">Messages</a>
@@ -44,7 +47,7 @@ const HeaderComponent = (props) => {
         </div>
       </Col>
       <Col style={{ display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-        <Badge onClick={() => { props.history.push("/cart") }} count={(props.cartReducer.cart || []).length} offset={[-18, 20]} style={{backgroundColor: "#f67d09", cursor: "pointer"}} size="defaukt">
+        <Badge onClick={() => { props.history.push("/cart") }} count={(props.cartReducer.cart || []).length} offset={[-18, 20]} style={{ backgroundColor: "#f67d09", cursor: "pointer" }} size="defaukt">
           <Avatar style={{
             color: "#f8af17",
             background: "#031429",
@@ -53,7 +56,7 @@ const HeaderComponent = (props) => {
             cursor: "ponter",
             width: "64px"
           }}>
-            <ShoppingCartOutlined style={{cursor: "pointer"}}/>
+            <ShoppingCartOutlined style={{ cursor: "pointer" }} />
           </Avatar>
         </Badge>
         <div style={{ color: "white" }}><strong>{userDetails.name}</strong> {` (${userDetails.email})`}</div>
@@ -71,7 +74,7 @@ const HeaderComponent = (props) => {
               }}
 
               className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-              <Badge count={1} style={{backgroundColor: "#1890ff"}}>
+              <Badge count={1} style={{ backgroundColor: "#1890ff" }}>
                 <Avatar shape="square" src="https://avatars3.githubusercontent.com/u/10627086?s=40&v=4" />
               </Badge>
             </a>

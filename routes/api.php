@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
   Route::post('register', 'API\Authentication\RegisterController@register');
 
   //SIGNUP
+  Route::get('signup/local-code', 'API\Signup\SignupController@local_code');
   Route::post('signup/requestor', 'API\Signup\SignupController@register_requestor');
 
   //GENERAL
@@ -44,6 +45,9 @@ use Illuminate\Support\Facades\Route;
     Route::post('carts/update', 'API\General\CartsController@update');
 
     Route::delete('carts/destroy_item/{id}', 'API\General\CartsController@destroy_item');
+
+    //LANGUAGES
+    Route::get('languages', 'API\General\LanguagesController@index');
 
     //PRODUCTS
     Route::get('products/{id}', 'API\General\ProductsController@find');

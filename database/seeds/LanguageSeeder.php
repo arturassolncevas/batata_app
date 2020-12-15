@@ -10,13 +10,13 @@ class LanguageSeeder extends Seeder
         "id" => "20071342-a128-11ea-bb37-0242ac130000",
         "name" => ["en" => "English", "da" => "Engelsk"],
         "alias" => "en",
-        "code" => "en",
+        "code" => "gb",
       ],
       [
         "id" => "20071342-a128-11ea-bb37-0242ac130002",
         "name" => ["en" => "Danish", "da" => "Dansk"],
         "alias" => "da",
-        "code" => "da",
+        "code" => "dk",
       ]
     ];
 

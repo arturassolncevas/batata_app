@@ -28,7 +28,10 @@
       "header": "Signup",
       "company_name": "Company name",
       "accept_terms_and_conditions": "I agree to be contacted",
-      "successfully_submitted": "Thank you for your request. You will be hearing from us soon."
+      "successfully_submitted": "Thank you for your request. You will be hearing from us soon.",
+      "company": {
+        "local_code": "CVR-number"
+      }
     },
     "newProduct": {
       "header": "New Product",
@@ -49,6 +52,9 @@
       "index": {
         "header": "Products"
       }
+    },
+    "profileSettings": {
+      "header": "Profil" 
     }
   },
   "shared": {
@@ -69,10 +75,13 @@
     "add_to_cart": "Add to cart",
     "inactive": "Inactive",
     "name": "Name",
+    "firstName": "Name",
+    "lastName": "Last name",
     "email": "Email",
     "password": "Password",
     "submit": "Submit",
     "phone": "Phone",
+    "language": "Language",
     "country": "Country",
     "search": "Search",
     "category": "Category",
@@ -88,7 +97,8 @@
     "yes": "Yes",
     "no": "No",
     "min": "Min",
-    "max": "Max"
+    "max": "Max",
+    "getData": "Get data"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -110,6 +120,21 @@
       "images": "Images",
       "title": "Title",
       "description": "Description"
+    },
+    "company": {
+      "local_code": null,
+      "name": "Company name",
+      "company": "Firma"
+    },
+    "address": {
+      "address": "Address",
+      "email": "Email",
+      "phone": "Phone nummer",
+      "zipcode": "Zipcode",
+      "city": "City"
+    },
+    "user": {
+      "profile": "Profile"
     }
   },
   "sort": {
@@ -119,7 +144,9 @@
   },
   "crud": {
     "edit": "Edit",
+    "create": "Submit",
     "delete": "Delete",
+    "save": "Save",
     "questions": {
       "want_to_delete_wqm": "Do you want to delete"
     }

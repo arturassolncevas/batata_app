@@ -28,7 +28,10 @@
       "header": "Signup",
       "company_name": "Firmanavn",
       "accept_terms_and_conditions": "Jeg tillader hermed at blive kontaktet",
-      "successfully_submitted": "Tak for din anmodning. Vi sætter stor pris på din interesse. Du hører snart fra os."
+      "successfully_submitted": "Tak for din anmodning. Vi sætter stor pris på din interesse. Du hører snart fra os.",
+      "company": {
+        "local_code": "CVR-nummer"
+      }
     },
     "newProduct": {
       "header": "Nyt Produkt",
@@ -49,6 +52,9 @@
       "index": {
         "header": "Produkter"
       }
+    },
+    "profileSettings": {
+      "header": "Profil" 
     }
   },
   "shared": {
@@ -68,13 +74,16 @@
     "active": "Aktiv",
     "add_to_cart": "Tilføje til kurv",
     "inactive": "Inaktiv",
-    "name": "Name",
+    "name": "Navn",
+    "firstName": "Navn",
+    "lastName": "Efternavn",
     "email": "Email",
     "password": "Password",
     "submit": "Submit",
     "phone": "Phone",
     "country": "Country",
     "search": "Søg",
+    "language": "Sprog",
     "category": "Category",
     "next": "Næste",
     "back": "Tilbage",
@@ -88,7 +97,8 @@
     "yes": "Ja",
     "no": "Nej",
     "min": "Min",
-    "max": "Max"
+    "max": "Max",
+    "getData": "Hent data"
   },
   "menu": {
     "dashboard": "Dashboard",
@@ -110,6 +120,21 @@
       "images": "Billeder",
       "title": "Titel",
       "description": "Beskrivelse"
+    },
+    "company": {
+      "local_code": null,
+      "name": "Firmanavn",
+      "company": "Firma"
+    },
+    "address": {
+      "address": "Adresse",
+      "email": "Email",
+      "phone": "Telefon nummer",
+      "zipcode": "Post nummer",
+      "city": "By"
+    },
+    "user": {
+      "profile": "Profil"
     }
   },
   "sort": {
@@ -119,7 +144,9 @@
   },
   "crud": {
     "edit": "Rediger",
+    "create": "Oprette",
     "delete": "Slet",
+    "save": "Gem",
     "questions": {
       "want_to_delete_wqm": "Vil du slette product"
     }

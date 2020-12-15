@@ -1,7 +1,22 @@
 const initialState = {
   initialForm: {
-    name: null,
-    company_name: null,
+    first_name: null,
+    last_name: null,
+    email: null,
+    company: {
+      name: null,
+      local_code: "",
+      address: {
+        address_1: null,
+        city: null,
+        email: null,
+        phone: null,
+        zipcode: null,
+        country: {
+          id: "85a5384e-bf34-4a47-be1d-10979f6b1807"
+        }
+      }
+    },
     email: null,
     country_id: null,
     area_code_country_id: null,
