@@ -1,284 +1,378 @@
-import React from 'react'
-import { PageHeader, Divider, Row, Table, Tag, Col } from 'antd';
-import { CarryOutOutlined } from '@ant-design/icons';
-
-
-const tableColumns = [
-  {
-    title: 'ID',
-    dataIndex: 'orderId',
-    key: 'orderId',
-    fixed: 'left',
-  },
-  {
-    title: 'Quantity',
-    dataIndex: 'quantity',
-    key: 'quantity',
-    fixed: 'left',
-    render: (objects = []) => { 
-      return objects.map((obj, index) => (
-        <Row key={index} >
-          <img style={{ height: "30px", padding: "1px", marginRight: "15px" }} src={obj.imageLink}/>
-          <div>{` ${obj.title} ${obj.quantity} x ${obj.price} /${obj.measure}`}</div>
-        </Row>
-      ))
-    }
-  },
-  {
-
-  },
-  {
-    title: 'Order time',
-    dataIndex: 'orderTime',
-    key: 'orderTime',
-  },
-  {
-    title: 'Delivery/Pickup date',
-    dataIndex: 'deliveryDate',
-    key: 'inStock',
-  },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: (status) => {
-      let color = ""
-      switch(status) {
-        case "Pending":
-          color = "blue"
-          break
-        case "Payment received":
-          color = "orange"
-          break
-        case "Delivered":
-          color = "green"
-          break
-        case "Cancelled":
-          color = "red"
-          break
-      }
-      return <Tag style={{ margin: "4px" }}
-        color={color}>
-        {status}
-      </Tag>
-    }
-  },
-];
-
-const tableData = [
-  {
-    key: 1,
-    orderId: "42552",
-    orderTime: "2020-09-01 15:20",
-    deliveryDate: "2020-10-01",
-    status: "Pending",
-    quantity: [
-      { 
-        quantity: 25,
-        title: "Tomatoes",
-        measure: "1Kg",
-        imageLink: "https://www.myswanlake.com/wp-content/uploads/2016/08/Hot-House-Tomatoes-On-The-Vine-200x200.jpg",
-        price: "5,00 kr."
-      },
-      { 
-        quantity: 40,
-        title: "Apples",
-        measure: "1Kg",
-        imageLink: "https://kgmi.com/wp-content/blogs.dir/70/files/2014/10/apples-200x200.jpg",
-        price: "6,00 kr."
-      },
-      { 
-        quantity: 40,
-        title: "Summer Rhubarb",
-        measure: "15pcs(pack)",
-        imageLink: "https://gardenseedsmarket.com/images/thumbnails/320/320/detailed/61/rabarbar-victoria.jpg",
-        price: "6,00 kr."
-      },
-    ],
-  },
-  {
-    key: 2,
-    orderId: "42553",
-    orderTime: "2020-08-28 10:14",
-    deliveryDate: "2020-09-14",
-    status: "Payment received",
-    quantity: [
-      { 
-        quantity: 15,
-        title: "Broiler",
-        measure: "1.5kg(pack)",
-        imageLink: "https://5.imimg.com/data5/IQ/NS/MY-11305339/whole-uncooked-raw-chicken-500x500.jpg",
-        price: "15,00 kr. "
-      },
-      { 
-        quantity: 5,
-        title: "Tomatoes",
-        measure: "Kg",
-        imageLink: "https://www.myswanlake.com/wp-content/uploads/2016/08/Hot-House-Tomatoes-On-The-Vine-200x200.jpg",
-        price: "5,00 kr."
-      },
-    ],
-  },
-  {
-    key: 3,
-    orderId: "42552",
-    orderTime: "2020-08-28 10:14",
-    deliveryDate: "2020-09-14",
-    status: "Delivered",
-    quantity: [
-      { 
-        quantity: 15,
-        title: "Basil",
-        measure: " 150g(pack)",
-        imageLink: "https://www.plantorama.dk/-/media/Images/Guide/Have/Haveplanter/Spiselige-baer-og-planter/Krydderurter/Dyrkning-af-basilikum/basilikum-spot-1.png?width=200&height=200&mode=crop&quality=70",
-        price: "5,00 kr."
-      },
-      { 
-        quantity: 20,
-        title: "Broiler",
-        measure: "1.5kg(pack)",
-        imageLink: "https://5.imimg.com/data5/IQ/NS/MY-11305339/whole-uncooked-raw-chicken-500x500.jpg",
-        price: "15,00 kr. "
-      },
-      { 
-        quantity: 50,
-        title: "Apples",
-        measure: "Kg",
-        imageLink: "https://kgmi.com/wp-content/blogs.dir/70/files/2014/10/apples-200x200.jpg",
-        price: "6,00 kr."
-      }
-    ],
-  },
-  {
-    key: 4,
-    orderId: "42551",
-    orderTime: "2020-08-28 10:14",
-    deliveryDate: "2020-09-14",
-    status: "Cancelled",
-    quantity: [
-      { 
-        quantity: 23,
-        title: "Basil",
-        measure: " 150g(pack)",
-        imageLink: "https://www.plantorama.dk/-/media/Images/Guide/Have/Haveplanter/Spiselige-baer-og-planter/Krydderurter/Dyrkning-af-basilikum/basilikum-spot-1.png?width=200&height=200&mode=crop&quality=70",
-        price: "5,00 kr."
-      },
-    ],
-  },
-  {
-    key: 5,
-    orderId: "42552",
-    orderTime: "2020-08-28 10:14",
-    deliveryDate: "2020-09-14",
-    status: "Delivered",
-    quantity: [
-      { 
-        quantity: 10,
-        title: "Broiler",
-        measure: "1.5kg(pack)",
-        imageLink: "https://5.imimg.com/data5/IQ/NS/MY-11305339/whole-uncooked-raw-chicken-500x500.jpg",
-        price: "15,00 kr. "
-      },
-      { 
-        quantity: 10,
-        title: "Tomatoes",
-        measure: "Kg",
-        imageLink: "https://www.myswanlake.com/wp-content/uploads/2016/08/Hot-House-Tomatoes-On-The-Vine-200x200.jpg",
-        price: "5,00 kr."
-      },
-      { 
-        quantity: 20,
-        title: "Apples",
-        measure: "Kg",
-        imageLink: "https://kgmi.com/wp-content/blogs.dir/70/files/2014/10/apples-200x200.jpg",
-        price: "6,00 kr."
-      }
-    ],
-  },
-  {
-    key: 6,
-    orderId: "42552",
-    orderTime: "2020-08-28 10:14",
-    deliveryDate: "2020-09-14",
-    status: "Delivered",
-    quantity: [
-      { 
-        quantity: 15,
-        title: "Basil",
-        measure: " 150g(pack)",
-        imageLink: "https://www.plantorama.dk/-/media/Images/Guide/Have/Haveplanter/Spiselige-baer-og-planter/Krydderurter/Dyrkning-af-basilikum/basilikum-spot-1.png?width=200&height=200&mode=crop&quality=70",
-        price: "5,00 kr."
-      },
-      { 
-        quantity: 65,
-        title: "Apples",
-        measure: "Kg",
-        imageLink: "https://kgmi.com/wp-content/blogs.dir/70/files/2014/10/apples-200x200.jpg",
-        price: "6,00 kr."
-      },
-      { 
-        quantity: 35,
-        title: "Tomatoes",
-        measure: "Kg",
-        imageLink: "https://www.myswanlake.com/wp-content/uploads/2016/08/Hot-House-Tomatoes-On-The-Vine-200x200.jpg",
-        price: "5,00 kr."
-      },
-    ],
-  },
-
-  {
-    key: 7,
-    orderId: "42552",
-    orderTime: "2020-08-28 10:14",
-    deliveryDate: "2020-09-14",
-    status: "Delivered",
-    quantity: [
-      { 
-        quantity: 12,
-        title: "Summer Rhubarb",
-        measure: "15pcs(pack)",
-        imageLink: "https://gardenseedsmarket.com/images/thumbnails/320/320/detailed/61/rabarbar-victoria.jpg",
-        price: "6,00 kr."
-      },
-      { 
-        quantity: 110,
-        title: "Apples",
-        measure: "Kg",
-        imageLink: "https://kgmi.com/wp-content/blogs.dir/70/files/2014/10/apples-200x200.jpg",
-        price: "6,00 kr."
-      },
-      { 
-        quantity: 25,
-        title: "Broiler",
-        measure: "1pcs (pack)",
-        imageLink: "https://5.imimg.com/data5/IQ/NS/MY-11305339/whole-uncooked-raw-chicken-500x500.jpg",
-        price: "15,00 kr. "
-      },
-      { 
-        quantity: 15,
-        title: "Tomatoes",
-        measure: "Kg",
-        imageLink: "https://www.myswanlake.com/wp-content/uploads/2016/08/Hot-House-Tomatoes-On-The-Vine-200x200.jpg",
-        price: "5,00 kr."
-      },
-    ]
-  }
-];
+import React from "react";
+import {
+    PageHeader,
+    Divider,
+    Row,
+    Table,
+    Tag,
+    Col,
+    Avatar,
+    Menu,
+    Dropdown,
+    Collapse
+} from "antd";
+import OverviewTable from "./OverviewTable";
+import Man1 from "../../../../images/Man1.jpg";
+import Man2 from "../../../../images/Man2.jpg";
+import Woman1 from "../../../../images/woman1.jpg";
+import Woman2 from "../../../../images/woman2.jpg";
 
 export default function OrdersPage() {
-  return (
-    <div>
-      <PageHeader
-        className="site-page-header"
-        title="Orders"
-        avatar={{ icon: (<CarryOutOutlined />) }}
-      />
-      <Divider className="site-devider after-header"></Divider>
-      <Row style={{}}>
-        <Col md={24} >
-          <Table columns={tableColumns} dataSource={tableData} />
-        </Col>
-      </Row>
-    </div>
-  )
+    const menu = (
+        <Menu>
+            <Menu.Item className="dark">View Order</Menu.Item>
+            <Menu.Item>Cancel Order</Menu.Item>
+        </Menu>
+    );
+
+    const sorter = (
+        <Menu>
+            <Menu.Item>Price</Menu.Item>
+            <Menu.Item>Delivery Date</Menu.Item>
+        </Menu>
+    );
+
+    const { Panel } = Collapse;
+
+    const columns = [
+        {
+            title: "",
+            dataIndex: "image",
+            key: "image",
+            width: "5%"
+        },
+        {
+            title: "Buyer",
+            dataIndex: "buyer",
+            key: "name",
+            render: buyer =>
+                buyer && (
+                    <>
+                        <span className="buyer-name">{buyer.name}</span> <br />
+                        <span className="buyer-id">
+                            ID: <span>{`${buyer.id}`}</span>
+                        </span>
+                    </>
+                )
+        },
+        {
+            title: (
+                <div className="product-title">
+                    <span className="product-info">Product</span>
+                    <span className="product-amount">Amount</span>
+                </div>
+            ),
+            dataIndex: "product",
+            width: "35%",
+            key: "product",
+            render: products => {
+                if (Array.isArray(products) === true) {
+                    let { title, quantity, measure, price } = products[0];
+                    // let others = `+ ${products.length - 1} others`;
+                    let desc = <span>{`${quantity} of ${measure}`}</span>;
+                    let header = (
+                        <div className="collapsible-header">
+                            <div className="product-info">
+                                <span className="product-name">{title} </span>
+                                <br />
+                                <span className="product-desc">{desc}</span>
+                            </div>
+                            <span className="product-amount">
+                                DKK
+                                <span>{price.split("DKK ")[1]}</span>
+                            </span>
+                        </div>
+                    );
+                    let totalAmount = 0;
+                    let hidden = products
+                        .map((product, idx) => {
+                            let { title, quantity, measure, price } = product;
+                            totalAmount += parseFloat(price.split("DKK ")[1]);
+                            return (
+                                <div key={idx} className="product-cell">
+                                    <div className="product-info">
+                                        <span className="product-name">
+                                            {title}
+                                        </span>{" "}
+                                        <br />
+                                        <span className="product-desc">{`${quantity} of ${measure}`}</span>
+                                    </div>
+
+                                    <span className="product-amount">
+                                        DKK
+                                        <span>{price.split("DKK ")[1]}</span>
+                                    </span>
+                                </div>
+                            );
+                        })
+                        .splice(1);
+
+                    return (
+                        <Collapse
+                            id="product-collapsible"
+                            expandIconPosition="right"
+                            ghost
+                        >
+                            <Panel header={header} key="1">
+                                {hidden}
+                                <Divider />
+                                <p className="total-amount">
+                                    Total :
+                                    <span>
+                                        DKK
+                                        <span>{`${parseFloat(
+                                            totalAmount.toFixed(2)
+                                        )}`}</span>
+                                    </span>
+                                </p>
+                            </Panel>
+                        </Collapse>
+                    );
+                } else {
+                    let { title, quantity, measure, price } = products;
+                    let others = <span>{`${quantity} of ${measure}`}</span>;
+                    return (
+                        <div className="product-cell">
+                            <div className="product-info">
+                                <span className="product-name">{title} </span>
+                                <br />
+                                <span className="product-desc">{others}</span>
+                            </div>
+
+                            <span className="product-amount">
+                                DKK
+                                <span>{price.split("DKK ")[1]}</span>
+                            </span>
+                        </div>
+                    );
+                }
+            }
+        },
+
+        {
+            title: "Delivery Date",
+            dataIndex: "delivery",
+            key: "delivery",
+            render: delivery =>
+                delivery && (
+                    <>
+                        <span className="delivery-date">{delivery.date} </span>
+                        <br />
+                        <span className="delivery-type">{delivery.type} </span>
+                    </>
+                )
+        },
+        {
+            title: "Status",
+            dataIndex: "status",
+            key: "status",
+            render: status => {
+                let color = "";
+                switch (status) {
+                    case "pending":
+                        color = "#f4d167";
+                        break;
+                    case "payment received":
+                        color = "#82cbf4";
+                        break;
+                    case "delivered":
+                        color = "#84e296";
+                        break;
+                    case "cancelled":
+                        color = "#f08989";
+                        break;
+                }
+                return (
+                    <Tag className="status" color={color}>
+                        {status}
+                    </Tag>
+                );
+            }
+        },
+        {
+            title: "Action",
+            dataIndex: "",
+            key: "x",
+            render: () => (
+                <Dropdown overlay={menu} overlayClassName="action-dropdown">
+                    <span
+                        className="ant-dropdown-link"
+                        style={{ fontSize: "2rem", fontWeight: "700" }}
+                    >
+                        ...
+                    </span>
+                </Dropdown>
+            )
+        }
+    ];
+
+    const data = [
+        {
+            key: 0,
+            buyer: {
+                name: "John Brown sr.",
+                id: "42552"
+            },
+            product: [
+                {
+                    quantity: 25,
+                    title: "Tomatoes",
+                    measure: "1kg",
+                    price: "DKK 15.60"
+                },
+                {
+                    quantity: 40,
+                    title: "red apples",
+                    measure: "1kg",
+                    price: "DKK 35.89"
+                },
+                {
+                    quantity: 25,
+                    title: "Rhubarb",
+                    measure: "15pcs (pack)",
+                    price: "DKK 10.00"
+                }
+            ],
+            delivery: {
+                date: "20/10/2020",
+                type: "pick up"
+            },
+            status: "delivered",
+            image: <Avatar src={Man1} shape="circle" />
+        },
+        {
+            key: 1,
+            buyer: {
+                name: "John Brown sr.",
+                id: "42552"
+            },
+            product: [
+                {
+                    quantity: 40,
+                    title: "red apples",
+                    measure: "1kg",
+                    price: "DKK 35.50"
+                },
+                {
+                    quantity: 25,
+                    title: "Rhubarb",
+                    measure: "15pcs (pack)",
+                    price: "DKK 10.99"
+                },
+                {
+                    quantity: 25,
+                    title: "Tomatoes",
+                    measure: "1kg",
+                    price: "DKK 15.00"
+                },
+                {
+                    quantity: 25,
+                    title: "Rhubarb",
+                    measure: "15pcs (pack)",
+                    price: "DKK 10.00"
+                }
+            ],
+            delivery: {
+                date: "Due in 3 days",
+                type: "pick up"
+            },
+            status: "payment received",
+            image: <Avatar src={Woman1} shape="circle" />
+        },
+        {
+            key: 2,
+            buyer: {
+                name: "Dianne Russell",
+                id: "33445"
+            },
+            product: {
+                quantity: 5,
+                title: "Pineapple",
+                measure: "1kg",
+                price: "DKK 15.00"
+            },
+            amount: "DKK 15.00",
+            delivery: {
+                date: "20/10/2020",
+                type: "pick up"
+            },
+            status: "pending",
+            image: <Avatar src={Woman2} shape="circle" />
+        },
+        {
+            key: 3,
+            buyer: {
+                name: "Leslie Alexander",
+                id: "42322"
+            },
+            product: [
+                {
+                    quantity: 40,
+                    title: "mutton",
+                    measure: "1kg",
+                    price: "DKK 102.50"
+                },
+                {
+                    quantity: 25,
+                    title: "pork",
+                    measure: "1kg",
+                    price: "DKK 99.99"
+                },
+                {
+                    quantity: 25,
+                    title: "beef",
+                    measure: "1kg",
+                    price: "DKK 59.99"
+                }
+            ],
+            delivery: {
+                date: "Due tomorrow",
+                type: "pick up"
+            },
+            status: "cancelled",
+            image: <Avatar src={Man2} shape="circle" />
+        }
+    ];
+
+    return (
+        <div id="order-table">
+            <div className="site-page-header">
+                <p className="table-header">Orders</p>
+                <Dropdown
+                    overlay={sorter}
+                    trigger={["click"]}
+                    placement="topLeft"
+                    overlayClassName="sorter-dropdown"
+                >
+                    <span className="ant-dropdown-link">
+                        <svg
+                            width="10"
+                            height="11"
+                            viewBox="0 0 10 11"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path
+                                d="M3.25 1.45H10M3.25 4.15H7.3M3.25 6.85H10M3.25 9.55H7.3M1 1H1.9V1.9H1V1ZM1 3.7H1.9V4.6H1V3.7ZM1 6.4H1.9V7.3H1V6.4ZM1 9.1H1.9V10H1V9.1Z"
+                                stroke="#666666"
+                            />
+                        </svg>
+                        Sort by
+                    </span>
+                </Dropdown>
+            </div>
+            <Row>
+                <Col span={24}>
+                    <Table
+                        className="extended-table"
+                        columns={columns}
+                        dataSource={data}
+                        pagination={false}
+                    />
+
+                    <OverviewTable data={data} />
+                </Col>
+            </Row>
+        </div>
+    );
 }
