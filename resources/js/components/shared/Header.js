@@ -47,7 +47,7 @@ const HeaderComponent = props => {
                     </div>
                 </Col>
                 <Col className="header-content">
-                    {/* <Badge
+                    <Badge
                         onClick={() => {
                             props.history.push("/cart");
                         }}
@@ -73,7 +73,7 @@ const HeaderComponent = props => {
                                 style={{ cursor: "pointer" }}
                             />
                         </Avatar>
-                    </Badge> */}
+                    </Badge>
                     <div className="profile-picture">
                         <Badge
                             count={3}
