@@ -8,8 +8,11 @@ let store = createStore(
     combineReducers({ authReducer, menuReducer, cartReducer }),
     compose(
         applyMiddleware(thunk),
-/*         window.__REDUX_DEVTOOLS_EXTENSION__ &&
-            window.__REDUX_DEVTOOLS_EXTENSION__() */
+        //TODO
+        //description: Some kind of dev tool etension setup for redux that does not work on local linux
+        //could be nice to make run script in package.json with ENV var flag
+        //if process.env.<flag> == true then 
+        //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     )
 );
 

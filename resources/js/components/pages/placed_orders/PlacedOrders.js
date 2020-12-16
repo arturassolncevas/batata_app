@@ -120,6 +120,7 @@ class PlacedOrdersPage extends Component {
               </div>
             </div>
             <Table
+              className="extended-table"
               dataSource={this.state.placed_orders.data}
               pagination={{
                 current: this.state.placed_orders.pagination.page ,

@@ -38,7 +38,7 @@ const MainLayout = props => {
             <Header
                 // handleMenuClick={(e) => { this.handleMenuClick(e) }}
                 handleLogOut={e => {
-                    this.handleLogOut(e);
+                    handleLogOut(e);
                 }}
                 history={props.history}
             />

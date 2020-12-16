@@ -14,10 +14,6 @@ const { Header } = Layout;
 const menu = handleLogout => {
     return (
         <Menu>
-            <Menu.Item key="0">
-              <a href to={"/profile/settings"}></a>
-                Profile settings
-            </Menu.Item>
             <Menu.Item key="1">
                 <a href="#">Messages</a>
             </Menu.Item>
