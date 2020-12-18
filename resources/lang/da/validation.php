@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'accepted' => 'The :attribute must be accepted.',
+    'accepted' => ':attribute skal accepteres',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',
     'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
@@ -96,7 +96,7 @@ return [
     'password' => 'The password is incorrect.',
     'phone_area' => 'The area code is required.',
     'present' => 'The :attribute field must be present.',
-    'recaptcha'=> 'Please ensure that you are a human!',
+    'recaptcha'=> 'skal valideres',
     'cart_item_quantity' => 'ordre kan kun være mellem :min stk og :max stk',
     'regex' => 'The :attribute format is invalid.',
     'required' => 'påkrævet',
@@ -137,6 +137,10 @@ return [
         'phone' => [
             'phone_area' => 'The phone area is required.',
         ],
+
+        'user.repeat_password' => [
+          'same' => 'skal matche adgangskode'
+        ]
     ],
 
     /*
@@ -151,7 +155,8 @@ return [
     */
 
     'attributes' => [
-      'country_id' => 'country'
+      'country_id' => 'Land',
+      'accept_terms_and_conditions' => 'Vilkår',
     ],
 
 ];

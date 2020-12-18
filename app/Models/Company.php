@@ -13,6 +13,12 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
+      'local_code',
+      'name',
+      'type',
+      'email',
+      'phone',
+      'address_id'
     ];
 
     /**
@@ -41,4 +47,10 @@ class Company extends Model
     {
         return $this->hasMany('App\Models\Order', 'company_id');
     }
+
+    public function address()
+    {
+        return $this->belongsTo('App\Models\Address', 'address_id');
+    }
+
 }

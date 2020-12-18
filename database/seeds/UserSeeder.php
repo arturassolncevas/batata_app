@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
       $this->buyer_companies = Company::where("type", "buyer")->get();
       $this->currency_dkk = Currency::where("iso_code", "DKK")->first();
       $this->currency_eur = Currency::where("iso_code", "EUR")->first();
-      $this->language_en = Language::where("code", "en")->first();
-      $this->language_da = Language::where("code", "da")->first();
+      $this->language_en = Language::where("code", "gb")->first();
+      $this->language_da = Language::where("code", "dk")->first();
 
       $this->users = [
         [

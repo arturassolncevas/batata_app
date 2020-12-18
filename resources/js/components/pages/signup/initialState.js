@@ -1,26 +1,27 @@
 const initialState = {
   initialForm: {
-    first_name: null,
-    last_name: null,
-    email: null,
+    user: {
+      name: null,
+      email: null,
+      password: null,
+      repeat_password: null
+    },
     company: {
       name: null,
       local_code: "",
+      type: null,
       address: {
+        email: null,
         address_1: null,
         city: null,
         email: null,
         phone: null,
         zipcode: null,
         country: {
-          id: "85a5384e-bf34-4a47-be1d-10979f6b1807"
+          id: null
         }
       }
     },
-    email: null,
-    country_id: null,
-    area_code_country_id: null,
-    phone: null,
     accept_terms_and_conditions: false,
     recaptcha_value: null,
   },
@@ -28,6 +29,28 @@ const initialState = {
   error: {
     message: null,
     errors: {
+      user: {
+        name: null,
+        email: null,
+        password: null,
+        repeat_password: null
+      },
+      company: {
+        local_code: null,
+        name: null,
+        email: null,
+        type: null,
+        address: {
+          phone: null,
+          address_1: null,
+          zipcode: null,
+          city: null,
+          country: {
+            id: null,
+          }
+        }
+
+      },
       name: null,
       company_name: null,
       email: null,

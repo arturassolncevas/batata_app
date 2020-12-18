@@ -17,7 +17,15 @@ class CreateCompaniesTable extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('type');
+            $table->string('email');
+            $table->string('local_code');
+            $table->string('phone');
+            $table->integer('address_id')->nullable();
             $table->timestamps();
+        });
+
+        Schema::table('companies', function (Blueprint $table) {
+            $table->foreign('address_id')->references('id')->on('addresses');
         });
     }
 
