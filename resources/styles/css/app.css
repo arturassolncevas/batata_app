@@ -87,7 +87,7 @@ body {
   padding: 0 !important;
 }
 
-.main-wrapper > section main.site-layout-background .ant-collapse-content-box .product-cell {
+.main-wrapper > section main.site-layout-background .ant-collapse-content-box .product-wrapper {
   padding-top: 1rem;
 }
 
@@ -146,26 +146,26 @@ body {
   font-weight: 500;
 }
 
-span.buyer-name, span.product-name, span.delivery-date, span.product-amount, p.total-amount span {
-  font-size: 1.6rem;
+span.company-name, span.product-name, span.delivery-date, span.product-amount, p.total-amount span {
+  font-size: 1.3rem;
   line-height: 1.5em;
 }
 
-span.buyer-id, span.product-desc, span.delivery-type, span.status, p.total-amount {
-  font-size: 1.4rem;
+span.company-id, span.product-desc, span.delivery-type, span.status, p.total-amount {
+  font-size: 1.15rem;
   line-height: 1.5em;
 }
 
-span.buyer-name {
+span.company-name {
   color: #001427;
   font-weight: 500;
 }
 
-span.buyer-id {
+span.company-id {
   color: #4f4f4f;
 }
 
-span.buyer-id span {
+span.company-id span {
   color: #001427;
   font-weight: 500;
 }
@@ -345,72 +345,99 @@ header.header .content-wrapper .header-content p {
   color: #001427;
 }
 
-#order-table {
+#placed-orders .sorting-options {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 1.5rem;
+}
+
+#placed-orders .sorting-options > div {
+  width: 20rem;
+  text-align: left;
+  display: flex;
+}
+
+#placed-orders .sorting-options > div .ant-select {
+  flex-grow: 1;
+}
+
+#placed-orders {
   text-transform: capitalize;
 }
 
-#order-table .site-page-header {
+#placed-orders .site-page-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
   align-items: flex-end;
 }
 
-#order-table .site-page-header span {
+#placed-orders .site-page-header span {
   color: #666;
   font-size: 1.4rem;
   line-height: 1.5em;
   font-weight: 400;
 }
 
-#order-table .site-page-header span svg {
+#placed-orders .site-page-header span svg {
   margin-right: 0.5rem;
 }
 
-#order-table table {
+#placed-orders table {
   background-color: #fafbfc;
   box-shadow: 0 0px 2.1px rgba(0, 0, 0, 0.035), 0 0px 17px rgba(0, 0, 0, 0.07);
 }
 
-#order-table table thead {
+#placed-orders table thead {
   text-transform: uppercase;
 }
 
-#order-table table thead tr th {
+#placed-orders table thead tr th {
   color: #4f4f4f;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   line-height: 1.5em;
   font-weight: 400;
 }
 
-#order-table table thead tr th .product-title {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-#order-table table thead tr th .product-title .product-amount {
-  margin-right: 5rem;
-}
-
-#order-table table tbody tr {
+#placed-orders table tbody tr {
   vertical-align: top;
   cursor: pointer;
 }
 
-#order-table table tbody tr:nth-of-type(odd) {
+#placed-orders table tbody tr:nth-of-type(odd) {
   background-color: #fff;
 }
 
-#order-table table tbody tr td {
+#placed-orders table tbody tr td {
   background-color: inherit;
 }
 
-#order-table table tbody tr td .product-cell,
-#order-table table tbody tr td .collapsible-header {
+#placed-orders table tbody tr td .product-wrapper {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+}
+
+#placed-orders table tbody tr td .product-wrapper .product-image {
+  height: 35px;
+  width: 35px;
+  margin-right: 1rem;
+}
+
+#placed-orders table tbody tr td .product-wrapper .product-image img {
+  max-width: 100%;
+}
+
+#placed-orders table tbody tr td .product-wrapper .product-details {
+  display: flex;
+  flex-direction: column;
+}
+
+#placed-orders table tbody tr td .image-placeholder {
+  height: 35px;
+  width: 35px;
+  margin-right: 1rem;
+  color: #4f4f4f;
+  background: #fff;
 }
 
 #overview-table {
@@ -437,18 +464,18 @@ header.header .content-wrapper .header-content p {
   font-size: 1.3rem;
 }
 
-#overview-table table tbody tr td.product-info-cell {
+#overview-table table tbody tr td .product-info-cell {
   display: flex;
   align-items: center;
 }
 
-#overview-table table tbody tr td.product-info-cell .status-badge .ant-badge-dot {
+#overview-table table tbody tr td .product-info-cell .status-badge .ant-badge-dot {
   position: unset;
   width: 10px;
   height: 10px;
 }
 
-#overview-table table tbody tr td.product-info-cell .status-badge ~ span {
+#overview-table table tbody tr td .product-info-cell .status-badge ~ span {
   margin-left: 2rem;
 }
 
@@ -592,18 +619,20 @@ header.header .content-wrapper .header-content p {
     width: 20%;
   }
   #side-nav {
-    width: 200px !important;
-    max-width: 200px !important;
+    display: none;
   }
-  .main-wrapper {
-    position: relative;
+  #mobile-nav {
+    display: block;
   }
   .main-wrapper > section {
-    margin-left: 200px;
+    margin: 0px;
+  }
+  .main-wrapper > section main.site-layout-background {
+    margin: 4rem;
   }
 }
 
-@media screen and (max-width: 1030px) {
+@media screen and (max-width: 900px) {
   .extended-table {
     display: none;
   }
@@ -615,18 +644,6 @@ header.header .content-wrapper .header-content p {
 @media screen and (max-width: 700px) {
   header.header .content-wrapper .header-content {
     width: 30%;
-  }
-  #side-nav {
-    display: none;
-  }
-  #mobile-nav {
-    display: block;
-  }
-  .main-wrapper > section {
-    margin: 0px;
-  }
-  .main-wrapper > section main.site-layout-background {
-    margin: 4rem;
   }
 }
 
@@ -685,10 +702,10 @@ header.header .content-wrapper .header-content p {
   .table-header {
     font-size: 2.4rem;
   }
-  span.buyer-name, span.product-name, span.delivery-date, span.product-amount, p.total-amount span {
+  span.company-name, span.product-name, span.delivery-date, span.product-amount, p.total-amount span {
     font-size: 1.3rem;
   }
-  span.buyer-id, span.product-desc, span.delivery-type, span.status, p.total-amount {
+  span.company-id, span.product-desc, span.delivery-type, span.status, p.total-amount {
     font-size: 1.2rem;
   }
 }

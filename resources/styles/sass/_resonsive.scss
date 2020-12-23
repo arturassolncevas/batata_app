@@ -8,20 +8,25 @@
     }
 
     #side-nav {
-        width: 200px !important;
-        max-width: 200px !important;
+        display: none;
+    }
+
+    #mobile-nav {
+        display: block;
     }
 
     .main-wrapper {
-        position: relative;
-
         > section {
-            margin-left: 200px;
+            margin: 0px;
+
+            main.site-layout-background {
+                margin: 4rem;
+            }
         }
     }
 }
 
-@media screen and (max-width: 1030px) {
+@media screen and (max-width: 900px) {
     .extended-table {
         display: none;
     }
@@ -36,24 +41,6 @@
         .content-wrapper {
             .header-content {
                 width: 30%;
-            }
-        }
-    }
-
-    #side-nav {
-        display: none;
-    }
-
-    #mobile-nav {
-        display: block;
-    }
-
-    .main-wrapper {
-        > section {
-            margin: 0px;
-
-            main.site-layout-background {
-                margin: 4rem;
             }
         }
     }
