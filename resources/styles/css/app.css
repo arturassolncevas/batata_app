@@ -479,114 +479,119 @@ header.header .content-wrapper .header-content p {
   margin-left: 2rem;
 }
 
-#more-info {
+.ant-modal-content {
+  border-radius: 1.2rem;
+}
+
+.ant-modal-content #more-info {
   padding: 3rem;
   text-transform: capitalize;
 }
 
-#more-info > div {
+.ant-modal-content #more-info > div {
   display: flex;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
 }
 
-#more-info .buyer-info {
+.ant-modal-content #more-info .buyer-info {
   justify-content: space-between;
   align-items: flex-start;
 }
 
-#more-info .buyer-info > div {
+.ant-modal-content #more-info .buyer-info > div {
   display: flex;
   align-items: center;
   flex-basis: 50%;
 }
 
-#more-info .buyer-info > div div {
+.ant-modal-content #more-info .buyer-info > div div {
   margin-left: 2rem;
 }
 
-#more-info .delivery-info {
+.ant-modal-content #more-info .delivery-info {
   display: block;
 }
 
-#more-info .products-wrapper {
+.ant-modal-content #more-info .products-wrapper {
   flex-direction: column;
-}
-
-#more-info .products-wrapper span.product-amount {
   margin: 0;
 }
 
-#more-info .products-wrapper span.product-amount span {
+.ant-modal-content #more-info .products-wrapper span.product-amount {
+  margin: 0;
+}
+
+.ant-modal-content #more-info .products-wrapper span.product-amount span {
   margin-left: 1rem;
 }
 
-#more-info .products-wrapper > div {
+.ant-modal-content #more-info .products-wrapper > div {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-#more-info .products-wrapper > div.ant-divider-horizontal {
+.ant-modal-content #more-info .products-wrapper > div.ant-divider-horizontal {
   min-width: 50%;
   width: 50%;
   align-self: flex-end;
 }
 
-#more-info .products-wrapper p {
+.ant-modal-content #more-info .products-wrapper p {
   text-align: right;
   margin: 0;
 }
 
-#more-info .footer {
-  margin: 0;
+.ant-modal-content #more-info .footer {
+  margin: 2rem 0 0;
 }
 
-#cancel-modal,
-#result {
+.ant-modal-content #cancel-modal,
+.ant-modal-content #result {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-#cancel-modal p,
-#cancel-modal .close-icon,
-#result p,
-#result .close-icon {
+.ant-modal-content #cancel-modal p,
+.ant-modal-content #cancel-modal .close-icon,
+.ant-modal-content #result p,
+.ant-modal-content #result .close-icon {
   margin: 1rem 0;
 }
 
-#cancel-modal .footer,
-#result .footer {
+.ant-modal-content #cancel-modal .footer,
+.ant-modal-content #result .footer {
   margin-top: 2rem;
   text-align: center;
 }
 
-.footer {
+.ant-modal-content .footer {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.footer button {
+.ant-modal-content .footer button {
   color: #001427;
   text-transform: uppercase;
   margin: 0 1rem;
   border-radius: 4px;
 }
 
-.footer button:focus, .footer button:hover {
+.ant-modal-content .footer button:focus, .ant-modal-content .footer button:hover {
   transform: scale(0.97);
   color: #001427;
   border-color: #d9d9d9;
 }
 
-.footer button:active {
+.ant-modal-content .footer button:active {
   color: #001427;
 }
 
-.footer button.cancel {
+.ant-modal-content .footer button.cancel {
   border: none;
   background-color: #f08989;
 }
@@ -668,8 +673,14 @@ header.header .content-wrapper .header-content p {
     display: flex;
     justify-content: flex-end;
   }
+  #overview-table table thead tr th {
+    padding: 1rem 1.5rem;
+  }
   #overview-table table thead tr th:last-of-type {
     text-align: right;
+  }
+  #overview-table table tbody tr td {
+    padding: 1rem 1.5rem;
   }
   #overview-table table tbody tr td.product-info-cell {
     justify-content: flex-end;

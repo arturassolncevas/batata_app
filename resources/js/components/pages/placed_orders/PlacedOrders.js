@@ -493,6 +493,8 @@ class PlacedOrdersPage extends Component {
                                     );
                                 }
                             }}
+                            formatPrice={formatPrice}
+                            intl={this.props.intl}
                         />
                     </Col>
                 </Row>

@@ -88,6 +88,8 @@
             thead {
                 tr {
                     th {
+                        padding: 1rem 1.5rem;
+
                         &:last-of-type {
                             text-align: right;
                         }
@@ -98,6 +100,8 @@
             tbody {
                 tr {
                     td {
+                        padding: 1rem 1.5rem;
+
                         &.product-info-cell {
                             justify-content: flex-end;
                         }
