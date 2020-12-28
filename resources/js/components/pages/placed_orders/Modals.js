@@ -1,69 +1,35 @@
 import React, { useState } from "react";
-import { Modal, Divider, Tag, Button } from "antd";
+import { Modal, Avatar, Tag, Button } from "antd";
+import { UserOutlined } from "@ant-design/icons";
+import moment from "moment";
 
 export const MoreInfo = ({
     setIsModalVisible,
     isModalVisible,
     openCancelModal,
-    data
+    data,
+    formatPrice
 }) => {
-    let { buyer, image, delivery, product, status } = data;
+    let { customer, status, created_at, line_items, total, intl } = data;
 
-    const displayProducts = () => {
-        if (Array.isArray(product)) {
-            let totalAmount = 0;
-            let products = product.map((p, idx) => {
-                let { title, quantity, measure, price } = p;
-                totalAmount += parseFloat(price.split("DKK ")[1]);
-                return (
-                    <div key={idx} className="product-cell">
-                        <div className="product-info">
-                            <span className="product-name">{title}</span> <br />
-                            <span className="product-desc">{`${quantity} of ${measure}`}</span>
-                        </div>
-
-                        <span className="product-amount">
-                            DKK
-                            <span>{price.split("DKK ")[1]}</span>
+    const displayProducts = () =>
+        line_items.map(obj => (
+            <div key={obj.id} className="products-wrapper">
+                <div className="product-cell">
+                    <div className="product-info">
+                        <span className="product-name">{obj.name}</span> <br />
+                        <span className="product-desc">
+                            {`${formatPrice(obj, intl)}`} &nbsp; x &nbsp;
+                            {`${obj.quantity}`}
                         </span>
                     </div>
-                );
-            });
 
-            return (
-                <div className="products-wrapper">
-                    {products}
-                    <Divider />
-                    <p className="total-amount">
-                        Total :
-                        <span>
-                            DKK
-                            <span>{`${parseFloat(
-                                totalAmount.toFixed(2)
-                            )}`}</span>
-                        </span>
-                    </p>
+                    <span className="product-amount">
+                        {currencyHelper.value(total).format()}
+                    </span>
                 </div>
-            );
-        } else {
-            let { price, title, quantity, measure } = product;
-            return (
-                <div className="products-wrapper">
-                    <div className="product-cell">
-                        <div className="product-info">
-                            <span className="product-name">{title}</span> <br />
-                            <span className="product-desc">{`${quantity} of ${measure}`}</span>
-                        </div>
-
-                        <span className="product-amount">
-                            DKK
-                            <span>{price.split("DKK ")[1]}</span>
-                        </span>
-                    </div>
-                </div>
-            );
-        }
-    };
+            </div>
+        ));
 
     const displayStatus = () => {
         let color = "";
@@ -71,15 +37,19 @@ export const MoreInfo = ({
             case "pending":
                 color = "#f4d167";
                 break;
-            case "payment received":
+            case "processing":
                 color = "#82cbf4";
                 break;
-            case "delivered":
-                color = "#84e296";
+            case "completed":
+                color = "84e296";
                 break;
             case "cancelled":
-                color = "#f08989";
+                color = "grey";
                 break;
+            case "failed":
+                color = "#f08989";
+            default:
+                color = "grey";
         }
         return (
             <Tag className="status" color={color}>
@@ -104,25 +74,30 @@ export const MoreInfo = ({
             onCancel={handleCancel}
             footer={null}
         >
-            {buyer !== undefined && (
+            {customer !== undefined && (
                 <div id="more-info">
                     <div className="buyer-info">
                         <div>
-                            {image}
+                            <Avatar size={40} icon={<UserOutlined />} />
                             <div>
-                                <span className="buyer-name">{buyer.name}</span>
+                                <span className="buyer-name">company name</span>
                                 <br />
                                 <span className="buyer-id">
-                                    ID: <span>{`${buyer.id}`}</span>
+                                    ID: <span>12345</span>
                                 </span>
                             </div>
                         </div>
                         {displayStatus()}
                     </div>
                     <div className="delivery-info">
-                        <span className="delivery-date">{delivery.date} </span>
+                        <span className="delivery-date">
+                            {moment
+                                .utc(created_at)
+                                .local()
+                                .format("MM-DD-YYYY hh:mm")}
+                        </span>
                         <br />
-                        <span className="delivery-type">{delivery.type} </span>
+                        {/* <span className="delivery-type">{delivery.type} </span> */}
                     </div>
                     {displayProducts()}
                     <div className="footer">
