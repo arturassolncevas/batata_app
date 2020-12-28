@@ -53,6 +53,9 @@
     },
     "profileSettings": {
       "header": "Profil" 
+    },
+    "companyProfileSettings": {
+      "header": "Company profile" 
     }
   },
   "shared": {
@@ -135,7 +138,8 @@
       "city": "City"
     },
     "user": {
-      "profile": "Profile"
+      "profile": "Profile",
+      "profile_image": "Profile picture"
     }
   },
   "sort": {
@@ -145,6 +149,7 @@
   },
   "crud": {
     "edit": "Edit",
+    "cancel": "Afbryd",
     "create": "Submit",
     "delete": "Delete",
     "save": "Save",

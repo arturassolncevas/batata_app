@@ -61,6 +61,9 @@ class AuthServiceProvider extends ServiceProvider
         return (in_array("admin", $roles) || in_array("customer", $roles) || in_array("employee", $roles)) && $product->company->id == $user->company->id ;
 
       });
-    }
 
+      Gate::define('delete-image-user-files', function ($user, $file) {
+        return $user->id == $file->user->id ? true : false;
+      });
+    }
 }

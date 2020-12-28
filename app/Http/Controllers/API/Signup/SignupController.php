@@ -13,6 +13,7 @@ use App\Models\Company;
 use App\Models\Address;
 use GuzzleHttp\Client;
 use App\User;
+use App\Http\Manager\UserManager;
 use DB;
 
 class SignupController extends Controller
@@ -81,31 +82,6 @@ class SignupController extends Controller
         return response()->json($response, 422);
       }
 	  }
-}
-
-class UserManager {
-   function __construct($params) {
-    $this->params = $params; 
-    $this->user = null;
-   }
-
-  function create($options = [ "save" => true]) {
-    DB::transaction(function () use ($options) {
-      $this->user = new User($this->params);
-      $this->create_associations();
-      if ($options["save"])
-        $this->user->save();
-    });
-    return $this->user;
-  }
-
-  function create_associations() {
-    foreach ($this->params as $key => $value) {
-      if (in_array($key, ["company", "language", "currency"])) {
-        $this->user->{$key}()->associate($value);
-      }
-    }
-  }
 }
 
 class CompanyManager {

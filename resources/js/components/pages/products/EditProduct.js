@@ -415,7 +415,6 @@ class EditProduct extends Component {
                 >
                   <BraftEditor
                     language="en"
-                    onSave={this.submitContent}
                     title={"title1"}
                   />
                 </Form.Item>

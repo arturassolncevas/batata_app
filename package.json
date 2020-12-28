@@ -28,6 +28,7 @@
         "@ant-design/icons": "^4.1.0",
         "@nivo/bar": "^0.62.0",
         "@nivo/line": "^0.62.0",
+        "@tinymce/tinymce-react": "^3.8.4",
         "ant-design-pro": "^2.3.2",
         "antd": "^4.1.5",
         "antd-img-crop": "^3.3.0",

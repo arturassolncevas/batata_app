@@ -53,6 +53,9 @@
     },
     "profileSettings": {
       "header": "Profil" 
+    },
+    "companyProfileSettings": {
+      "header": "Firma profil" 
     }
   },
   "shared": {
@@ -135,7 +138,8 @@
       "city": "By"
     },
     "user": {
-      "profile": "Profil"
+      "profile": "Profil",
+      "profile_image": "Profil billede"
     }
   },
   "sort": {
@@ -145,6 +149,7 @@
   },
   "crud": {
     "edit": "Rediger",
+    "cancel": "Afbryd",
     "create": "Oprette",
     "delete": "Slet",
     "save": "Gem",

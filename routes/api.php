@@ -49,6 +49,13 @@ use Illuminate\Support\Facades\Route;
     //LANGUAGES
     Route::get('languages', 'API\General\LanguagesController@index');
 
+    //PROFILE
+    Route::get('settings/profile', 'API\General\ProfileSettingsController@get_settings');
+    Route::patch('settings/profile', 'API\General\ProfileSettingsController@update');
+
+    Route::post('user_files/upload_profile_image', 'API\General\UserFilesController@upload_profile_image');
+    Route::delete('user_files/delete_profile_image/{id}', 'API\General\UserFilesController@delete_profile_image');
+
     //PRODUCTS
     Route::get('products/{id}', 'API\General\ProductsController@find');
     Route::get('products', 'API\General\ProductsController@index');
