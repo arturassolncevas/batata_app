@@ -11,9 +11,10 @@ use App\Models\Language;
 use App\Models\Currency;
 use App\Models\Company;
 use App\Models\Address;
+use App\Models\Role;
 use GuzzleHttp\Client;
 use App\User;
-use App\Http\Manager\UserManager;
+use App\Http\Managers\UserManager;
 use DB;
 
 class SignupController extends Controller

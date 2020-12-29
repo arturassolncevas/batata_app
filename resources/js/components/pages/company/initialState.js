@@ -1,6 +1,11 @@
 const initialState = {
-  initialForm: {
-    company: {
+  form1: {
+    company_profile: {
+      description: "<p>papa</p>",
+    }
+  },
+  form2: {
+    company_profile: {
       description: "<p>papa</p>",
       name: null,
       local_code: "",

@@ -51,15 +51,14 @@ class UserSeeder extends Seeder
           ],
           "roles" => ["employee"]
         ],
-      ];
-    }
+    ];
+  }
 
-    public function run()
-    {
-      $country = Country::first();
-      foreach($this->users as $data) {
-        $user = User::create($data["params"]);
-        $user->assignRole(Role::where("name", $data["roles"])->get());
-      }
+  public function run() {
+    $country = Country::first();
+    foreach($this->users as $data) {
+      $user = User::create($data["params"]);
+      $user->assignRole(Role::where("name", $data["roles"])->get());
     }
+  }
 }

@@ -1,585 +1,506 @@
-import React, { Component } from 'react'
-import { PageHeader, Divider, Button, Row, Col, Table, Avatar, Select, Tag } from 'antd';
-import { DropboxOutlined, FileImageOutlined, SortAscendingOutlined, SortDescendingOutlined } from '@ant-design/icons';
-import { withRouter } from 'react-router-dom'
-import { injectIntl } from 'react-intl'
-import moment from 'moment';
-import qs from 'qs';
-const { Column } = Table;
-const { Option } = Select
-
-let setFrontImageThumbnailUrl = (item) => {
-  item = item || { files: [] }
-  return (item.files.find(e => e.type === "thumbnail") || {}).url
-}
-
-let formatPrice = (lineItem, intl) => {
-  let productFormatter = new ProductFormatter()
-  productFormatter.setOptions({ measurementUnitAlias: lineItem.measurement_unit.alias, packed: lineItem.packed, intl })
-  return productFormatter.formattedPrice({ price: currencyHelper.value(lineItem.price).format(), quantity: lineItem.product_quantity })
-}
-
-let parseQueryString = (str) => {
-  return qs.parse(str.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
-}
-
-class PlacedOrdersPage extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { placed_orders: { data: [], pagination: { total: 10, page: 1, size: 20 }, sort: { sort_by: "date", direction: "desc" } } }
-  }
-
-  componentDidMount() {
-    this.setDataFromQuery(() => { this.fetchInitialData() })
-  }
-
-  async fetchInitialData() {
-    await this.filterOrdersRequest(parseQueryString(this.props.history.location.search))
-    this.setState(this.state)
-  }
-
-  filterOrdersRequest(data) {
-    if (this.props.history.location.pathname !== "/placed_orders")
-      return
-    return requestClient.post(`/api/placed_orders/filter`, { data: { ...data, ...this.state.placed_orders.sort, page: this.state.placed_orders.pagination.page } })
-      .then(async (response) => {
-        this.state.placed_orders = response.data
-        this.state.placed_orders.data.forEach(e => { e.key = e.id })
-        this.setState(this.state)
-        let queryData = parseQueryString(this.props.history.location.search)
-        queryData = { ...queryData, page: response.data.pagination.page, ...this.state.placed_orders.sort }
-        this.props.history.push(`${this.props.history.location.pathname}?${qs.stringify(queryData)}`)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
-
-  setDataFromQuery(callback = () => {}) {
-   let { page = 1, sort_by = "date", direction = "desc" } =  parseQueryString(this.props.history.location.search)
-   this.state.placed_orders.pagination.page = page
-   this.state.placed_orders.sort.sort_by = sort_by
-   this.state.placed_orders.sort.direction = direction
-   this.setState(this.state, callback)
-  }
-
-  handleOnSortDirectionClick() {
-    if (this.state.placed_orders.sort.direction === "asc") {
-      this.state.placed_orders.sort.direction = "desc"
-    } else {
-      this.state.placed_orders.sort.direction = "asc"
-    } 
-    this.setState(this.state, () => { this.handlePaginationPageChange(1) })
-  }
-
-  handleOnSortChange(val) {
-    this.state.placed_orders.sort.sort_by = val
-    this.setState(this.state, () => { this.handlePaginationPageChange(1) })
-  }
-
-  async handlePaginationPageChange(page) {
-    this.state.placed_orders.pagination.page = page
-    this.setState(this.state, () => { this.filterByQueryStringData() })
-  }
-
-  filterByQueryStringData() {
-    let queryData = qs.parse(this.props.history.location.search.replace(/(%3F|\?)/g, ""), { charset: 'iso-8859-1', interpretNumericEntities: true, })
-    this.filterOrdersRequest(queryData)
-  }
-
-  render() {
-    return (
-      <div>
-        <PageHeader
-          className="site-page-header"
-          title={this.props.intl.formatMessage({ id: 'pages.placed_orders.header' })}
-          avatar={{ icon: (<DropboxOutlined className="header-icon" />) }}
-        />
-        <Divider className="site-devider after-header"></Divider>
-
-        <Row justify="center">
-          <Col xl={24} style={{ textAlign: "center", padding: "40px" }}>
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <div>
-                <Select
-                  style={{ width: 200, textAlign: "left" }}
-                  defaultActiveFirstOption={undefined}
-                  placeholder={this.props.intl.formatMessage({ id: 'sort.placeholder' })}
-                  value={this.state.placed_orders.sort.sort_by}
-                  onChange={(val) => { this.handleOnSortChange(val) }}
-                >
-                  <Option value={undefined}>{this.props.intl.formatMessage({ id: 'sort.placeholder' })}</Option>
-                  <Option value="date">{this.props.intl.formatMessage({ id: 'sort.date' })}</Option>
-                  <Option value="total">{this.props.intl.formatMessage({ id: 'sort.price' })}</Option>
-                </Select>
-                <Button
-                  type="default"
-                  icon={this.state.placed_orders.sort.direction == "asc" ? <SortAscendingOutlined /> : <SortDescendingOutlined />}
-                  onClick={() => { this.handleOnSortDirectionClick() }}
-                />
-              </div>
-            </div>
-            <Table
-              className="extended-table"
-              dataSource={this.state.placed_orders.data}
-              pagination={{
-                current: this.state.placed_orders.pagination.page ,
-                pageSize: this.state.placed_orders.pagination.size,
-                total: this.state.placed_orders.pagination.total,
-                onChange: (page, pageSize) => { this.handlePaginationPageChange(page, pageSize)}} }
-              >
-              <Column title="ID" dataIndex="id" key="id" />
-              <Column title="Time" dataIndex="created_at" key="created_at"
-              render={(dateTime) => {
-                return moment.utc(dateTime).local().format("MM-DD-YYYY hh:mm")
-              }}
-               />
-              <Column title="Status" dataIndex="status" key="status"
-                render={(status) => {
-                  let color = ""
-                  switch (status) {
-                    case "pending":
-                      color = "purple"
-                      break
-                    case "processing":
-                      color = "blue"
-                      break
-                    case "completed":
-                      color = "green"
-                      break
-                    case "cancelled":
-                      color = "grey"
-                      break
-                    case "failed":
-                      color = "red"
-                    default:
-                      color = "grey"
-                  }
-                  return <Tag style={{ margin: "4px" }}
-                    color={color}>
-                    {status}
-                  </Tag>
-                }
-                }
-               />
-              <Column
-                title="Products"
-                dataIndex="line_items"
-                key="line_items"
-                render= { (objects = []) => { 
-                  return objects.map((obj, index) => (
-                    <Row key={obj.id} >
-                      { obj.product ?
-                      <img style={{ height: "30px", padding: "1px", marginRight: "15px" }} src={setFrontImageThumbnailUrl(obj.product)}/> :
-                      <Avatar style={{
-                        background: "white",
-                        color: "grey",
-                        fontSize: "25px",
-                        height: "30px",
-                        width: "30px",
-                        marginRight: "15px"
-                      }}>
-                        <FileImageOutlined />
-                      </Avatar>}
-                      <div>{`${obj.name} ${formatPrice(obj, this.props.intl)}`}</div>
-                      <div>&nbsp; x &nbsp;</div>
-                      <div>{`${obj.quantity}`}</div>
-                    </Row>
-                  ))
-                }}
-                />
-              <Column
-                title="TOTAL"
-                dataIndex="total"
-                key="total"
-                render = { (object) => currencyHelper.value(object).format()}
-              />
-            </Table>
-          </Col>
-        </Row>
-      </div>
-    )
-  }
-}
-
-export default withRouter(injectIntl(PlacedOrdersPage))
-
-/* 
-import React from "react";
+import React, { Component } from "react";
+import OverviewTable from "./OverviewTable";
 import {
     PageHeader,
     Divider,
+    Button,
     Row,
-    Table,
-    Tag,
     Col,
+    Table,
     Avatar,
+    Select,
+    Tag,
+    Space,
     Menu,
     Dropdown,
     Collapse
 } from "antd";
-import OverviewTable from "./OverviewTable";
-import Man1 from "../../../../images/man1.jpg";
-import Man2 from "../../../../images/man2.jpg";
-import Woman1 from "../../../../images/woman1.jpg";
-import Woman2 from "../../../../images/woman2.jpg";
+import {
+    DropboxOutlined,
+    FileImageOutlined,
+    SortAscendingOutlined,
+    SortDescendingOutlined,
+    UserOutlined
+} from "@ant-design/icons";
+import { withRouter } from "react-router-dom";
+import { injectIntl } from "react-intl";
+import moment from "moment";
+import qs from "qs";
 
-export default function OrdersPage() {
-    const menu = (
-        <Menu>
-            <Menu.Item className="dark">View Order</Menu.Item>
-            <Menu.Item>Cancel Order</Menu.Item>
-        </Menu>
-    );
+const { Column } = Table;
+const { Option } = Select;
 
-    const sorter = (
-        <Menu>
-            <Menu.Item>Price</Menu.Item>
-            <Menu.Item>Delivery Date</Menu.Item>
-        </Menu>
-    );
+const { Panel } = Collapse;
 
-    const { Panel } = Collapse;
+let setFrontImageThumbnailUrl = item => {
+    item = item || { files: [] };
+    return (item.files.find(e => e.type === "thumbnail") || {}).url;
+};
 
-    const columns = [
-        {
-            title: "",
-            dataIndex: "image",
-            key: "image",
-            width: "5%"
-        },
-        {
-            title: "Buyer",
-            dataIndex: "buyer",
-            key: "name",
-            render: buyer =>
-                buyer && (
-                    <>
-                        <span className="buyer-name">{buyer.name}</span> <br />
-                        <span className="buyer-id">
-                            ID: <span>{`${buyer.id}`}</span>
-                        </span>
-                    </>
-                )
-        },
-        {
-            title: (
-                <div className="product-title">
-                    <span className="product-info">Product</span>
-                    <span className="product-amount">Amount</span>
-                </div>
-            ),
-            dataIndex: "product",
-            width: "35%",
-            key: "product",
-            render: products => {
-                if (Array.isArray(products) === true) {
-                    let { title, quantity, measure, price } = products[0];
-                    // let others = `+ ${products.length - 1} others`;
-                    let desc = <span>{`${quantity} of ${measure}`}</span>;
-                    let header = (
-                        <div className="collapsible-header">
-                            <div className="product-info">
-                                <span className="product-name">{title} </span>
-                                <br />
-                                <span className="product-desc">{desc}</span>
-                            </div>
-                            <span className="product-amount">
-                                DKK
-                                <span>{price.split("DKK ")[1]}</span>
-                            </span>
-                        </div>
-                    );
-                    let totalAmount = 0;
-                    let hidden = products
-                        .map((product, idx) => {
-                            let { title, quantity, measure, price } = product;
-                            totalAmount += parseFloat(price.split("DKK ")[1]);
-                            return (
-                                <div key={idx} className="product-cell">
-                                    <div className="product-info">
-                                        <span className="product-name">
-                                            {title}
-                                        </span>{" "}
-                                        <br />
-                                        <span className="product-desc">{`${quantity} of ${measure}`}</span>
-                                    </div>
+const menu = (
+    <Menu>
+        <Menu.Item className="dark">View Order</Menu.Item>
+        <Menu.Item>Cancel Order</Menu.Item>
+    </Menu>
+);
 
-                                    <span className="product-amount">
-                                        DKK
-                                        <span>{price.split("DKK ")[1]}</span>
-                                    </span>
-                                </div>
-                            );
-                        })
-                        .splice(1);
+let formatPrice = (lineItem, intl) => {
+    let productFormatter = new ProductFormatter();
+    productFormatter.setOptions({
+        measurementUnitAlias: lineItem.measurement_unit.alias,
+        packed: lineItem.packed,
+        intl
+    });
+    return productFormatter.formattedPrice({
+        price: currencyHelper.value(lineItem.price).format(),
+        quantity: lineItem.product_quantity
+    });
+};
 
-                    return (
-                        <Collapse
-                            id="product-collapsible"
-                            expandIconPosition="right"
-                            ghost
-                        >
-                            <Panel header={header} key="1">
-                                {hidden}
-                                <Divider />
-                                <p className="total-amount">
-                                    Total :
-                                    <span>
-                                        DKK
-                                        <span>{`${parseFloat(
-                                            totalAmount.toFixed(2)
-                                        )}`}</span>
-                                    </span>
-                                </p>
-                            </Panel>
-                        </Collapse>
-                    );
-                } else {
-                    let { title, quantity, measure, price } = products;
-                    let others = <span>{`${quantity} of ${measure}`}</span>;
-                    return (
-                        <div className="product-cell">
-                            <div className="product-info">
-                                <span className="product-name">{title} </span>
-                                <br />
-                                <span className="product-desc">{others}</span>
-                            </div>
+let parseQueryString = str => {
+    return qs.parse(str.replace(/(%3F|\?)/g, ""), {
+        charset: "iso-8859-1",
+        interpretNumericEntities: true
+    });
+};
 
-                            <span className="product-amount">
-                                DKK
-                                <span>{price.split("DKK ")[1]}</span>
-                            </span>
-                        </div>
-                    );
-                }
+class PlacedOrdersPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            placed_orders: {
+                data: [],
+                pagination: { total: 10, page: 1, size: 20 },
+                sort: { sort_by: "date", direction: "desc" }
             }
-        },
+        };
+    }
 
-        {
-            title: "Delivery Date",
-            dataIndex: "delivery",
-            key: "delivery",
-            render: delivery =>
-                delivery && (
-                    <>
-                        <span className="delivery-date">{delivery.date} </span>
-                        <br />
-                        <span className="delivery-type">{delivery.type} </span>
-                    </>
-                )
-        },
-        {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
-            render: status => {
-                let color = "";
-                switch (status) {
-                    case "pending":
-                        color = "#f4d167";
-                        break;
-                    case "payment received":
-                        color = "#82cbf4";
-                        break;
-                    case "delivered":
-                        color = "#84e296";
-                        break;
-                    case "cancelled":
-                        color = "#f08989";
-                        break;
+    componentDidMount() {
+        this.setDataFromQuery(() => {
+            this.fetchInitialData();
+        });
+    }
+
+    async fetchInitialData() {
+        await this.filterOrdersRequest(
+            parseQueryString(this.props.history.location.search)
+        );
+        this.setState(this.state);
+    }
+
+    filterOrdersRequest(data) {
+        if (this.props.history.location.pathname !== "/placed_orders") return;
+        return requestClient
+            .post(`/api/placed_orders/filter`, {
+                data: {
+                    ...data,
+                    ...this.state.placed_orders.sort,
+                    page: this.state.placed_orders.pagination.page
                 }
-                return (
-                    <Tag className="status" color={color}>
-                        {status}
-                    </Tag>
+            })
+            .then(async response => {
+                this.state.placed_orders = response.data;
+                this.state.placed_orders.data.forEach(e => {
+                    e.key = e.id;
+                });
+                this.setState(this.state);
+                let queryData = parseQueryString(
+                    this.props.history.location.search
                 );
-            }
-        },
-        {
-            title: "Action",
-            dataIndex: "",
-            key: "x",
-            render: () => (
-                <Dropdown overlay={menu} overlayClassName="action-dropdown">
-                    <span
-                        className="ant-dropdown-link"
-                        style={{ fontSize: "2rem", fontWeight: "700" }}
-                    >
-                        ...
-                    </span>
-                </Dropdown>
-            )
-        }
-    ];
+                queryData = {
+                    ...queryData,
+                    page: response.data.pagination.page,
+                    ...this.state.placed_orders.sort
+                };
+                this.props.history.push(
+                    `${this.props.history.location.pathname}?${qs.stringify(
+                        queryData
+                    )}`
+                );
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
 
-    const data = [
-        {
-            key: 0,
-            buyer: {
-                name: "John Brown sr.",
-                id: "42552"
-            },
-            product: [
-                {
-                    quantity: 25,
-                    title: "Tomatoes",
-                    measure: "1kg",
-                    price: "DKK 15.60"
-                },
-                {
-                    quantity: 40,
-                    title: "red apples",
-                    measure: "1kg",
-                    price: "DKK 35.89"
-                },
-                {
-                    quantity: 25,
-                    title: "Rhubarb",
-                    measure: "15pcs (pack)",
-                    price: "DKK 10.00"
-                }
-            ],
-            delivery: {
-                date: "20/10/2020",
-                type: "pick up"
-            },
-            status: "delivered",
-            image: <Avatar src={Man1} shape="circle" />
-        },
-        {
-            key: 1,
-            buyer: {
-                name: "John Brown sr.",
-                id: "42552"
-            },
-            product: [
-                {
-                    quantity: 40,
-                    title: "red apples",
-                    measure: "1kg",
-                    price: "DKK 35.50"
-                },
-                {
-                    quantity: 25,
-                    title: "Rhubarb",
-                    measure: "15pcs (pack)",
-                    price: "DKK 10.99"
-                },
-                {
-                    quantity: 25,
-                    title: "Tomatoes",
-                    measure: "1kg",
-                    price: "DKK 15.00"
-                },
-                {
-                    quantity: 25,
-                    title: "Rhubarb",
-                    measure: "15pcs (pack)",
-                    price: "DKK 10.00"
-                }
-            ],
-            delivery: {
-                date: "Due in 3 days",
-                type: "pick up"
-            },
-            status: "payment received",
-            image: <Avatar src={Woman1} shape="circle" />
-        },
-        {
-            key: 2,
-            buyer: {
-                name: "Dianne Russell",
-                id: "33445"
-            },
-            product: {
-                quantity: 5,
-                title: "Pineapple",
-                measure: "1kg",
-                price: "DKK 15.00"
-            },
-            amount: "DKK 15.00",
-            delivery: {
-                date: "20/10/2020",
-                type: "pick up"
-            },
-            status: "pending",
-            image: <Avatar src={Woman2} shape="circle" />
-        },
-        {
-            key: 3,
-            buyer: {
-                name: "Leslie Alexander",
-                id: "42322"
-            },
-            product: [
-                {
-                    quantity: 40,
-                    title: "mutton",
-                    measure: "1kg",
-                    price: "DKK 102.50"
-                },
-                {
-                    quantity: 25,
-                    title: "pork",
-                    measure: "1kg",
-                    price: "DKK 99.99"
-                },
-                {
-                    quantity: 25,
-                    title: "beef",
-                    measure: "1kg",
-                    price: "DKK 59.99"
-                }
-            ],
-            delivery: {
-                date: "Due tomorrow",
-                type: "pick up"
-            },
-            status: "cancelled",
-            image: <Avatar src={Man2} shape="circle" />
-        }
-    ];
+    setDataFromQuery(callback = () => {}) {
+        let {
+            page = 1,
+            sort_by = "date",
+            direction = "desc"
+        } = parseQueryString(this.props.history.location.search);
+        this.state.placed_orders.pagination.page = page;
+        this.state.placed_orders.sort.sort_by = sort_by;
+        this.state.placed_orders.sort.direction = direction;
+        this.setState(this.state, callback);
+    }
 
-    return (
-        <div id="order-table">
-            <div className="site-page-header">
-                <p className="table-header">Orders</p>
-                <Dropdown
-                    overlay={sorter}
-                    trigger={["click"]}
-                    placement="topLeft"
-                    overlayClassName="sorter-dropdown"
-                >
-                    <span className="ant-dropdown-link">
-                        <svg
-                            width="10"
-                            height="11"
-                            viewBox="0 0 10 11"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
+    handleOnSortDirectionClick() {
+        if (this.state.placed_orders.sort.direction === "asc") {
+            this.state.placed_orders.sort.direction = "desc";
+        } else {
+            this.state.placed_orders.sort.direction = "asc";
+        }
+        this.setState(this.state, () => {
+            this.handlePaginationPageChange(1);
+        });
+    }
+
+    handleOnSortChange(val) {
+        this.state.placed_orders.sort.sort_by = val;
+        this.setState(this.state, () => {
+            this.handlePaginationPageChange(1);
+        });
+    }
+
+    async handlePaginationPageChange(page) {
+        this.state.placed_orders.pagination.page = page;
+        this.setState(this.state, () => {
+            this.filterByQueryStringData();
+        });
+    }
+
+    filterByQueryStringData() {
+        let queryData = qs.parse(
+            this.props.history.location.search.replace(/(%3F|\?)/g, ""),
+            { charset: "iso-8859-1", interpretNumericEntities: true }
+        );
+        this.filterOrdersRequest(queryData);
+    }
+
+    render() {
+        return (
+            <div id="placed-orders">
+                <PageHeader
+                    className="site-page-header"
+                    title={this.props.intl.formatMessage({
+                        id: "pages.placed_orders.header"
+                    })}
+                    avatar={{
+                        icon: <DropboxOutlined className="header-icon" />
+                    }}
+                />
+                <Divider className="site-devider after-header"></Divider>
+
+                <Row justify="center">
+                    <Col span={24}>
+                        <div className="sorting-options">
+                            <div>
+                                <Select
+                                    defaultActiveFirstOption={undefined}
+                                    placeholder={this.props.intl.formatMessage({
+                                        id: "sort.placeholder"
+                                    })}
+                                    value={
+                                        this.state.placed_orders.sort.sort_by
+                                    }
+                                    onChange={val => {
+                                        this.handleOnSortChange(val);
+                                    }}
+                                >
+                                    <Option value={undefined}>
+                                        {this.props.intl.formatMessage({
+                                            id: "sort.placeholder"
+                                        })}
+                                    </Option>
+                                    <Option value="date">
+                                        {this.props.intl.formatMessage({
+                                            id: "sort.date"
+                                        })}
+                                    </Option>
+                                    <Option value="total">
+                                        {this.props.intl.formatMessage({
+                                            id: "sort.price"
+                                        })}
+                                    </Option>
+                                </Select>
+                                <Button
+                                    type="default"
+                                    icon={
+                                        this.state.placed_orders.sort
+                                            .direction == "asc" ? (
+                                            <SortAscendingOutlined />
+                                        ) : (
+                                            <SortDescendingOutlined />
+                                        )
+                                    }
+                                    onClick={() => {
+                                        this.handleOnSortDirectionClick();
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <Table
+                            className="extended-table"
+                            dataSource={this.state.placed_orders.data}
+                            pagination={{
+                                current: this.state.placed_orders.pagination
+                                    .page,
+                                pageSize: this.state.placed_orders.pagination
+                                    .size,
+                                total: this.state.placed_orders.pagination
+                                    .total,
+                                onChange: (page, pageSize) => {
+                                    this.handlePaginationPageChange(
+                                        page,
+                                        pageSize
+                                    );
+                                }
+                            }}
                         >
-                            <path
-                                d="M3.25 1.45H10M3.25 4.15H7.3M3.25 6.85H10M3.25 9.55H7.3M1 1H1.9V1.9H1V1ZM1 3.7H1.9V4.6H1V3.7ZM1 6.4H1.9V7.3H1V6.4ZM1 9.1H1.9V10H1V9.1Z"
-                                stroke="#666666"
+                            <Column
+                                title="Buyer"
+                                dataIndex="customer"
+                                key="buyer"
+                                render={customer => (
+                                    <div className="company-details">
+                                        <Space align="start">
+                                            <Avatar
+                                                size={40}
+                                                icon={<UserOutlined />}
+                                            />
+                                            <span>
+                                                <span className="company-name">
+                                                    company name
+                                                </span>
+                                                <br />
+                                                <span className="company-id">
+                                                    ID:{" "}
+                                                    {/* <span>{`${customer.company_id}`}</span> */}
+                                                    <span>12345</span>
+                                                </span>
+                                            </span>
+                                        </Space>
+                                    </div>
+                                )}
                             />
-                        </svg>
-                        Sort by
-                    </span>
-                </Dropdown>
-            </div>
-            <Row>
-                <Col span={24}>
-                    <Table
-                        className="extended-table"
-                        columns={columns}
-                        dataSource={data}
-                        pagination={false}
-                    />
+                            <Column
+                                title="Products"
+                                dataIndex="line_items"
+                                key="line_items"
+                                width="25%"
+                                render={(objects = []) => {
+                                    if (objects.length === 1) {
+                                        return objects.map(obj => (
+                                            <Row key={obj.id}>
+                                                <div className="product-wrapper">
+                                                    <div className="product-image">
+                                                        {obj.product ? (
+                                                            <img
+                                                                src={setFrontImageThumbnailUrl(
+                                                                    obj.product
+                                                                )}
+                                                            />
+                                                        ) : (
+                                                            <Avatar className="image-placeholder">
+                                                                <FileImageOutlined />
+                                                            </Avatar>
+                                                        )}
+                                                    </div>
 
-                </Col>
-            </Row>
-        </div>
-    );
+                                                    <div className="product-details">
+                                                        <span className="product-name">
+                                                            {obj.name}
+                                                        </span>
+                                                        <span className="product-desc">
+                                                            {`${formatPrice(
+                                                                obj,
+                                                                this.props.intl
+                                                            )}`}{" "}
+                                                            &nbsp; x &nbsp;{" "}
+                                                            {`${obj.quantity}`}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </Row>
+                                        ));
+                                    } else {
+                                        let {
+                                            product,
+                                            quantity,
+                                            name
+                                        } = objects[0];
+
+                                        let header = (
+                                            <div className="product-wrapper">
+                                                <div className="product-image">
+                                                    {product ? (
+                                                        <img
+                                                            src={setFrontImageThumbnailUrl(
+                                                                product
+                                                            )}
+                                                        />
+                                                    ) : (
+                                                        <Avatar className="image-placeholder">
+                                                            <FileImageOutlined />
+                                                        </Avatar>
+                                                    )}
+                                                </div>
+
+                                                <div className="product-details">
+                                                    <span className="product-name">
+                                                        {name}
+                                                    </span>
+                                                    <span className="product-desc">
+                                                        {`${formatPrice(
+                                                            objects[0],
+                                                            this.props.intl
+                                                        )}`}{" "}
+                                                        &nbsp; x &nbsp;{" "}
+                                                        {`${quantity}`}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        );
+                                        let hidden = objects
+                                            .map((obj, index) => (
+                                                <Row key={obj.id}>
+                                                    <div className="product-wrapper">
+                                                        <div className="product-image">
+                                                            {obj.product ? (
+                                                                <img
+                                                                    src={setFrontImageThumbnailUrl(
+                                                                        obj.product
+                                                                    )}
+                                                                />
+                                                            ) : (
+                                                                <Avatar className="image-placeholder">
+                                                                    <FileImageOutlined />
+                                                                </Avatar>
+                                                            )}
+                                                        </div>
+
+                                                        <div className="product-details">
+                                                            <span className="product-name">
+                                                                {obj.name}
+                                                            </span>
+                                                            <span className="product-desc">
+                                                                {`${formatPrice(
+                                                                    obj,
+                                                                    this.props
+                                                                        .intl
+                                                                )}`}{" "}
+                                                                &nbsp; x &nbsp;{" "}
+                                                                {`${obj.quantity}`}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </Row>
+                                            ))
+                                            .splice(1);
+
+                                        return (
+                                            <Collapse
+                                                id="product-collapsible"
+                                                expandIconPosition="right"
+                                                ghost
+                                            >
+                                                <Panel header={header} key="1">
+                                                    {hidden}
+                                                </Panel>
+                                            </Collapse>
+                                        );
+                                    }
+                                }}
+                            />
+                            <Column
+                                title="Amount"
+                                dataIndex="total"
+                                key="total"
+                                render={object =>
+                                    currencyHelper.value(object).format()
+                                }
+                            />
+                            {/* <Column title="ID" dataIndex="id" key="id" /> */}
+                            <Column
+                                title="Time"
+                                dataIndex="created_at"
+                                key="created_at"
+                                render={dateTime => {
+                                    return moment
+                                        .utc(dateTime)
+                                        .local()
+                                        .format("MM-DD-YYYY hh:mm");
+                                }}
+                            />
+                            <Column
+                                title="Status"
+                                dataIndex="status"
+                                key="status"
+                                render={status => {
+                                    let color = "";
+                                    switch (status) {
+                                        case "pending":
+                                            color = "#f4d167";
+                                            break;
+                                        case "processing":
+                                            color = "#82cbf4";
+                                            break;
+                                        case "completed":
+                                            color = "84e296";
+                                            break;
+                                        case "cancelled":
+                                            color = "grey";
+                                            break;
+                                        case "failed":
+                                            color = "#f08989";
+                                        default:
+                                            color = "grey";
+                                    }
+                                    return (
+                                        <Tag className="status" color={color}>
+                                            {status}
+                                        </Tag>
+                                    );
+                                }}
+                            />
+                            <Column
+                                title="Action"
+                                key="action"
+                                render={() => (
+                                    <Dropdown
+                                        overlay={menu}
+                                        overlayClassName="action-dropdown"
+                                    >
+                                        <span
+                                            className="ant-dropdown-link"
+                                            style={{
+                                                fontSize: "2rem",
+                                                fontWeight: "700"
+                                            }}
+                                        >
+                                            ...
+                                        </span>
+                                    </Dropdown>
+                                )}
+                            />
+                        </Table>
+
+                        <OverviewTable
+                            data={this.state.placed_orders.data}
+                            pagination={{
+                                current: this.state.placed_orders.pagination
+                                    .page,
+                                pageSize: this.state.placed_orders.pagination
+                                    .size,
+                                total: this.state.placed_orders.pagination
+                                    .total,
+                                onChange: (page, pageSize) => {
+                                    this.handlePaginationPageChange(
+                                        page,
+                                        pageSize
+                                    );
+                                }
+                            }}
+                            formatPrice={formatPrice}
+                            intl={this.props.intl}
+                        />
+                    </Col>
+                </Row>
+            </div>
+        );
+    }
 }
- */
+
+export default withRouter(injectIntl(PlacedOrdersPage));

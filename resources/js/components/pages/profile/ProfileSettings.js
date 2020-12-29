@@ -36,7 +36,6 @@ class ProfileSettings extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {}
     this.initialState = initialState
     this.state = deepCopy(initialState)
     this.formRef = React.createRef();

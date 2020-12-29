@@ -34,22 +34,22 @@
 }
 
 %shared-dark-font-style {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     line-height: 1.5em;
 }
 
 %shared-light-font-style {
-    font-size: 1.4rem;
+    font-size: 1.15rem;
     line-height: 1.5em;
 }
 
-span.buyer-name {
+span.company-name {
     @extend %shared-dark-font-style;
     color: $primary;
     font-weight: 500;
 }
 
-span.buyer-id {
+span.company-id {
     @extend %shared-light-font-style;
     color: $light;
 

@@ -39,7 +39,7 @@ class AuthServiceProvider extends ServiceProvider
     private function registerGates() {
       Gate::define('filter-products', function ($user) {
         $roles = $user->getRoleNames()->toArray();
-        return in_array("admin", $roles) || in_array("customer", $roles) || in_array("employee", $roles);
+        return in_array("admin", $roles) || in_array("customer", $roles) || in_array("employee", $roles) || in_array("client", $roles);
       });
 
       Gate::define('step2-products', function ($user) {
@@ -52,13 +52,13 @@ class AuthServiceProvider extends ServiceProvider
       
       Gate::define('upload-image-product-files', function ($user, $product) {
         $roles = $user->getRoleNames()->toArray();
-        return (in_array("admin", $roles) || in_array("customer", $roles) || in_array("employee", $roles)) && $product->company->id == $user->company->id ;
+        return (in_array("admin", $roles) || in_array("customer", $roles) || in_array("employee", $roles) || in_array("client", $roles)) && $product->company->id == $user->company->id ;
 
       });
 
       Gate::define('delete-image-product-files', function ($user, $product) {
         $roles = $user->getRoleNames()->toArray();
-        return (in_array("admin", $roles) || in_array("customer", $roles) || in_array("employee", $roles)) && $product->company->id == $user->company->id ;
+        return (in_array("admin", $roles) || in_array("customer", $roles) || in_array("employee", $roles) || in_array("client", $roles)) && $product->company->id == $user->company->id ;
 
       });
 

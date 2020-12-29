@@ -53,6 +53,9 @@ use Illuminate\Support\Facades\Route;
     Route::get('settings/profile', 'API\General\ProfileSettingsController@get_settings');
     Route::patch('settings/profile', 'API\General\ProfileSettingsController@update');
 
+    Route::get('settings/company_profile', 'API\General\CompanySettingsController@get_settings');
+    Route::patch('settings/company_profile', 'API\General\CompanySettingsController@update');
+
     Route::post('user_files/upload_profile_image', 'API\General\UserFilesController@upload_profile_image');
     Route::delete('user_files/delete_profile_image/{id}', 'API\General\UserFilesController@delete_profile_image');
 
