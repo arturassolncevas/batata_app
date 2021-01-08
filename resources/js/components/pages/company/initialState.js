@@ -1,7 +1,11 @@
 const initialState = {
+  form1EditEnabled: false,
+  form2EditEnabled: false,
   form1: {
     company_profile: {
       description: "<p>papa</p>",
+      website_url: null,
+      facebook_url: null
     }
   },
   form2: {
@@ -27,18 +31,27 @@ const initialState = {
   error: {
     message: null,
     errors: {
-      company: {
-        local_code: null,
-        name: null,
-        email: null,
-        type: null,
-        address: {
-          phone: null,
-          address_1: null,
-          zipcode: null,
-          city: null,
-          country: {
-            id: null,
+      form1: {
+        company_profile: {
+          description: null,
+          website_url: null,
+          facebook_url: null
+        }
+      },
+      form2: {
+        company_profile: {
+          local_code: null,
+          name: null,
+          email: null,
+          type: null,
+          address: {
+            phone: null,
+            address_1: null,
+            zipcode: null,
+            city: null,
+            country: {
+              id: null,
+            }
           }
         }
       }

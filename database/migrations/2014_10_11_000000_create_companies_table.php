@@ -21,6 +21,9 @@ class CreateCompaniesTable extends Migration
             $table->string('local_code');
             $table->string('phone');
             $table->integer('address_id')->nullable();
+            $table->text('description');
+            $table->text('website_url');
+            $table->text('facebook_url');
             $table->timestamps();
         });
 

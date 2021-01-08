@@ -54,10 +54,14 @@ use Illuminate\Support\Facades\Route;
     Route::patch('settings/profile', 'API\General\ProfileSettingsController@update');
 
     Route::get('settings/company_profile', 'API\General\CompanySettingsController@get_settings');
-    Route::patch('settings/company_profile', 'API\General\CompanySettingsController@update');
+    Route::patch('settings/company_profile/primary_data', 'API\General\CompanySettingsController@update_primary');
+    Route::patch('settings/company_profile/secondary_data', 'API\General\CompanySettingsController@update_secondary');
 
     Route::post('user_files/upload_profile_image', 'API\General\UserFilesController@upload_profile_image');
     Route::delete('user_files/delete_profile_image/{id}', 'API\General\UserFilesController@delete_profile_image');
+
+    Route::post('company_files/upload_profile_image', 'API\General\CompanyFilesController@upload_profile_image');
+    Route::delete('company_files/delete_profile_image/{id}', 'API\General\CompanyFilesController@delete_profile_image');
 
     //PRODUCTS
     Route::get('products/{id}', 'API\General\ProductsController@find');

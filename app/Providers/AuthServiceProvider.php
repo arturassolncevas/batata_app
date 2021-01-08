@@ -65,5 +65,9 @@ class AuthServiceProvider extends ServiceProvider
       Gate::define('delete-image-user-files', function ($user, $file) {
         return $user->id == $file->user->id ? true : false;
       });
+
+      Gate::define('delete-image-company-files', function ($user, $file) {
+        return $user->company->id == $file->company->id ? true : false;
+      });
     }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
-class UserFile extends Model
+class CompanyFile extends Model
 {
     use Concerns\UsesUuid;
 
@@ -29,16 +29,16 @@ class UserFile extends Model
     ];
 
     public static function types() {
-      return ['file', 'image', 'thumbnail', 'document', 'profile_image'];
+      return ['file', 'image', 'thumbnail', 'document', 'certificate', 'profile_image'];
     }
 
     public static function extensions() {
       return ['png', 'jpg'];
     }
 
-    public function user()
+    public function company()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\Company');
     }
 
 }

@@ -27,18 +27,30 @@ class CompanySettingsController extends Controller
       return response()->json(new CompanySettingsResource($user->company)); 
     }
     
-    public function update(CompanyProfileRequest $request) {
+    public function update_primary(CompanyProfileRequest $request) {
       $user = Auth::user();
       $company_params = $request->validated()["company_profile"];
       $address_params = $company_params["address"];
       $address_params["country"] = Country::find($address_params["country"]["id"]);
       $company_params["phone"] = $address_params["phone"];
+      $company_params["email"] = $address_params["email"];
       $company = $user->company;
       $address = $company->address;
 
       DB::transaction(function () use ($address, $address_params, $company, $company_params) {
         $address = (new AddressManager($address_params))->update($address);
         $company_params["address"] = $address;
+        $company = (new CompanyManager($company_params))->update($company);
+      });
+
+      return response()->json(new CompanySettingsResource($company)); 
+    }
+
+    public function update_secondary(CompanyProfileRequest $request) {
+      $user = Auth::user();
+      $company_params = $request->validated()["company_profile"];
+      $company = $user->company;
+      DB::transaction(function () use ($company, $company_params) {
         $company = (new CompanyManager($company_params))->update($company);
       });
 

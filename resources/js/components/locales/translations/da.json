@@ -128,7 +128,10 @@
       "local_code": null,
       "name": "Firmanavn",
       "company": "Firma",
-      "type": "Type"
+      "type": "Type",
+      "website_url": "Hjemmeside",
+      "facebook_url": "Facebook",
+      "instagram_url": "Instagram"
     },
     "address": {
       "address": "Adresse",

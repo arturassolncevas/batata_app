@@ -96,13 +96,11 @@ class ProfileSettings extends Component {
   }
 
   async handleOnRemove(file) {
-    console.log("here")
     requestClient.delete(`/api/user_files/delete_profile_image/${file.uid}`).then(async (response) => {
       const index = this.state.fileList.indexOf(file)
       this.state.fileList.splice(index, 1)
       this.setState(this.state)
     })
-
   }
 
   async uploadImage(props) {
