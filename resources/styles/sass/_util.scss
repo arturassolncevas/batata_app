@@ -8,24 +8,37 @@
 
 .table-header {
     color: $primary;
-    font-size: 2.8rem;
-    line-height: 1.5em;
     font-weight: 400;
     margin: 0;
 }
 
+.table-header,
+.text-larger {
+    font-size: 2.8rem;
+    line-height: 1.5em;
+}
+
+.text-small,
+.text-normal,
+text-large {
+    line-height: 1.5em;
+    font-weight: 400;
+}
+
 .text-small {
     font-size: 1rem;
-    line-height: 1.5em;
 }
 
 .text-normal {
     font-size: 1.4rem;
-    line-height: 1.5rem;
+}
+
+.text-large {
+    font-size: 2rem;
 }
 
 .text-light {
-    color: $light;
+    color: $light !important;
 }
 
 .text-dark {

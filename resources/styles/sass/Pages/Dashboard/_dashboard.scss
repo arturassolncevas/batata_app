@@ -1,0 +1,11 @@
+#dashboard {
+    .performance-card {
+        flex-basis: 100%;
+        flex-grow: 1;
+        background-color: #fff;
+
+        & + * {
+            margin-left: 2rem;
+        }
+    }
+}
