@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PlacedOrdersTable from "../../shared/PlacedOrdersTable";
+import { ProductChart } from "./Charts";
 // import { PageHeader, Divider, Row, Col, Table, Tag } from 'antd';
 // import { DotChartOutlined } from '@ant-design/icons';
 // import Trend from 'ant-design-pro/lib/Trend';
@@ -213,7 +214,7 @@ const Dashboard = () => {
                 </div>
             </section>
 
-            <section className="recent-orders my-5">
+            <section className="analytics my-5">
                 <div className="d-flex justify-content-between align-items-center">
                     <h3 className="text-capitalize text-large text-black m-0">
                         analytics
@@ -244,8 +245,8 @@ const Dashboard = () => {
                 )}
             </section>
 
-            <section className="recent-orders my-5">
-                <div className="d-flex justify-content-between align-items-center">
+            <section className="product-summary my-5">
+                <div className="d-flex justify-content-between align-items-center mb-5">
                     <h3 className="text-capitalize text-large text-black m-0">
                         product summary
                     </h3>
@@ -253,6 +254,33 @@ const Dashboard = () => {
                     <button className="btn btn-dark text-capitalize">
                         view products
                     </button>
+                </div>
+
+                <div className="d-flex justify-content-between align-items-center flex-wrap">
+                    <div className="shadow-sm chart-card py-4 px-4">
+                        <h3 className="text-capitalize mb-4">green apples</h3>
+                        <ProductChart data={[4284, 1235, 123]} />
+                    </div>
+                    <div className="shadow-sm chart-card py-4 px-4">
+                        <h3 className="text-capitalize mb-4">cucumber</h3>
+                        <ProductChart data={[4284, 1235, 123]} />
+                    </div>
+                    <div className="shadow-sm chart-card py-4 px-4">
+                        <h3 className="text-capitalize mb-4">brown eggs</h3>
+                        <ProductChart data={[4284, 1235, 123]} />
+                    </div>
+                    <div className="shadow-sm chart-card py-4 px-4">
+                        <h3 className="text-capitalize mb-4">soya bean</h3>
+                        <ProductChart data={[4284, 1235, 123]} />
+                    </div>
+                    <div className="shadow-sm chart-card py-4 px-4">
+                        <h3 className="text-capitalize mb-4">salat</h3>
+                        <ProductChart data={[4284, 1235, 123]} />
+                    </div>
+                    <div className="shadow-sm chart-card py-4 px-4">
+                        <h3 className="text-capitalize mb-4">avocado</h3>
+                        <ProductChart data={[4284, 1235, 123]} />
+                    </div>
                 </div>
             </section>
         </div>

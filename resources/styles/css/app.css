@@ -10772,15 +10772,30 @@ header.header .content-wrapper .header-content p {
   border-radius: 4px;
 }
 
+#dashboard .performance-card,
+#dashboard .chart-card {
+  background-color: #fff;
+  flex-grow: 1;
+}
+
+#dashboard .performance-card + *,
+#dashboard .chart-card + * {
+  margin-left: 2rem;
+}
+
 #dashboard .performance-card {
   flex-basis: 100%;
-  flex-grow: 1;
-  background-color: #fff;
   height: 14rem;
 }
 
-#dashboard .performance-card + * {
-  margin-left: 2rem;
+#dashboard .chart-card {
+  flex-basis: 30%;
+  margin-bottom: 2rem;
+}
+
+#dashboard .chart-card .chart canvas {
+  width: 80% !important;
+  height: auto !important;
 }
 
 @media screen and (max-width: 1100px) {
