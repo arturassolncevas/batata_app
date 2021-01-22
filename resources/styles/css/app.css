@@ -10250,7 +10250,9 @@ button.btn:hover {
 
 .text-small,
 .text-normal,
-text-large {
+text-large,
+.text-caption,
+.text-caption-small {
   line-height: 1.5em;
   font-weight: 400;
 }
@@ -10259,8 +10261,16 @@ text-large {
   font-size: 1rem;
 }
 
+.text-caption-small {
+  font-size: 1.2rem;
+}
+
 .text-normal {
   font-size: 1.4rem;
+}
+
+.text-caption {
+  font-size: 1.8rem;
 }
 
 .text-large {
@@ -10274,6 +10284,14 @@ text-large {
 .text-dark {
   color: #001427;
   font-weight: 500;
+}
+
+.text-grey {
+  color: #bdbdbd;
+}
+
+.bg-white {
+  background-color: #fff;
 }
 
 span.company-name, span.product-name, span.delivery-date, span.product-amount, p.total-amount span {
@@ -10796,6 +10814,10 @@ header.header .content-wrapper .header-content p {
 #dashboard .chart-card .chart canvas {
   width: 80% !important;
   height: auto !important;
+}
+
+#dashboard .news-card {
+  background-color: #fafbfc;
 }
 
 @media screen and (max-width: 1100px) {

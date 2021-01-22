@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import PlacedOrdersTable from "../../shared/PlacedOrdersTable";
 import { ProductChart } from "./Charts";
+import AuthorImg from "../../../../images/man1.jpg";
+import NewsCard from "./NewsCard";
 // import { PageHeader, Divider, Row, Col, Table, Tag } from 'antd';
 // import { DotChartOutlined } from '@ant-design/icons';
 // import Trend from 'ant-design-pro/lib/Trend';
@@ -9,8 +12,22 @@ import { ProductChart } from "./Charts";
 // import numeral from 'numeral';
 // import moment from 'moment'
 
+const newsAndUpdates = [];
+for (var i = 0; i < 4; i++) {
+    newsAndUpdates.push({
+        tag: "blog",
+        topic: "Hacking productivity and Increasing Sales Revenue",
+        authorName: "Ezra Samuels",
+        jobDesc: "agro investor",
+        authorImg: AuthorImg,
+        time: "2 hours ago"
+    });
+}
+
 const Dashboard = () => {
     const [recentOrders, setRecentOrders] = useState(null);
+
+    const history = useHistory();
 
     const fetchRecentOrders = () => {
         const pagination = { total: 5, page: 1, size: 20 };
@@ -27,12 +44,36 @@ const Dashboard = () => {
                 let data = response.data;
                 data.data.forEach(item => (item.key = item.id));
 
-                setRecentOrders(data);
+                window.localStorage.setItem(
+                    "recentOrders",
+                    JSON.stringify(data)
+                );
+
+                setRecentOrders(
+                    JSON.parse(window.localStorage.getItem("recentOrders")) ||
+                        {}
+                );
             })
             .catch(error => {
                 console.log(error);
             });
     };
+
+    const displayNewsAndUpdates = newsAndUpdates.map((item, idx) => {
+        const { tag, topic, authorName, jobDesc, authorImg, time } = item;
+
+        return (
+            <NewsCard
+                key={idx}
+                tag={tag}
+                topic={topic}
+                authorName={authorName}
+                jobDesc={jobDesc}
+                authorImg={authorImg}
+                time={time}
+            />
+        );
+    });
 
     useState(fetchRecentOrders, []);
 
@@ -232,7 +273,10 @@ const Dashboard = () => {
                         recent orders
                     </h3>
 
-                    <button className="btn btn-dark text-capitalize">
+                    <button
+                        className="btn btn-dark text-capitalize"
+                        onClick={() => history.push("/placed_orders")}
+                    >
                         view all orders
                     </button>
                 </div>
@@ -251,7 +295,10 @@ const Dashboard = () => {
                         product summary
                     </h3>
 
-                    <button className="btn btn-dark text-capitalize">
+                    <button
+                        className="btn btn-dark text-capitalize"
+                        onClick={() => history.push("/products")}
+                    >
                         view products
                     </button>
                 </div>
@@ -280,6 +327,24 @@ const Dashboard = () => {
                     <div className="shadow-sm chart-card py-4 px-4">
                         <h3 className="text-capitalize mb-4">avocado</h3>
                         <ProductChart data={[4284, 1235, 123]} />
+                    </div>
+                </div>
+            </section>
+
+            <section className="my-5">
+                <div className="row">
+                    <div className="col">
+                        <h3 className="text-dark text-large text-capitalize">
+                            account activity
+                        </h3>
+                    </div>
+                    <div className="col">
+                        <h3 className="text-dark text-large text-capitalize mb-5">
+                            news, updates and blog
+                        </h3>
+                        <div className="bg-white shadow-sm p-4">
+                            {displayNewsAndUpdates}
+                        </div>
                     </div>
                 </div>
             </section>
