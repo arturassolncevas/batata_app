@@ -10496,77 +10496,92 @@ header.header .content-wrapper .header-content p {
   flex-grow: 1;
 }
 
-#placed-orders {
+#placed-orders,
+#dashboard {
   text-transform: capitalize;
 }
 
-#placed-orders .site-page-header {
+#placed-orders .site-page-header,
+#dashboard .site-page-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
   align-items: flex-end;
 }
 
-#placed-orders .site-page-header span {
+#placed-orders .site-page-header span,
+#dashboard .site-page-header span {
   color: #666;
   font-size: 1.4rem;
   line-height: 1.5em;
   font-weight: 400;
 }
 
-#placed-orders .site-page-header span svg {
+#placed-orders .site-page-header span svg,
+#dashboard .site-page-header span svg {
   margin-right: 0.5rem;
 }
 
-#placed-orders table {
+#placed-orders table,
+#dashboard table {
   background-color: #fafbfc;
   box-shadow: 0 0px 2.1px rgba(0, 0, 0, 0.035), 0 0px 17px rgba(0, 0, 0, 0.07);
 }
 
-#placed-orders table thead {
+#placed-orders table thead,
+#dashboard table thead {
   text-transform: uppercase;
 }
 
-#placed-orders table thead tr th {
+#placed-orders table thead tr th,
+#dashboard table thead tr th {
   color: #4f4f4f;
   font-size: 1.2rem;
   line-height: 1.5em;
   font-weight: 400;
 }
 
-#placed-orders table tbody tr {
+#placed-orders table tbody tr,
+#dashboard table tbody tr {
   vertical-align: top;
   cursor: pointer;
 }
 
-#placed-orders table tbody tr:nth-of-type(odd) {
+#placed-orders table tbody tr:nth-of-type(odd),
+#dashboard table tbody tr:nth-of-type(odd) {
   background-color: #fff;
 }
 
-#placed-orders table tbody tr td {
+#placed-orders table tbody tr td,
+#dashboard table tbody tr td {
   background-color: inherit;
 }
 
-#placed-orders table tbody tr td .product-wrapper {
+#placed-orders table tbody tr td .product-wrapper,
+#dashboard table tbody tr td .product-wrapper {
   display: flex;
 }
 
-#placed-orders table tbody tr td .product-wrapper .product-image {
+#placed-orders table tbody tr td .product-wrapper .product-image,
+#dashboard table tbody tr td .product-wrapper .product-image {
   height: 35px;
   width: 35px;
   margin-right: 1rem;
 }
 
-#placed-orders table tbody tr td .product-wrapper .product-image img {
+#placed-orders table tbody tr td .product-wrapper .product-image img,
+#dashboard table tbody tr td .product-wrapper .product-image img {
   max-width: 100%;
 }
 
-#placed-orders table tbody tr td .product-wrapper .product-details {
+#placed-orders table tbody tr td .product-wrapper .product-details,
+#dashboard table tbody tr td .product-wrapper .product-details {
   display: flex;
   flex-direction: column;
 }
 
-#placed-orders table tbody tr td .image-placeholder {
+#placed-orders table tbody tr td .image-placeholder,
+#dashboard table tbody tr td .image-placeholder {
   height: 35px;
   width: 35px;
   margin-right: 1rem;

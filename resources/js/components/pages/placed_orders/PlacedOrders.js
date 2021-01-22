@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PlacedOrdersTable from "../../shared/PlacedOrdersTable";
 import OverviewTable from "./OverviewTable";
-import { PageHeader, Divider, Button, Row, Col, Table, Select } from "antd";
+import { PageHeader, Divider, Button, Row, Col, Select } from "antd";
 import {
     DropboxOutlined,
     SortAscendingOutlined,

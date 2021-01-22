@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import PlacedOrdersTable from "../../shared/PlacedOrdersTable";
 // import { PageHeader, Divider, Row, Col, Table, Tag } from 'antd';
 // import { DotChartOutlined } from '@ant-design/icons';
 // import Trend from 'ant-design-pro/lib/Trend';
@@ -8,6 +9,32 @@ import React from "react";
 // import moment from 'moment'
 
 const Dashboard = () => {
+    const [recentOrders, setRecentOrders] = useState(null);
+
+    const fetchRecentOrders = () => {
+        const pagination = { total: 5, page: 1, size: 20 };
+        const sort = { sort_by: "date", direction: "desc" };
+
+        return requestClient
+            .post(`/api/placed_orders/filter`, {
+                data: {
+                    sort,
+                    page: pagination.page
+                }
+            })
+            .then(async response => {
+                let data = response.data;
+                data.data.forEach(item => (item.key = item.id));
+
+                setRecentOrders(data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
+    useState(fetchRecentOrders, []);
+
     return (
         <div id="dashboard">
             <section className="performance-overview my-5">
@@ -199,7 +226,7 @@ const Dashboard = () => {
             </section>
 
             <section className="recent-orders my-5">
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="d-flex justify-content-between align-items-center mb-5">
                     <h3 className="text-capitalize text-large text-black m-0">
                         recent orders
                     </h3>
@@ -208,6 +235,13 @@ const Dashboard = () => {
                         view all orders
                     </button>
                 </div>
+
+                {recentOrders && (
+                    <PlacedOrdersTable
+                        data={recentOrders.data}
+                        pagination={false}
+                    />
+                )}
             </section>
 
             <section className="recent-orders my-5">

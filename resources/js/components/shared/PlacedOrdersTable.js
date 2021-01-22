@@ -39,7 +39,7 @@ const PlacedOrdersTable = ({ data, pagination, intl }) => {
         <Table
             className="extended-table"
             dataSource={data}
-            pagination={pagination}
+            pagination={pagination ? pagination : false}
         >
             <Column
                 title="Buyer"
