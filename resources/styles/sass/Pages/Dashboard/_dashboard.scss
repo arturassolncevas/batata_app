@@ -1,8 +1,12 @@
 #dashboard {
+    .btn {
+        border-radius: 4px;
+    }
     .performance-card {
         flex-basis: 100%;
         flex-grow: 1;
         background-color: #fff;
+        height: 14rem;
 
         & + * {
             margin-left: 2rem;

@@ -10126,6 +10126,10 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+button.btn:hover {
+  transform: scale(0.98);
+}
+
 .ant-layout {
   background-color: #fafbfc;
 }
@@ -10413,6 +10417,10 @@ header.header .content-wrapper .header-content p {
 
 #side-nav ul li::after {
   display: none;
+}
+
+#side-nav ul li a {
+  text-decoration: none;
 }
 
 #side-nav ul li a:hover {
@@ -10745,10 +10753,15 @@ header.header .content-wrapper .header-content p {
   border-radius: 16px;
 }
 
+#dashboard .btn {
+  border-radius: 4px;
+}
+
 #dashboard .performance-card {
   flex-basis: 100%;
   flex-grow: 1;
   background-color: #fff;
+  height: 14rem;
 }
 
 #dashboard .performance-card + * {
