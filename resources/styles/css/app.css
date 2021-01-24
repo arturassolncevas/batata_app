@@ -10831,6 +10831,14 @@ header.header .content-wrapper .header-content p {
   height: auto !important;
 }
 
+#dashboard .info-section .same-height {
+  max-height: 800px;
+}
+
+#dashboard .info-section .same-height .activity-card + * {
+  margin-top: 1.5rem;
+}
+
 @media screen and (max-width: 1100px) {
   header.header .content-wrapper .header-content {
     width: 20%;

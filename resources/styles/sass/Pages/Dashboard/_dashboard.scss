@@ -52,4 +52,16 @@
             height: auto !important;
         }
     }
+
+    .info-section {
+        .same-height {
+            max-height: 800px;
+
+            .activity-card {
+                & + * {
+                    margin-top: 1.5rem;
+                }
+            }
+        }
+    }
 }

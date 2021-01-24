@@ -28,18 +28,18 @@ for (var i = 0; i < 4; i++) {
 const Dashboard = () => {
     const [recentOrders, setRecentOrders] = useState(null);
     const [lineChartData, setLineChartData] = useState([
-        10000,
-        30000,
-        40000,
-        22000,
-        15000,
-        35000,
-        43000,
+        11239,
+        16087,
+        14375,
+        22439,
+        8848,
+        23471,
+        15036,
         25000,
-        11000,
-        27000,
-        34000,
-        8000
+        15417,
+        9838,
+        11239,
+        13728
     ]);
 
     const history = useHistory();
@@ -90,9 +90,76 @@ const Dashboard = () => {
         );
     });
 
+    const recentActivity = [
+        // {
+        //     date: "14 Dec, 2020",
+        //     time: "04:56 pm",
+        //     desc: {
+        //         activity: "new order created (pending payment)",
+        //         addedInfo: "ID: 4556"
+        //     }
+        // },
+        // {
+        //     date: "15 Dec, 2020",
+        //     time: "04:56 pm",
+        //     desc: {
+        //         activity: "product added to marketplace",
+        //         addedInfo: "carrot: 2300 units"
+        //     }
+        // }
+    ];
+
     const sumOfLineChartData = lineChartData.reduce((a, b) => a + b, 0);
 
     const { Option } = Select;
+
+    const ShowActivites =
+        recentActivity.length === 0 ? (
+            <p
+                className="mx-3 py-5 w-100 text-caption text-grey text-center"
+                style={{ backgroundColor: "#fafbfc" }}
+            >
+                no activity
+            </p>
+        ) : (
+            recentActivity.map((item, idx) => {
+                let { date, time, desc } = item;
+
+                return (
+                    <div
+                        key={idx}
+                        className="row align-items-baseline activity-card"
+                    >
+                        <div className="col-3">
+                            <span className="d-flex flex-column align-items-start text-end justify-content-center">
+                                <time
+                                    dateTime="2020-12-14"
+                                    className="text-caption-small text-dark mb-2"
+                                >
+                                    {date}
+                                </time>
+                                <time
+                                    dateTime="16:56"
+                                    className="text-caption-small text-grey"
+                                >
+                                    {time}
+                                </time>
+                            </span>
+                        </div>
+                        <div className="col-8">
+                            <span className="d-flex flex-column align-items-start justify-content-center">
+                                <h6 className="text-normal text-dark mb-2">
+                                    {desc.activity}
+                                </h6>
+                                <p className="m-0 text-caption-small text-grey">
+                                    {desc.addedInfo}
+                                </p>
+                            </span>
+                        </div>
+                    </div>
+                );
+            })
+        );
 
     useState(fetchRecentOrders, []);
 
@@ -395,18 +462,22 @@ const Dashboard = () => {
                 </div>
             </section>
 
-            <section className="my-5">
+            <section className="my-5 info-section">
                 <div className="row">
                     <div className="col">
-                        <h3 className="text-dark text-large text-capitalize">
+                        <h3 className="text-dark text-large text-capitalize mb-5">
                             account activity
                         </h3>
+
+                        <div className="activity bg-white shadow-sm p-5 overflow-auto same-height">
+                            {ShowActivites}
+                        </div>
                     </div>
                     <div className="col">
                         <h3 className="text-dark text-large text-capitalize mb-5">
                             news, updates and blog
                         </h3>
-                        <div className="bg-white shadow-sm p-4">
+                        <div className="bg-white shadow-sm p-4 overflow-auto same-height">
                             {displayNewsAndUpdates}
                         </div>
                     </div>
