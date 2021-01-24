@@ -74,21 +74,38 @@ const Dashboard = () => {
             });
     };
 
-    const displayNewsAndUpdates = newsAndUpdates.map((item, idx) => {
-        const { tag, topic, authorName, jobDesc, authorImg, time } = item;
+    const displayNewsAndUpdates =
+        newsAndUpdates.length === 0 ? (
+            <p
+                className="mx-3 py-5 w-100 text-caption text-grey text-center"
+                style={{ backgroundColor: "#fafbfc" }}
+            >
+                no data
+            </p>
+        ) : (
+            newsAndUpdates.map((item, idx) => {
+                const {
+                    tag,
+                    topic,
+                    authorName,
+                    jobDesc,
+                    authorImg,
+                    time
+                } = item;
 
-        return (
-            <NewsCard
-                key={idx}
-                tag={tag}
-                topic={topic}
-                authorName={authorName}
-                jobDesc={jobDesc}
-                authorImg={authorImg}
-                time={time}
-            />
+                return (
+                    <NewsCard
+                        key={idx}
+                        tag={tag}
+                        topic={topic}
+                        authorName={authorName}
+                        jobDesc={jobDesc}
+                        authorImg={authorImg}
+                        time={time}
+                    />
+                );
+            })
         );
-    });
 
     const recentActivity = [
         // {
