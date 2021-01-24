@@ -10820,6 +10820,17 @@ header.header .content-wrapper .header-content p {
   background-color: #fafbfc;
 }
 
+#dashboard .chart-wrapper .filter > div:hover > div, #dashboard .chart-wrapper .filter > div:focus > div {
+  border-color: #9ba5ae;
+  box-shadow: none;
+  outline: none;
+}
+
+#dashboard .chart-wrapper canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
 @media screen and (max-width: 1100px) {
   header.header .content-wrapper .header-content {
     width: 20%;

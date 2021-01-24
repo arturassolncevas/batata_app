@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { Select } from "antd";
 import PlacedOrdersTable from "../../shared/PlacedOrdersTable";
-import { ProductChart } from "./Charts";
+import { ProductChart, LineChart } from "./Charts";
 import AuthorImg from "../../../../images/man1.jpg";
 import NewsCard from "./NewsCard";
 // import { PageHeader, Divider, Row, Col, Table, Tag } from 'antd';
@@ -26,6 +27,20 @@ for (var i = 0; i < 4; i++) {
 
 const Dashboard = () => {
     const [recentOrders, setRecentOrders] = useState(null);
+    const [lineChartData, setLineChartData] = useState([
+        10000,
+        30000,
+        40000,
+        22000,
+        15000,
+        35000,
+        43000,
+        25000,
+        11000,
+        27000,
+        34000,
+        8000
+    ]);
 
     const history = useHistory();
 
@@ -74,6 +89,10 @@ const Dashboard = () => {
             />
         );
     });
+
+    const sumOfLineChartData = lineChartData.reduce((a, b) => a + b, 0);
+
+    const { Option } = Select;
 
     useState(fetchRecentOrders, []);
 
@@ -256,7 +275,7 @@ const Dashboard = () => {
             </section>
 
             <section className="analytics my-5">
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="d-flex justify-content-between align-items-center mb-5">
                     <h3 className="text-capitalize text-large text-black m-0">
                         analytics
                     </h3>
@@ -264,6 +283,51 @@ const Dashboard = () => {
                     <button className="btn btn-dark text-capitalize">
                         view analytics
                     </button>
+                </div>
+
+                <div className="chart-wrapper bg-white shadow-sm rounded p-5">
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div className="action-btn">
+                            <button className="btn btn-link text-normal text-dark">
+                                Sales
+                            </button>
+                            <button className="btn btn-link text-normal text-dark">
+                                Orders
+                            </button>
+                        </div>
+                        <div className="filter">
+                            <Select
+                                defaultValue="Monthly"
+                                style={{ width: 120 }}
+                                onChange={value =>
+                                    console.log(`selected ${value}`)
+                                }
+                            >
+                                <Option value="Monthly">Monthly</Option>
+                                <Option value="Quarterly">Quartely</Option>
+
+                                <Option value="Yearly">Yearly</Option>
+                            </Select>
+                        </div>
+                    </div>
+                    <div className="chart-info my-5 py-4">
+                        <p className="m-0 text-normal text-uppercase text-light">
+                            total sales
+                        </p>
+                        <p className="m-0 text-larger fw-bold text-dark my-2">
+                            {sumOfLineChartData}{" "}
+                            <span className="text-normal fw-normal text-light">
+                                DKK
+                            </span>
+                        </p>
+                        <p
+                            className="m-0 text-normal"
+                            style={{ color: "#16C538" }}
+                        >
+                            15%
+                        </p>
+                    </div>
+                    <LineChart data={lineChartData} />
                 </div>
             </section>
 

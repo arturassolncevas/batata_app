@@ -56,7 +56,9 @@ const NewsCard = ({ tag, topic, authorName, jobDesc, authorImg, time }) => {
                     </span>
                 </Space>
 
-                <time className="text-caption-small text-grey">{time}</time>
+                <time className="text-caption-small text-grey">
+                    Published {time}
+                </time>
             </div>
         </div>
     );
