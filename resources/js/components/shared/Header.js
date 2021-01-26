@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { NavLink } from "react-router-dom"
 import { Layout, Menu, Dropdown, Row, Col, Button, Badge, Avatar } from "antd";
 import {
     MenuFoldOutlined,
@@ -14,7 +15,13 @@ const { Header } = Layout;
 const menu = handleLogout => {
     return (
         <Menu>
+            <Menu.Item key="0">
+              <NavLink to={"/settings/profile"}> Profile </NavLink>
+            </Menu.Item>
             <Menu.Item key="1">
+              <NavLink to={"/settings/company"}> Company </NavLink>
+            </Menu.Item>
+            <Menu.Item key="2">
                 <a href="#">Messages</a>
             </Menu.Item>
             <Menu.Divider />

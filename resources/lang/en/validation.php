@@ -150,7 +150,8 @@ return [
     */
 
     'attributes' => [
-      'country_id' => 'country'
+      'country_id' => 'country',
+      'accept_terms_and_conditions' => 'conditions',
     ],
 
 ];

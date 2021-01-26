@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'accepted' => 'The :attribute must be accepted.',
+    'accepted' => ':attribute skal accepteres',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',
     'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
@@ -94,9 +94,9 @@ return [
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
     'password' => 'The password is incorrect.',
-    'phone_area' => 'The area code is required.',
+    'phone_area' => 'lande kode er påkrævet',
     'present' => 'The :attribute field must be present.',
-    'recaptcha'=> 'Please ensure that you are a human!',
+    'recaptcha'=> 'skal valideres',
     'cart_item_quantity' => 'ordre kan kun være mellem :min stk og :max stk',
     'regex' => 'The :attribute format is invalid.',
     'required' => 'påkrævet',
@@ -117,7 +117,7 @@ return [
     'starts_with' => 'The :attribute must start with one of the following: :values.',
     'string' => 'The :attribute must be a string.',
     'timezone' => 'The :attribute must be a valid zone.',
-    'unique' => 'The :attribute has already been taken.',
+    'unique' => ':attribute er allerede brugt.',
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
@@ -137,6 +137,10 @@ return [
         'phone' => [
             'phone_area' => 'The phone area is required.',
         ],
+
+        'user.repeat_password' => [
+          'same' => 'skal matche adgangskode'
+        ]
     ],
 
     /*
@@ -151,7 +155,9 @@ return [
     */
 
     'attributes' => [
-      'country_id' => 'country'
+      'country_id' => 'Land',
+      'accept_terms_and_conditions' => 'Vilkår',
+      'profile.email' => 'email'  
     ],
 
 ];

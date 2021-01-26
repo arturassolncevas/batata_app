@@ -25,14 +25,21 @@ class CreateRequestor extends FormRequest
     public function rules()
     {
         return [
-          'name' => 'required|max:255',
-          'company_name' => 'max:255',
-          'email' => 'required|email|max:255|unique:requestors,email',
-          'country_id' => 'required',
-          'phone' => ['bail', new Phonearea($this->phone_area_country_id),'required', 'max:255'],
+          'user.name' => 'required|max:255',
+          'user.email' => 'required|email|max:255|unique:users,email',
+          'user.password' => 'required|max:255',
+          'user.repeat_password' => 'bail|required|same:user.password',
+          'company.local_code' => 'required|max:255|unique:companies,local_code',
+          'company.name' => 'required|max:255|unique:companies,name',
+          'company.email' => 'required|email|max:255|unique:companies,email',
+          'company.type' => 'required',
+          'company.address.phone' => ['bail', new Phonearea($this->company["address"]["country"]["id"]),'required', 'max:255'],
+          'company.address.country.id' => 'required',
+          'company.address.address_1' => 'required|max:255',
+          'company.address.zipcode' => 'required|max:255',
+          'company.address.city' => 'required|max:255',
           'accept_terms_and_conditions' => 'accepted',
-          'phone_area_country_id' => '',
-          'captcha_value' => 'recaptcha'
+          // 'captcha_value' => 'recaptcha'
         ];
     }
 }

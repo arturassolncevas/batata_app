@@ -31,7 +31,7 @@ class ProductPolicy
     public function create(User $user)
     {
       $roles = $user->getRoleNames()->toArray();
-      return in_array("admin", $roles) || in_array("employee", $roles) || in_array("customer", $roles);
+      return in_array("admin", $roles) || in_array("employee", $roles) || in_array("customer", $roles) || in_array("client", $roles);
     }
 
     /**

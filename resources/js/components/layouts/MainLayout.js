@@ -52,7 +52,14 @@ const MainLayout = props => {
                                 placeholder={placeholders[pathname]}
                                 allowClear
                                 onSearch={onSearch}
-                                style={{ width: 200, margin: "0 10px" }}
+                                style={{
+                                    width: 200,
+                                    margin: "0 10px",
+                                    display:
+                                        pathname === "dashboard"
+                                            ? "none"
+                                            : "inline-block"
+                                }}
                             />
                         </div>
                         {props.children}

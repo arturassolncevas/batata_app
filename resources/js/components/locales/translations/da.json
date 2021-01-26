@@ -28,10 +28,8 @@
       "header": "Signup",
       "company_name": "Firmanavn",
       "accept_terms_and_conditions": "Jeg tillader hermed at blive kontaktet",
-      "successfully_submitted": "Tak for din anmodning. Vi sætter stor pris på din interesse. Du hører snart fra os.",
-      "company": {
-        "local_code": "CVR-nummer"
-      }
+      "successfully_submitted": "Din profil er belevet oprettet",
+      "company": { "local_code": "CVR-nummer", "types": { "seller": "Sælger", "buyer": "Køber", "seller_and_buyer": "Begge to" } }
     },
     "newProduct": {
       "header": "Nyt Produkt",
@@ -55,6 +53,9 @@
     },
     "profileSettings": {
       "header": "Profil" 
+    },
+    "companyProfileSettings": {
+      "header": "Firma profil" 
     }
   },
   "shared": {
@@ -71,6 +72,7 @@
     }
   },
   "general": {
+    "continue": "Fortsæt",
     "active": "Aktiv",
     "add_to_cart": "Tilføje til kurv",
     "inactive": "Inaktiv",
@@ -78,7 +80,8 @@
     "firstName": "Navn",
     "lastName": "Efternavn",
     "email": "Email",
-    "password": "Password",
+    "password": "Adgangskode",
+    "repeat_password": "Gentag adgangskode",
     "submit": "Submit",
     "phone": "Phone",
     "country": "Country",
@@ -124,7 +127,11 @@
     "company": {
       "local_code": null,
       "name": "Firmanavn",
-      "company": "Firma"
+      "company": "Firma",
+      "type": "Type",
+      "website_url": "Hjemmeside",
+      "facebook_url": "Facebook",
+      "instagram_url": "Instagram"
     },
     "address": {
       "address": "Adresse",
@@ -134,7 +141,8 @@
       "city": "By"
     },
     "user": {
-      "profile": "Profil"
+      "profile": "Profil",
+      "profile_image": "Profil billede"
     }
   },
   "sort": {
@@ -144,6 +152,7 @@
   },
   "crud": {
     "edit": "Rediger",
+    "cancel": "Afbryd",
     "create": "Oprette",
     "delete": "Slet",
     "save": "Gem",

@@ -15,9 +15,9 @@ class Phonearea implements Rule
 
     public $phone_area_country_id;
 
-    public function __construct($phone_area_country_id)
+    public function __construct($country_id)
     {
-      $this->phone_area_country_id = $phone_area_country_id;
+      $this->phone_area_country_id = $country_id;
     }
 
     /**

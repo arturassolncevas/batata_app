@@ -9,9 +9,10 @@ class SetLocale
     public function handle($request, Closure $next)
     {
         $user = $request->user();
-        if ($user)
+        if ($user) {
           app()->setLocale($user->language->alias);
-        //app()->setLocale("en");
+          //app()->setLocale("en");
+        }
         return $next($request);
     }
 }

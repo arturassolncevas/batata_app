@@ -35,8 +35,8 @@ class CreateOrders extends Migration
 
             $table->uuid('currency_id');
             $table->uuid('customer_id');
-            $table->uuid('billing_address_id')->nullable();
-            $table->uuid('delivery_address_id')->nullable();
+            $table->integer('billing_address_id')->nullable();
+            $table->integer('delivery_address_id')->nullable();
             $table->uuid('payment_method_id')->nullable();
 
             $table->foreign('currency_id')->references('id')->on('currencies');

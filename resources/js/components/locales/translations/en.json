@@ -28,10 +28,8 @@
       "header": "Signup",
       "company_name": "Company name",
       "accept_terms_and_conditions": "I agree to be contacted",
-      "successfully_submitted": "Thank you for your request. You will be hearing from us soon.",
-      "company": {
-        "local_code": "CVR-number"
-      }
+      "successfully_submitted": "Your profile has been created",
+      "company": { "local_code": "CVR-number", "types": { "seller": "Seller", "buyer": "Buyer", "seller_and_buyer": "Both" } }
     },
     "newProduct": {
       "header": "New Product",
@@ -55,6 +53,9 @@
     },
     "profileSettings": {
       "header": "Profil" 
+    },
+    "companyProfileSettings": {
+      "header": "Company profile" 
     }
   },
   "shared": {
@@ -71,6 +72,7 @@
     }
   },
   "general": {
+    "continue": "Continue",
     "active": "Active",
     "add_to_cart": "Add to cart",
     "inactive": "Inactive",
@@ -79,6 +81,7 @@
     "lastName": "Last name",
     "email": "Email",
     "password": "Password",
+    "repeat_password": "Repeat password",
     "submit": "Submit",
     "phone": "Phone",
     "language": "Language",
@@ -124,7 +127,11 @@
     "company": {
       "local_code": null,
       "name": "Company name",
-      "company": "Firma"
+      "company": "Firma",
+      "type": "Type",
+      "website_url": "Website",
+      "facebook_url": "Facebook",
+      "instagram_url": "Instagram"
     },
     "address": {
       "address": "Address",
@@ -134,7 +141,8 @@
       "city": "City"
     },
     "user": {
-      "profile": "Profile"
+      "profile": "Profile",
+      "profile_image": "Profile picture"
     }
   },
   "sort": {
@@ -144,6 +152,7 @@
   },
   "crud": {
     "edit": "Edit",
+    "cancel": "Afbryd",
     "create": "Submit",
     "delete": "Delete",
     "save": "Save",
