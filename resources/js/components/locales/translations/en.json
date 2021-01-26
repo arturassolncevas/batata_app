@@ -101,14 +101,21 @@
     "no": "No",
     "min": "Min",
     "max": "Max",
-    "getData": "Get data"
+    "getData": "Get data",
+    "ratings": "Ratings",
+    "rating": "Rating",
+    "about": "About",
+    "picture_gallery": "Picture gallery",
+    "reviews": "Reviews",
+    "review": "Review"
   },
   "menu": {
     "dashboard": "Dashboard",
     "marketplace": "Marketplace",
     "products": "Products",
     "orders": "Orders",
-    "placed_orders": "Placed orders"
+    "placed_orders": "Placed orders",
+    "profile": "Profile"
   },
   "countries": {
     "Denmark": "Denmark",
@@ -131,7 +138,12 @@
       "type": "Type",
       "website_url": "Website",
       "facebook_url": "Facebook",
-      "instagram_url": "Instagram"
+      "instagram_url": "Instagram",
+      "basic_info": "Basic informatiom",
+      "about_form": "About form",
+      "business_info": "Business information",
+      "social_links": "Social links",
+      "ecological": "Økologisk"
     },
     "address": {
       "address": "Address",

@@ -18,7 +18,7 @@ class CreateCompanyFilesTable extends Migration
             $table->uuid('company_id');
             $table->integer('group_priority')->nullable();
             $table->string('extension');
-            $table->enum('type', ['file', 'image', 'thumbnail', 'document', 'certificate', 'profile_image']);
+            $table->enum('type', ['file', 'feature_image', 'image', 'thumbnail', 'feature_image_thumbnail', 'document', 'certificate', 'profile_image']);
             $table->boolean('public');
             $table->string('path');
             $table->string('url');

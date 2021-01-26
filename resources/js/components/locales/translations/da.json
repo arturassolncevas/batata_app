@@ -101,14 +101,19 @@
     "no": "Nej",
     "min": "Min",
     "max": "Max",
-    "getData": "Hent data"
+    "getData": "Hent data",
+    "ratings": "Ratings",
+    "rating": "Rating",
+    "about": "Beskrivelse",
+    "picture_gallery": "Billeder"
   },
   "menu": {
     "dashboard": "Dashboard",
     "marketplace": "Marketplace",
     "products": "Produkter",
     "orders": "Innkommende ordrer",
-    "placed_orders": "Afgivet ordrer"
+    "placed_orders": "Afgivet ordrer",
+    "profile": "Profil"
   },
   "countries": {
     "Denmark": "Denmark",
@@ -131,7 +136,12 @@
       "type": "Type",
       "website_url": "Hjemmeside",
       "facebook_url": "Facebook",
-      "instagram_url": "Instagram"
+      "instagram_url": "Instagram",
+      "basic_info": "Basis info",
+      "about_form": "Om firma",
+      "business_info": "Basis info",
+      "social_links": "Sociale media",
+      "ecological": "Økologisk"
     },
     "address": {
       "address": "Adresse",

@@ -62,6 +62,8 @@ use Illuminate\Support\Facades\Route;
 
     Route::post('company_files/upload_profile_image', 'API\General\CompanyFilesController@upload_profile_image');
     Route::delete('company_files/delete_profile_image/{id}', 'API\General\CompanyFilesController@delete_profile_image');
+    Route::post('company_files/upload_feature_image', 'API\General\CompanyFilesController@upload_feature_image');
+    Route::delete('company_files/delete_feature_image/{id}', 'API\General\CompanyFilesController@delete_feature_image');
 
     //PRODUCTS
     Route::get('products/{id}', 'API\General\ProductsController@find');

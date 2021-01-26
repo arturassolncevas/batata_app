@@ -19,7 +19,8 @@ const menuKeys = {
     "2": { location: "/placed_orders", regex: [new RegExp("^/placed_orders")] },
     "3": { location: "/orders", regex: [new RegExp("^/orders")] },
     "4": { location: "/products", regex: [new RegExp("^/products")] },
-    "5": { location: "/marketplace", regex: [new RegExp("^/marketplace")] }
+    "5": { location: "/marketplace", regex: [new RegExp("^/marketplace")] },
+    "6": { location: "/settings/profile", regex: [new RegExp("^/settings/profile")] }
 };
 
 const selectMenuKeys = locationString => {
@@ -70,6 +71,12 @@ const MenuComponent = props => {
                     <NavLink to={menuKeys["2"].location}>
                         <DotChartOutlined />
                         {props.intl.formatMessage({ id: "menu.placed_orders" })}
+                    </NavLink>
+                </Menu.Item>
+                <Menu.Item key="6">
+                    <NavLink to={menuKeys["6"].location}>
+                        <DotChartOutlined />
+                        {props.intl.formatMessage({ id: "menu.profile" })}
                     </NavLink>
                 </Menu.Item>
             </Menu>

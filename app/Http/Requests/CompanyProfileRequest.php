@@ -23,9 +23,10 @@ class CompanyProfileRequest extends FormRequest
       switch($data_type) {
         case "secondary":
           return [
-          'company_profile.description' => "required",
-          'company_profile.website_url' => "required|max:25",
-          'company_profile.facebook_url' => "required|max:255"
+          'company_profile.description' => "max:3000",
+          'company_profile.website_url' => "max:255",
+          'company_profile.facebook_url' => "max:255",
+          'company_profile.instagram_url' => "max:255"
           ];
         break;
         case "primary":
@@ -68,7 +69,8 @@ class CompanyProfileRequest extends FormRequest
                 "country_id" => $phone_area_country ? $phone_area_country->id : null,
                 "company_id" => $company_id
               ];
-              $result = $this->validation_steps('primary', $params);
+              $result = array_merge($result, $this->validation_steps('primary', $params));
+              $result = array_merge($result, $this->validation_steps('secondary'));
               break;
       }
       return $result;

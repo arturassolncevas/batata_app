@@ -1,45 +1,36 @@
 const initialState = {
   form1EditEnabled: false,
   form2EditEnabled: false,
-  form1: {
+  form: {
     company_profile: {
-      description: "<p>papa</p>",
-      website_url: null,
-      facebook_url: null
-    }
-  },
-  form2: {
-    company_profile: {
-      description: "<p>papa</p>",
+      local_code: null,
       name: null,
-      local_code: "",
+      email: null,
       type: null,
       address: {
-        email: null,
-        address_1: null,
-        city: null,
-        email: null,
         phone: null,
+        address_1: null,
         zipcode: null,
+        city: null,
         country: {
-          id: null
+          id: null,
         }
-      }
+      },
+      website_url: null,
+      facebook_url: null,
+      description: "",
     }
   },
 
   error: {
     message: null,
     errors: {
-      form1: {
+      form: {
         company_profile: {
-          description: null,
+          name: null,
           website_url: null,
-          facebook_url: null
-        }
-      },
-      form2: {
-        company_profile: {
+          facebook_url: null,
+          description: null,
           local_code: null,
           name: null,
           email: null,
@@ -57,11 +48,12 @@ const initialState = {
       }
     }
   },
-
   countries: [],
   isFetching: true,
-  editEnabled: true,
-  fileList: [],
+  formEditEnabled: true,
+  profileImageList: [],
+  featureImageList: [],
+  company_id: null,
 }
 
 exports.initialState = initialState

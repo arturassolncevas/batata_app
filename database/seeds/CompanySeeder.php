@@ -34,7 +34,7 @@ class CompanySeeder extends Seeder
           "address_1" => "Address 19",
           "city" => "Paris",
           "zipcode" => "Kolding",
-          "email" => "sc1@mail.com",
+          "email" => "sc2@mail.com",
           "phone" => "2541511215",
         ]
       ],

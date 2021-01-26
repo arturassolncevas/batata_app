@@ -26,7 +26,8 @@ class CompanySettings extends JsonResource
           'facebook_url' => $this->facebook_url,
           'description' => $this->description,
           'address' => new AddressResource($this->address),
-          'profile_image' => new CompanyFile($this->profile_image())
+          'profile_image' => new CompanyFile($this->profile_image()),
+          'feature_images' =>  CompanyFile::collection($this->feature_images())
         ];
     }
 }

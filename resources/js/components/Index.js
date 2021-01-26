@@ -9,6 +9,7 @@ const EditProductPage = React.lazy(() => import('./pages/products/EditProduct'))
 const MarketPlacePage = React.lazy(() => import('./pages/marketplace/Marketplace'));
 const CartPage = React.lazy(() => import('./pages/cart/Cart'));
 const ProfileSettingsPage = React.lazy(() => import('./pages/profile/ProfileSettings.js'));
+const CompanyProfileSettingsEdit = React.lazy(() => import('./pages/company/CompanyProfileSettingsEdit.js'));
 const CompanyProfileSettings = React.lazy(() => import('./pages/company/CompanyProfileSettings.js'));
 
 import DashBoardPage from './pages/dashboard/Dashboard'
@@ -66,7 +67,8 @@ class Index extends Component {
               <PrivateRoute path="/dashboard" component={DashBoardPage} />
               <PrivateRoute path="/orders" component={OrdersPage} />
               <PrivateRoute path="/placed_orders" component={PlacedOrdersPage} />
-              <PrivateRoute path="/settings/profile" component={ProfileSettingsPage} />
+              <PrivateRoute path="/settings/profile/edit" component={CompanyProfileSettingsEdit} />
+              <PrivateRoute path="/settings/profile/" component={CompanyProfileSettings} />
               <PrivateRoute path="/settings/company" component={CompanyProfileSettings} />
               <PrivateRoute path="/payments/status" component={PaymentsPage} />
               <PrivateRoute exact path="/products" component={ProductsPage} allowed_roles={[]} />

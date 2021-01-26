@@ -26,7 +26,8 @@ class Company extends Model
       'address_id',
       'description',
       'facebook_url',
-      'website_url'
+      'website_url',
+      'instagram_url'
     ];
 
     /**
@@ -68,6 +69,10 @@ class Company extends Model
 
     public function profile_image() {
       return $this->files()->where('type', 'profile_image')->first();
+    }
+
+    public function feature_images() {
+      return $this->files()->where('type', 'feature_image')->orderBy('group_priority')->get();
     }
 
     public function save_file($data, $file_name, $extension, $type, $public, $group_id = null, $group_priority = 0) {
