@@ -104,6 +104,7 @@ class CompanyProfileSettings extends Component {
           avatar={{ icon: (<DropboxOutlined className="header-icon" />) }}
           extra={[
               <Button
+                key={"headerButton"}
                 onClick={() => { this.props.history.push('/settings/profile/edit') }}
               >{this.props.intl.formatMessage({ id: 'crud.edit' })}</Button>
           ]}
@@ -114,7 +115,7 @@ class CompanyProfileSettings extends Component {
           <Col><img
             height={150}
             width={150}
-            src={this.state.company_profile.profile_image.url} alt="brand logo" /></Col>
+            src={(this.state.company_profile.profile_image || {}).url} alt="brand logo" /></Col>
           <Col>
             <div>{this.state.company_profile.name}</div>
             <Row style={{ alignItems: "center" }}>
@@ -181,8 +182,8 @@ class CompanyProfileSettings extends Component {
             <div style={{ display: "flex", fontSize: "15px", alignItems: "center", justifyContent: "center", width: "40px", height: "40px", border: "1px solid black", borderRadius: "50%" }}>{average}</div>
             <Rate allowHalf style={{ fontSize: "18px" }} disabled defaultValue={average} />
             <div>({`${reviews.length} ${this.props.intl.formatMessage({ id: 'general.ratings' })}`})</div>
-            {getRatingsGroupedTotal(reviews).map(e => {
-              return (<div>{e.name} <Progress percent={e.percentage} showInfo={true} format={() => { return `(${e.times})` }} /></div>)
+            {getRatingsGroupedTotal(reviews).map((e, i) => {
+              return (<div key={i}>{e.name} <Progress percent={e.percentage} showInfo={true} format={() => { return `(${e.times})` }} /></div>)
             })}
           </Col>
         </Row>

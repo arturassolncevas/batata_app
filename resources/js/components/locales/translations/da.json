@@ -105,7 +105,9 @@
     "ratings": "Ratings",
     "rating": "Rating",
     "about": "Beskrivelse",
-    "picture_gallery": "Billeder"
+    "picture_gallery": "Billeder",
+    "reviews": "Anmeldelser",
+    "review": "Anmeldelse"
   },
   "menu": {
     "dashboard": "Dashboard",
