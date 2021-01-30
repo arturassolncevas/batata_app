@@ -9,6 +9,11 @@ html {
 body {
     font-family: "Poppins", sans-serif;
 }
+button.btn {
+    &:hover {
+        transform: scale(0.98);
+    }
+}
 .ant-layout {
     background-color: #fafbfc;
 }

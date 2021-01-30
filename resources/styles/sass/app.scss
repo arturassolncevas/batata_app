@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
 
 @import "./variables";
+@import "./custom";
 @import "./config";
 @import "./util";
 @import "./header";
@@ -8,4 +9,5 @@
 @import "./mobileMenu";
 @import "./Pages/Orders/order";
 @import "./Pages/MarketPlace/marketPlace";
+@import "./Pages//Dashboard/dashboard";
 @import "./resonsive";

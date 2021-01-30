@@ -1,0 +1,67 @@
+#dashboard {
+    .btn {
+        border-radius: 4px;
+    }
+
+    .performance-card,
+    .chart-card {
+        background-color: #fff;
+        flex-grow: 1;
+
+        & + * {
+            margin-left: 2rem;
+        }
+    }
+
+    .performance-card {
+        flex-basis: 100%;
+        height: 14rem;
+    }
+
+    .chart-card {
+        flex-basis: 30%;
+        margin-bottom: 2rem;
+
+        .chart {
+            canvas {
+                width: 80% !important;
+                height: auto !important;
+            }
+        }
+    }
+
+    .news-card {
+        background-color: #fafbfc;
+    }
+
+    .chart-wrapper {
+        .filter {
+            > div {
+                &:hover,
+                &:focus {
+                    > div {
+                        border-color: lighten($dark, 50%);
+                        box-shadow: none;
+                        outline: none;
+                    }
+                }
+            }
+        }
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+    }
+
+    .info-section {
+        .same-height {
+            max-height: 800px;
+
+            .activity-card {
+                & + * {
+                    margin-top: 1.5rem;
+                }
+            }
+        }
+    }
+}
